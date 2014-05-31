@@ -3,8 +3,6 @@ package ca.ajweeks.rpg.state;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
-import ca.ajweeks.rpg.input.Input;
-
 public class StateManager {
 	
 	public static final int MAIN_MENU_STATE = 0;
@@ -29,7 +27,7 @@ public class StateManager {
 		}
 	}
 	
-	public void update(Input input, StateManager sm) {
+	public void update() {
 		currentState.update();
 	}
 	

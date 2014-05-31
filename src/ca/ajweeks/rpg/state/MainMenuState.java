@@ -41,13 +41,17 @@ public class MainMenuState extends BasicState {
 		
 		if (louder.isDown(RPG.input)) {
 			RPG.input.leftMouse = false;
-			Sound.volume = Sound.volume.louder();
+			Sound.volume = Sound.louder(Sound.volume);
+			if (Sound.volume == Sound.MAX_VOLUME) louder.disable();
+			if (Sound.volume > Sound.MIN_VOLUME) quieter.enable();
 			Sound.SELECT.play();
 		}
 		
 		if (quieter.isDown(RPG.input)) {
 			RPG.input.leftMouse = false;
-			Sound.volume = Sound.volume.quieter();
+			Sound.volume = Sound.quieter(Sound.volume);
+			if (Sound.volume == Sound.MIN_VOLUME) quieter.disable();
+			if (Sound.volume < Sound.MAX_VOLUME) louder.enable();
 			Sound.SELECT.play();
 		}
 	}

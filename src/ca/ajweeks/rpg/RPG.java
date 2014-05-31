@@ -9,7 +9,6 @@ import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
 
-import ca.ajweeks.rpg.Sound.Volume;
 import ca.ajweeks.rpg.input.Input;
 import ca.ajweeks.rpg.state.StateManager;
 
@@ -45,8 +44,6 @@ public class RPG extends JFrame implements Runnable {
 		setVisible(true);
 		requestFocus();
 		
-		Sound.volume = Volume.LOW;
-		
 		font = new Font("Consolas", Font.BOLD, 32);
 		
 		sm = new StateManager();
@@ -54,7 +51,7 @@ public class RPG extends JFrame implements Runnable {
 	}
 	
 	public void update() {
-		sm.update(input, sm);
+		sm.update();
 	}
 	
 	public void render() {
