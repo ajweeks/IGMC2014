@@ -9,35 +9,32 @@ import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
 
+import ca.ajweeks.rpg.Sound.Volume;
 import ca.ajweeks.rpg.input.Input;
 import ca.ajweeks.rpg.state.StateManager;
 
 public class RPG extends JFrame implements Runnable {
 	private static final long serialVersionUID = 1L;
 	
-	public static final String TITLE = "TITLE";
+	public static final String GAME_TITLE = "TITLE";
 	public static final Dimension SIZE = new Dimension(1200, 675);
 	
-	public StateManager sm;
-	public Canvas canvas;
-	public Input input;
-	public Font font;
+	public static StateManager sm;
+	public static Input input;
+	
+	private Canvas canvas;
+	private Font font;
 	
 	public int frames = 0;
 	
 	private volatile boolean running = false;
 	
 	public RPG() {
-		super(TITLE);
-		
-		font = new Font("Consolas", Font.BOLD, 32);
-		sm = new StateManager();
+		super(GAME_TITLE);
 		
 		canvas = new Canvas();
 		canvas.setSize(SIZE);
 		canvas.setFont(font);
-		
-		input = new Input(canvas);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		add(canvas);
@@ -47,6 +44,13 @@ public class RPG extends JFrame implements Runnable {
 		setLocationRelativeTo(null);
 		setVisible(true);
 		requestFocus();
+		
+		Sound.volume = Volume.LOW;
+		
+		font = new Font("Consolas", Font.BOLD, 32);
+		
+		sm = new StateManager();
+		input = new Input(canvas);
 	}
 	
 	public void update() {
@@ -60,7 +64,7 @@ public class RPG extends JFrame implements Runnable {
 			return;
 		}
 		Graphics g = buffer.getDrawGraphics();
-		g.setFont(canvas.getFont());
+		g.setFont(font);
 		
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, SIZE.width, SIZE.height);

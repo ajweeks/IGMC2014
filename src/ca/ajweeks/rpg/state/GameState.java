@@ -5,7 +5,7 @@ import java.awt.Graphics;
 
 import ca.ajweeks.rpg.Colour;
 import ca.ajweeks.rpg.RPG;
-import ca.ajweeks.rpg.input.Input;
+import ca.ajweeks.rpg.Sound;
 
 public class GameState extends BasicState {
 	
@@ -15,8 +15,12 @@ public class GameState extends BasicState {
 		colour = new Colour();
 	}
 	
-	public void update(Input input, StateManager sm) {
-		if (input.esc.down) sm.enterState(StateManager.MAIN_MENU_STATE);
+	public void update() {
+		if (RPG.input.esc.down) {
+			RPG.input.esc.down = false;
+			Sound.SELECT.play();
+			RPG.sm.enterState(StateManager.MAIN_MENU_STATE);
+		}
 	}
 	
 	public void render(Graphics g) {

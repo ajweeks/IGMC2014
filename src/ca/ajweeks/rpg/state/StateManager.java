@@ -24,11 +24,13 @@ public class StateManager {
 	public void enterState(int stateIndex) {
 		if (stateIndex <= states.size()) {
 			currentState = states.get(stateIndex);
+		} else {
+			new Exception("Invalid state index: " + stateIndex + "!").printStackTrace();
 		}
 	}
 	
 	public void update(Input input, StateManager sm) {
-		currentState.update(input, sm);
+		currentState.update();
 	}
 	
 	public void render(Graphics g) {
