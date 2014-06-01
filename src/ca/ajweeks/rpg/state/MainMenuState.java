@@ -17,8 +17,10 @@ public class MainMenuState extends BasicState {
 	private Image down;
 	
 	private static final int START_GAME = 0;
-	private static final int QUIETER = 1;
-	private static final int LOUDER = 2;
+	private static final int HELP = 1;
+	private static final int QUIT = 2;
+	private static final int QUIETER = 3;
+	private static final int LOUDER = 4;
 	
 	private Button[] buttons;
 	
@@ -28,13 +30,27 @@ public class MainMenuState extends BasicState {
 		up = new ImageIcon("res/up.png").getImage();
 		down = new ImageIcon("res/down.png").getImage();
 		
-		buttons = new Button[] {
-				new Button(RPG.SIZE.width / 2 - 160 / 2, 225, 160, 75, "Play!", Colour.button, Colour.hButton, Colour.offWhite, true),
-				new Button(RPG.SIZE.width - 130, 30, 50, 50, "", Colour.button, Colour.hButton, Colour.offWhite, false, down),
-				new Button(RPG.SIZE.width - 70, 30, 50, 50, "", Colour.button, Colour.hButton, Colour.offWhite, false, up) };
+		buttons = new Button[] { new Button(RPG.SIZE.width / 2 - 160 / 2, 225, 160, 75, "Play!", Colour.button, Colour.hButton, Colour.offWhite),
+				new Button(RPG.SIZE.width / 2 - 160 / 2, 325, 160, 75, "Help", Colour.button, Colour.hButton, Colour.offWhite),
+				new Button(RPG.SIZE.width / 2 - 160 / 2, 425, 160, 75, "Quit", Colour.button, Colour.hButton, Colour.offWhite),
+				new Button(RPG.SIZE.width - 130, 30, 50, 50, "", Colour.button, Colour.hButton, Colour.offWhite, down),
+				new Button(RPG.SIZE.width - 70, 30, 50, 50, "", Colour.button, Colour.hButton, Colour.offWhite, up) };
+		
+		for (int i = 0; i < buttons.length; i++) {
+			if (i == selectedButton) buttons[i].setSelected();
+			else buttons[i].setDeselected();
+		}
 	}
 	
 	public void update() {
+		for (int i = 0; i < buttons.length; i++) {
+			if (buttons[i].hover) selectedButton = i;
+			for (int j = 0; j < buttons.length; j++) {
+				if (j == selectedButton) buttons[j].setSelected();
+				else buttons[j].setDeselected();
+			}
+		}
+		
 		if (RPG.input.tab) {
 			RPG.input.tab = false;
 			selectedButton++;
@@ -51,6 +67,12 @@ public class MainMenuState extends BasicState {
 			case START_GAME:
 				if (buttons[START_GAME].enabled) startGame();
 				break;
+			case HELP:
+				if (buttons[HELP].enabled) help();
+				break;
+			case QUIT:
+				if (buttons[QUIT].enabled) RPG.stop();
+				break;
 			case QUIETER:
 				if (buttons[QUIETER].enabled) quieter();
 				break;
@@ -61,6 +83,8 @@ public class MainMenuState extends BasicState {
 		}
 		
 		if (buttons[START_GAME].isDown(RPG.input)) startGame();
+		if (buttons[HELP].isDown(RPG.input)) help();
+		if (buttons[QUIT].isDown(RPG.input)) RPG.stop();
 		if (buttons[LOUDER].isDown(RPG.input)) louder();
 		if (buttons[QUIETER].isDown(RPG.input)) quieter();
 	}
@@ -68,6 +92,10 @@ public class MainMenuState extends BasicState {
 	private void startGame() {
 		Sound.SELECT.play();
 		RPG.sm.enterState(StateManager.GAME_STATE);
+	}
+	
+	private void help() {
+		
 	}
 	
 	private void quieter() {
@@ -88,9 +116,9 @@ public class MainMenuState extends BasicState {
 		g.setColor(new Color(15, 15, 15));
 		g.fillRect(0, 0, RPG.SIZE.width, RPG.SIZE.height);
 		
-		buttons[START_GAME].render(g);
-		buttons[LOUDER].render(g);
-		buttons[QUIETER].render(g);
+		for (Button b : buttons) {
+			b.render(g);
+		}
 	}
 	
 }

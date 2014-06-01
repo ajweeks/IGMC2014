@@ -17,7 +17,7 @@ public class Button {
 	public boolean enabled;
 	private boolean selected;
 	
-	public Button(int x, int y, int width, int height, String text, Color colour, Color hColour, Color tColour, boolean selected) {
+	public Button(int x, int y, int width, int height, String text, Color colour, Color hColour, Color tColour) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -26,13 +26,12 @@ public class Button {
 		this.colour = colour;
 		this.hColour = hColour;
 		this.tColour = tColour;
-		this.selected = selected;
 		this.hover = false;
 		this.enabled = true;
 		this.hasImage = false;
 	}
 	
-	public Button(int x, int y, int width, int height, String text, Color colour, Color hColour, Color tColour, boolean selected, Image image) {
+	public Button(int x, int y, int width, int height, String text, Color colour, Color hColour, Color tColour, Image image) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -41,7 +40,6 @@ public class Button {
 		this.colour = colour;
 		this.hColour = hColour;
 		this.tColour = tColour;
-		this.selected = selected;
 		this.hover = false;
 		this.enabled = true;
 		this.image = image;

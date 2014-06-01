@@ -28,7 +28,7 @@ public class RPG extends JFrame implements Runnable {
 	public static int fps = 0;
 	public int frames = 0;
 	
-	private static volatile boolean running = false;
+	public static volatile boolean running = false;
 	
 	public RPG() {
 		super(GAME_TITLE);
@@ -121,6 +121,8 @@ public class RPG extends JFrame implements Runnable {
 			
 			before = System.currentTimeMillis();
 		}
+		dispose();
+		System.exit(0);
 	}
 	
 	public static void stop() {
