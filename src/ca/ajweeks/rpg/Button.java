@@ -14,9 +14,10 @@ public class Button {
 	private String text;
 	private Image image;
 	private boolean hasImage;
-	private boolean enabled;
+	public boolean enabled;
+	private boolean selected;
 	
-	public Button(int x, int y, int width, int height, String text, Color colour, Color hColour, Color tColour) {
+	public Button(int x, int y, int width, int height, String text, Color colour, Color hColour, Color tColour, boolean selected) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -25,12 +26,13 @@ public class Button {
 		this.colour = colour;
 		this.hColour = hColour;
 		this.tColour = tColour;
+		this.selected = selected;
 		this.hover = false;
 		this.enabled = true;
 		this.hasImage = false;
 	}
 	
-	public Button(int x, int y, int width, int height, String text, Color colour, Color hColour, Color tColour, Image image) {
+	public Button(int x, int y, int width, int height, String text, Color colour, Color hColour, Color tColour, boolean selected, Image image) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -39,31 +41,37 @@ public class Button {
 		this.colour = colour;
 		this.hColour = hColour;
 		this.tColour = tColour;
+		this.selected = selected;
 		this.hover = false;
 		this.enabled = true;
 		this.image = image;
 		this.hasImage = true;
 	}
 	
-	public void disable() {
-		this.enabled = false;
+	public void setDeselected() {
+		this.selected = false;
 	}
 	
-	public void enable() {
-		this.enabled = true;
+	public void setSelected() {
+		this.selected = true;
 	}
 	
-	/** @return <code>true</code> if the mouse has clicked in this button*/
+	/** @return <code>true</code> if the mouse is being clicked in this button (but not dragged into it) */
 	public boolean isDown(Input input) {
 		if (!enabled) return false;
 		if (input.x > this.x && input.x < this.x + this.width && input.y > this.y && input.y < this.y + this.height) {
 			this.hover = true;
-			if (input.leftMouse) return true;
+			if (input.leftMouse && !RPG.leftWasDown) return true;
 		} else this.hover = false;
 		return false;
 	}
 	
 	public void render(Graphics g) {
+		if (selected) {
+			g.setColor(Colour.offWhite);
+			g.fillRoundRect(x - 3, y - 3, width + 6, height + 6, 25, 25);
+		}
+		
 		g.setColor(hover ? colour : hColour);
 		g.fillRoundRect(x, y, width, height, 25, 25);
 		
@@ -79,5 +87,4 @@ public class Button {
 			g.fillRoundRect(x, y, width, height, 25, 25);
 		}
 	}
-	
 }

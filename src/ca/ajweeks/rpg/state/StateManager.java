@@ -27,6 +27,10 @@ public class StateManager {
 		}
 	}
 	
+	public String getCurrentState() {
+		return currentState.getClass().getSimpleName();
+	}
+	
 	public void update() {
 		currentState.update();
 	}

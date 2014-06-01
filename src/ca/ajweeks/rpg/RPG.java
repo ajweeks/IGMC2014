@@ -20,13 +20,15 @@ public class RPG extends JFrame implements Runnable {
 	
 	public static StateManager sm;
 	public static Input input;
+	public static boolean leftWasDown;
 	
 	private Canvas canvas;
 	private Font font;
 	
+	public static int fps = 0;
 	public int frames = 0;
 	
-	private volatile boolean running = false;
+	private static volatile boolean running = false;
 	
 	public RPG() {
 		super(GAME_TITLE);
@@ -39,10 +41,11 @@ public class RPG extends JFrame implements Runnable {
 		add(canvas);
 		setResizable(false);
 		pack();
-		setFocusable(true);
 		setLocationRelativeTo(null);
 		setVisible(true);
-		requestFocus();
+		
+		canvas.setFocusable(true);
+		canvas.requestFocus();
 		
 		font = new Font("Consolas", Font.BOLD, 32);
 		
@@ -52,6 +55,8 @@ public class RPG extends JFrame implements Runnable {
 	
 	public void update() {
 		sm.update();
+		input.update();
+		leftWasDown = input.leftMouse;
 	}
 	
 	public void render() {
@@ -68,6 +73,24 @@ public class RPG extends JFrame implements Runnable {
 		
 		sm.render(g);
 		
+		if (input.debug) {
+			int xoff = 0;
+			int yoff = 0;
+			
+			g.setColor(new Color(0, 0, 0, 150));
+			g.fillRect(xoff + 2, yoff + 2, 50, 14);
+			
+			g.setFont(font.deriveFont(12f));
+			g.setColor(Color.WHITE);
+			g.drawString(fps + " fps", xoff + 4, yoff + 12);
+			
+			g.setColor(new Color(0, 0, 0, 150));
+			g.fillRect(xoff + 2, yoff + 16, 205, 14);
+			
+			g.setColor(Color.WHITE);
+			g.drawString("Current state: " + sm.getCurrentState(), xoff + 4, yoff + 26);
+		}
+		
 		g.dispose();
 		buffer.show();
 		frames++;
@@ -82,7 +105,7 @@ public class RPG extends JFrame implements Runnable {
 			render();
 			try {
 				//TODO add better game loop..
-				Thread.sleep(1000 / 70);
+				Thread.sleep(1000 / 60);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -91,8 +114,8 @@ public class RPG extends JFrame implements Runnable {
 			
 			seconds += elapsed;
 			if (seconds >= 1000) {
+				fps = frames;
 				seconds = 0;
-				System.out.println(frames + " FPS");
 				frames = 0;
 			}
 			
@@ -100,7 +123,7 @@ public class RPG extends JFrame implements Runnable {
 		}
 	}
 	
-	public void stop() {
+	public static void stop() {
 		running = false;
 	}
 	

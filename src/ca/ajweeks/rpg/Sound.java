@@ -11,10 +11,10 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 public enum Sound {
-	SELECT("res/select.wav");
+	SELECT("res/select2.wav");
 	
 	public static float volume = -8.0f;
-	public final static float MAX_VOLUME = 4.0f;
+	public final static float MAX_VOLUME = 6.0f;
 	public final static float MIN_VOLUME = -22.0f;
 	
 	private Clip clip;
