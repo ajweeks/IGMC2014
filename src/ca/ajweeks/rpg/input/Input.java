@@ -12,7 +12,7 @@ import ca.ajweeks.rpg.entity.Player;
 public class Input implements MouseMotionListener, MouseListener, KeyListener {
 	
 	public int x, y;
-	//FIXME implement a better key listener system already..
+	//FIXME Implement a better key listener system already..
 	public boolean leftMouse, rightMouse, esc, debug = true;
 	public boolean up, down, right, left, space, tab, enter;
 	

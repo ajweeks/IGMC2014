@@ -15,15 +15,15 @@ import ca.ajweeks.rpg.state.StateManager;
 public class RPG extends JFrame implements Runnable {
 	private static final long serialVersionUID = 1L;
 	
-	public static final String GAME_TITLE = "TITLE";
+	public static final String GAME_TITLE = "IGMC 2014";
 	public static final Dimension SIZE = new Dimension(1200, 675);
 	
 	public static StateManager sm;
 	public static Input input;
 	public static boolean leftWasDown;
+	public static Font font;
 	
 	private Canvas canvas;
-	private Font font;
 	
 	public static int fps = 0;
 	public int frames = 0;
@@ -47,7 +47,7 @@ public class RPG extends JFrame implements Runnable {
 		canvas.setFocusable(true);
 		canvas.requestFocus();
 		
-		font = new Font("Consolas", Font.BOLD, 32);
+		font = new Font("Consolas", Font.BOLD, 34);
 		
 		sm = new StateManager();
 		input = new Input(canvas);
@@ -104,7 +104,7 @@ public class RPG extends JFrame implements Runnable {
 			update();
 			render();
 			try {
-				//TODO add better game loop..
+				//TODO Add better game loop..
 				Thread.sleep(1000 / 60);
 			} catch (InterruptedException e) {
 				e.printStackTrace();

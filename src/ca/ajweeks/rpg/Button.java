@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 
-import ca.ajweeks.rpg.input.Input;
-
 public class Button {
 	
 	public int x, y, width, height;
@@ -55,16 +53,17 @@ public class Button {
 	}
 	
 	/** @return <code>true</code> if the mouse is being clicked in this button (but not dragged into it) */
-	public boolean isDown(Input input) {
+	public boolean isDown() {
 		if (!enabled) return false;
-		if (input.x > this.x && input.x < this.x + this.width && input.y > this.y && input.y < this.y + this.height) {
+		if (RPG.input.x > this.x && RPG.input.x < this.x + this.width && RPG.input.y > this.y && RPG.input.y < this.y + this.height) {
 			this.hover = true;
-			if (input.leftMouse && !RPG.leftWasDown) return true;
+			if (RPG.input.leftMouse && !RPG.leftWasDown) return true;
 		} else this.hover = false;
 		return false;
 	}
 	
 	public void render(Graphics g) {
+		g.setFont(RPG.font.deriveFont(34f));
 		if (selected) {
 			g.setColor(Colour.offWhite);
 			g.fillRoundRect(x - 3, y - 3, width + 6, height + 6, 25, 25);
@@ -74,7 +73,7 @@ public class Button {
 		g.fillRoundRect(x, y, width, height, 25, 25);
 		
 		g.setColor(tColour);
-		g.drawString(text, x + 38, y + 45);
+		g.drawString(text, x + width / 8, (int) (y + height * 0.65));
 		
 		if (hasImage) {
 			g.drawImage(image, x + 5, y + 5, null);
