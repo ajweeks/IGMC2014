@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
@@ -35,6 +36,9 @@ public class RPG extends JFrame implements Runnable {
 		
 		canvas = new Canvas();
 		canvas.setSize(SIZE);
+		//Arial Black
+		font = getFonts();
+		System.out.println(font.getName());
 		canvas.setFont(font);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -47,10 +51,19 @@ public class RPG extends JFrame implements Runnable {
 		canvas.setFocusable(true);
 		canvas.requestFocus();
 		
-		font = new Font("Consolas", Font.BOLD, 34);
-		
 		sm = new StateManager();
 		input = new Input(canvas);
+	}
+	
+	private Font getFonts() {
+		Font result = new Font("Consolas", Font.BOLD, 34);
+		Font[] fonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts();
+		for (Font f : fonts) {
+			System.out.println(f.getName());
+			if (f.getName().equals("Arial")) return new Font("Arial", Font.BOLD, 34);
+			if (f.getName().equals("Microsoft Sans Serif")) return new Font("Microsoft Sans Serif", Font.BOLD, 34);
+		}
+		return result;
 	}
 	
 	public void update() {

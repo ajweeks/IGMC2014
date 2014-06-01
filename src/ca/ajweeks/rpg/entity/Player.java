@@ -9,7 +9,6 @@ import ca.ajweeks.rpg.level.Level;
 public class Player extends Mob {
 	
 	private Level level;
-	public boolean inAir;
 	
 	public static int speed = 5;
 	
@@ -20,7 +19,6 @@ public class Player extends Mob {
 		this.level = level;
 		x = RPG.SIZE.width / 2 - width / 2;
 		y = RPG.SIZE.height / 2 - height / 2;
-		inAir = false;
 	}
 	
 	@Override

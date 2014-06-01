@@ -15,10 +15,10 @@ public class MainMenuState extends BasicState {
 	private Image up;
 	private Image down;
 	
-	private static final int START_GAME = 0;
+	private static final int PLAY = 0;
 	private static final int HELP = 1;
-	private static final int QUIT = 2;
-	private static final int CREDITS = 3;
+	private static final int CREDITS = 2;
+	private static final int QUIT = 3;
 	private static final int QUIETER = 4;
 	private static final int LOUDER = 5;
 	
@@ -33,8 +33,8 @@ public class MainMenuState extends BasicState {
 		//TODO make all buttons same width, but have centered text
 		buttons = new Button[] { new Button(RPG.SIZE.width / 2 - 120 / 2, 125, 120, 75, "Play!", Colour.button, Colour.hButton, Colour.offWhite),
 				new Button(RPG.SIZE.width / 2 - 100 / 2, 225, 100, 75, "Help", Colour.button, Colour.hButton, Colour.offWhite),
-				new Button(RPG.SIZE.width / 2 - 100 / 2, 325, 100, 75, "Quit", Colour.button, Colour.hButton, Colour.offWhite),
-				new Button(RPG.SIZE.width / 2 - 180 / 2, 425, 180, 75, "Credits", Colour.button, Colour.hButton, Colour.offWhite),
+				new Button(RPG.SIZE.width / 2 - 180 / 2, 325, 180, 75, "Credits", Colour.button, Colour.hButton, Colour.offWhite),
+				new Button(RPG.SIZE.width / 2 - 100 / 2, 425, 100, 75, "Quit", Colour.button, Colour.hButton, Colour.offWhite),
 				new Button(RPG.SIZE.width - 130, 30, 50, 50, "", Colour.button, Colour.hButton, Colour.offWhite, down),
 				new Button(RPG.SIZE.width - 70, 30, 50, 50, "", Colour.button, Colour.hButton, Colour.offWhite, up) };
 		
@@ -65,11 +65,16 @@ public class MainMenuState extends BasicState {
 		if (RPG.input.enter) {
 			RPG.input.enter = false;
 			switch (selectedButton) {
-			case START_GAME:
-				if (buttons[START_GAME].enabled) startGame();
+			case PLAY:
+				if (buttons[PLAY].enabled) startGame();
 				break;
 			case HELP:
 				if (buttons[HELP].enabled) help();
+				break;
+			case CREDITS:
+				if (buttons[CREDITS].enabled) {
+					credits();
+				}
 				break;
 			case QUIT:
 				if (buttons[QUIT].enabled) RPG.stop();
@@ -80,24 +85,17 @@ public class MainMenuState extends BasicState {
 			case LOUDER:
 				if (buttons[LOUDER].enabled) louder();
 				break;
-			case CREDITS:
-				if (buttons[CREDITS].enabled) {
-					Sound.SELECT.play();
-					RPG.sm.enterState(CREDITS);
-				}
-				break;
 			}
 		}
 		
-		if (buttons[START_GAME].isDown()) startGame();
+		if (buttons[PLAY].isDown()) startGame();
 		if (buttons[HELP].isDown()) help();
+		if (buttons[CREDITS].isDown()) {
+			credits();
+		}
 		if (buttons[QUIT].isDown()) RPG.stop();
 		if (buttons[LOUDER].isDown()) louder();
 		if (buttons[QUIETER].isDown()) quieter();
-		if (buttons[CREDITS].isDown()) {
-			Sound.SELECT.play();
-			RPG.sm.enterState(CREDITS);
-		}
 	}
 	
 	private void updateSelected() {
@@ -115,6 +113,11 @@ public class MainMenuState extends BasicState {
 	private void help() {
 		Sound.SELECT.play();
 		RPG.sm.enterState(StateManager.HELP);
+	}
+	
+	private void credits() {
+		Sound.SELECT.play();
+		RPG.sm.enterState(StateManager.CREDITS);
 	}
 	
 	private void quieter() {

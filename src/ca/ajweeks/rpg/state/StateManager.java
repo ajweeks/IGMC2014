@@ -16,7 +16,7 @@ public class StateManager {
 	public StateManager() {
 		states = new ArrayList<>();
 		states.add(new MainMenuState());
-		states.add(new HelpState(MAIN_MENU_STATE));
+		states.add(new HelpState());
 		states.add(new GameState());
 		states.add(new CreditState());
 		
@@ -25,7 +25,6 @@ public class StateManager {
 	
 	public void enterState(int stateIndex) {
 		if (stateIndex <= states.size()) {
-			if (stateIndex == HELP) states.set(HELP, new HelpState(states.indexOf(currentState)));
 			currentState = states.get(stateIndex);
 		} else {
 			new Exception("Invalid state index: " + stateIndex + "!").printStackTrace();

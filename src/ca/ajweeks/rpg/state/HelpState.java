@@ -12,12 +12,9 @@ public class HelpState extends BasicState {
 	
 	private int page = 0;
 	private static final int MAX_PAGES = 3;
-	//TODO Always return to main menu, rather than parent?
-	private int parent;
 	private Button back;
 	
-	public HelpState(int parent) {
-		this.parent = parent;
+	public HelpState() {
 		back = new Button(RPG.SIZE.width / 2 - 100 / 2, RPG.SIZE.height - 120, 100, 75, "Back", Colour.button, Colour.hButton, Colour.offWhite);
 		back.setSelected();
 	}
@@ -37,13 +34,13 @@ public class HelpState extends BasicState {
 		if (RPG.input.enter) {
 			RPG.input.enter = false;
 			Sound.SELECT.play();
-			RPG.sm.enterState(parent);
+			RPG.sm.enterState(StateManager.MAIN_MENU_STATE);
 		}
 		
 		if (back.isDown() || RPG.input.esc) {
 			RPG.input.esc = false;
 			Sound.SELECT.play();
-			RPG.sm.enterState(parent);
+			RPG.sm.enterState(StateManager.MAIN_MENU_STATE);
 		}
 	}
 	

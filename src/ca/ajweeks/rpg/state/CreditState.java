@@ -1,5 +1,6 @@
 package ca.ajweeks.rpg.state;
 
+import java.awt.Color;
 import java.awt.Graphics;
 
 import ca.ajweeks.rpg.Button;
@@ -31,7 +32,14 @@ public class CreditState extends BasicState {
 		g.setColor(Colour.offBlack);
 		g.fillRect(0, 0, RPG.SIZE.width, RPG.SIZE.height);
 		
+		g.setFont(RPG.font.deriveFont(24f));
+		g.setColor(Color.WHITE);
+		String[] message = new String[] { RPG.GAME_TITLE + " is a 2D (insert game genre) game made by AJ Weeks in June 2014 for",
+				"the Indie Game Maker Contest 2014." };
+		for (int i = 0; i < message.length; i++) {
+			g.drawString(message[i], RPG.SIZE.width / 2 - 510, RPG.SIZE.height / 2 - 200 + i * 45);
+		}
+		
 		back.render(g);
 	}
-	
 }
