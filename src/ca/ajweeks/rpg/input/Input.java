@@ -15,6 +15,7 @@ public class Input implements MouseMotionListener, MouseListener, KeyListener {
 	//FIXME Implement a better key listener system already..
 	public boolean leftMouse, rightMouse, esc, debug = true;
 	public boolean up, down, right, left, space, tab, enter;
+	public static boolean mouseIsStill = false;
 	
 	public void releaseAll() {
 		leftMouse = false;
@@ -35,6 +36,7 @@ public class Input implements MouseMotionListener, MouseListener, KeyListener {
 	}
 	
 	public void mouseMoved(MouseEvent e) {
+		mouseIsStill = false;
 		x = e.getX();
 		y = e.getY();
 	}
@@ -59,15 +61,20 @@ public class Input implements MouseMotionListener, MouseListener, KeyListener {
 		if (e.getKeyCode() == KeyEvent.VK_F3) debug = !debug;
 		
 		if (e.getKeyCode() == KeyEvent.VK_UP) this.up = down;
+		if (e.getKeyCode() == KeyEvent.VK_W) this.up = down;
 		if (e.getKeyCode() == KeyEvent.VK_RIGHT) this.right = down;
+		if (e.getKeyCode() == KeyEvent.VK_D) this.right = down;
 		if (e.getKeyCode() == KeyEvent.VK_DOWN) this.down = down;
+		if (e.getKeyCode() == KeyEvent.VK_S) this.down = down;
 		if (e.getKeyCode() == KeyEvent.VK_LEFT) this.left = down;
+		if (e.getKeyCode() == KeyEvent.VK_A) this.left = down;
 		if (e.getKeyCode() == KeyEvent.VK_SPACE) this.space = down;
 		if (e.getKeyCode() == KeyEvent.VK_TAB) this.tab = down;
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) this.enter = down;
 	}
 	
 	public void keyPressed(KeyEvent e) {
+		mouseIsStill = true;
 		if (e.isShiftDown()) Player.speed = 10;
 		toggle(e, true);
 	}

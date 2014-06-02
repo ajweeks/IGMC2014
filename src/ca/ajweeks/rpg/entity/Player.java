@@ -4,31 +4,49 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import ca.ajweeks.rpg.RPG;
-import ca.ajweeks.rpg.level.Level;
 
 public class Player extends Mob {
 	
-	private Level level;
-	
 	public static int speed = 5;
+	
+	public boolean onGround;
 	
 	private int width = 100;
 	private int height = 220;
 	
-	public Player(Level level) {
-		this.level = level;
+	public Player() {
 		x = RPG.SIZE.width / 2 - width / 2;
 		y = RPG.SIZE.height / 2 - height / 2;
 	}
 	
 	@Override
 	public void update() {
+		if (RPG.input.right && xa == 0) xa = 1;
+		if (RPG.input.left && xa == 0) xa = -1;
+		
+		if (xa == 1 && !RPG.input.right) xa = 0;
+		if (xa == -1 && !RPG.input.left) xa = 0;
+		
+		if (!RPG.input.right && !RPG.input.left) xa = 0;
+		
 		x += xa * speed;
-		y += ya * speed;
 		if (x + width > RPG.SIZE.width) x = RPG.SIZE.width - width;
 		if (x < 0) x = 0;
-		if (y + height > RPG.SIZE.height) y = RPG.SIZE.height - height;
-		if (y < 0) y = 0;
+		if (y > RPG.SIZE.height - height) {
+			onGround = true;
+			ya = 0;
+			y = RPG.SIZE.height - height + 1;
+		} else onGround = false;
+		
+		if (RPG.input.space && onGround) {
+			RPG.input.space = true;
+			onGround = false;
+			ya = -20;
+		}
+		//TODO decrease gravity
+		ya++;
+		y += ya;
+		
 	}
 	
 	@Override
@@ -36,8 +54,7 @@ public class Player extends Mob {
 		g.setColor(Color.DARK_GRAY);
 		g.fillRect(x, y, width, height);
 		
-		g.setColor(Color.GREEN);
+		g.setColor(Color.WHITE);
 		g.fillRect(x + 5, y + 5, width - 10, height - 10);
 	}
-	
 }
