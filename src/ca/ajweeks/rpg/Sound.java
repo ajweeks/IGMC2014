@@ -13,9 +13,9 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 public enum Sound {
 	SELECT("res/select2.wav");
 	
-	public static float volume = -8.0f;
+	public static float volume = -9.0f;
 	public final static float MAX_VOLUME = 6.0f;
-	public final static float MIN_VOLUME = -22.0f;
+	public final static float MIN_VOLUME = -24.0f;
 	
 	private Clip clip;
 	private FloatControl control;
@@ -33,11 +33,11 @@ public enum Sound {
 	}
 	
 	public static float louder(float n) {
-		return Math.min(n + 2, MAX_VOLUME);
+		return Math.min(n + 3, MAX_VOLUME);
 	}
 	
 	public static float quieter(float n) {
-		return Math.max(n - 2, MIN_VOLUME);
+		return Math.max(n - 3, MIN_VOLUME);
 	}
 	
 	public void play() {

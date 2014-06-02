@@ -23,10 +23,13 @@ public class RPG extends JFrame implements Runnable {
 	public static Input input;
 	public static boolean leftWasDown;
 	public static Font font;
+	public static Font debugFont;
 	
 	private Canvas canvas;
 	
+	public static int ups = 0;
 	public static int fps = 0;
+	public int updates = 0;
 	public int frames = 0;
 	
 	public static volatile boolean running = false;
@@ -36,9 +39,8 @@ public class RPG extends JFrame implements Runnable {
 		
 		canvas = new Canvas();
 		canvas.setSize(SIZE);
-		//Arial Black
 		font = getFonts();
-		System.out.println(font.getName());
+		debugFont = font.deriveFont(12f);
 		canvas.setFont(font);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -59,7 +61,6 @@ public class RPG extends JFrame implements Runnable {
 		Font result = new Font("Consolas", Font.BOLD, 34);
 		Font[] fonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts();
 		for (Font f : fonts) {
-			System.out.println(f.getName());
 			if (f.getName().equals("Arial")) return new Font("Arial", Font.BOLD, 34);
 			if (f.getName().equals("Microsoft Sans Serif")) return new Font("Microsoft Sans Serif", Font.BOLD, 34);
 		}
@@ -70,6 +71,7 @@ public class RPG extends JFrame implements Runnable {
 		sm.update();
 		input.update();
 		leftWasDown = input.leftMouse;
+		updates++;
 	}
 	
 	public void render() {
@@ -86,23 +88,7 @@ public class RPG extends JFrame implements Runnable {
 		
 		sm.render(g);
 		
-		if (input.debug) {
-			int xoff = 0;
-			int yoff = 0;
-			
-			g.setColor(new Color(0, 0, 0, 150));
-			g.fillRect(xoff + 2, yoff + 2, 50, 14);
-			
-			g.setFont(font.deriveFont(12f));
-			g.setColor(Color.WHITE);
-			g.drawString(fps + " fps", xoff + 4, yoff + 12);
-			
-			g.setColor(new Color(0, 0, 0, 150));
-			g.fillRect(xoff + 2, yoff + 16, 205, 14);
-			
-			g.setColor(Color.WHITE);
-			g.drawString("Current state: " + sm.getCurrentState(), xoff + 4, yoff + 26);
-		}
+		if (input.debug) RenderDebugOverlay.render(g);
 		
 		g.dispose();
 		buffer.show();
@@ -118,7 +104,7 @@ public class RPG extends JFrame implements Runnable {
 			render();
 			try {
 				//TODO Add better game loop..
-				Thread.sleep(1000 / 60);
+				Thread.sleep(1000 / 120);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -128,7 +114,9 @@ public class RPG extends JFrame implements Runnable {
 			seconds += elapsed;
 			if (seconds >= 1000) {
 				fps = frames;
+				ups = updates;
 				seconds = 0;
+				updates = 0;
 				frames = 0;
 			}
 			

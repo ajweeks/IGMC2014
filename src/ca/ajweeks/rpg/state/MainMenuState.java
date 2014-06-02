@@ -9,11 +9,12 @@ import ca.ajweeks.rpg.Button;
 import ca.ajweeks.rpg.Colour;
 import ca.ajweeks.rpg.RPG;
 import ca.ajweeks.rpg.Sound;
+import ca.ajweeks.rpg.input.Input;
 
 public class MainMenuState extends BasicState {
 	
-	private Image up;
-	private Image down;
+	private Image louder;
+	private Image quieter;
 	
 	private static final int PLAY = 0;
 	private static final int HELP = 1;
@@ -27,39 +28,38 @@ public class MainMenuState extends BasicState {
 	private int selectedButton = 0;
 	
 	public MainMenuState() {
-		up = new ImageIcon("res/up.png").getImage();
-		down = new ImageIcon("res/down.png").getImage();
+		louder = new ImageIcon("res/louder.png").getImage();
+		quieter = new ImageIcon("res/quieter.png").getImage();
 		
 		//TODO make all buttons same width, but have centered text
-		buttons = new Button[] { new Button(RPG.SIZE.width / 2 - 120 / 2, 125, 120, 75, "Play!", Colour.button, Colour.hButton, Colour.offWhite),
+		buttons = new Button[] { new Button(RPG.SIZE.width / 2 - 115 / 2, 125, 115, 75, "Play!", Colour.button, Colour.hButton, Colour.offWhite),
 				new Button(RPG.SIZE.width / 2 - 100 / 2, 225, 100, 75, "Help", Colour.button, Colour.hButton, Colour.offWhite),
-				new Button(RPG.SIZE.width / 2 - 180 / 2, 325, 180, 75, "Credits", Colour.button, Colour.hButton, Colour.offWhite),
+				new Button(RPG.SIZE.width / 2 - 155 / 2, 325, 155, 75, "Credits", Colour.button, Colour.hButton, Colour.offWhite),
 				new Button(RPG.SIZE.width / 2 - 100 / 2, 425, 100, 75, "Quit", Colour.button, Colour.hButton, Colour.offWhite),
-				new Button(RPG.SIZE.width - 130, 30, 50, 50, "", Colour.button, Colour.hButton, Colour.offWhite, down),
-				new Button(RPG.SIZE.width - 70, 30, 50, 50, "", Colour.button, Colour.hButton, Colour.offWhite, up) };
+				new Button(RPG.SIZE.width - 130, 30, 50, 50, "", Colour.button, Colour.hButton, Colour.offWhite, quieter),
+				new Button(RPG.SIZE.width - 70, 30, 50, 50, "", Colour.button, Colour.hButton, Colour.offWhite, louder) };
 		
-		updateSelected();
+		updateSelectedButton();
 	}
 	
 	public void update() {
 		for (int i = 0; i < buttons.length; i++) {
-			if (buttons[i].hover) selectedButton = i;
-			updateSelected();
+			if (buttons[i].hover && buttons[i].enabled && !Input.mouseIsStill) selectedButton = i;
 		}
 		
 		if (RPG.input.up) {
 			RPG.input.up = false;
-			selectedButton--;
-			if (selectedButton < 0) selectedButton = buttons.length - 1;
-			updateSelected();
+			do {
+				previousButton(); //previous enabled button
+			} while (!buttons[selectedButton].enabled);
 		}
 		
 		if (RPG.input.tab || RPG.input.down) {
 			RPG.input.tab = false;
 			RPG.input.down = false;
-			selectedButton++;
-			if (selectedButton > buttons.length - 1) selectedButton = 0;
-			updateSelected();
+			do {
+				nextButton(); //previous enabled button
+			} while (!buttons[selectedButton].enabled);
 		}
 		
 		if (RPG.input.enter) {
@@ -72,9 +72,7 @@ public class MainMenuState extends BasicState {
 				if (buttons[HELP].enabled) help();
 				break;
 			case CREDITS:
-				if (buttons[CREDITS].enabled) {
-					credits();
-				}
+				if (buttons[CREDITS].enabled) credits();
 				break;
 			case QUIT:
 				if (buttons[QUIT].enabled) RPG.stop();
@@ -96,13 +94,29 @@ public class MainMenuState extends BasicState {
 		if (buttons[QUIT].isDown()) RPG.stop();
 		if (buttons[LOUDER].isDown()) louder();
 		if (buttons[QUIETER].isDown()) quieter();
+		
+		updateSelectedButton();
 	}
 	
-	private void updateSelected() {
+	private void updateSelectedButton() {
 		for (int i = 0; i < buttons.length; i++) {
+			if (!buttons[i].enabled) {
+				buttons[i].setDeselected();
+				continue;
+			}
 			if (i == selectedButton) buttons[i].setSelected();
 			else buttons[i].setDeselected();
 		}
+	}
+	
+	private void nextButton() {
+		if (selectedButton + 1 > buttons.length - 1) selectedButton = 0;
+		else selectedButton += 1;
+	}
+	
+	private void previousButton() {
+		if (selectedButton - 1 < 0) selectedButton = buttons.length - 1;
+		else selectedButton -= 1;
 	}
 	
 	private void startGame() {
@@ -123,14 +137,20 @@ public class MainMenuState extends BasicState {
 	private void quieter() {
 		Sound.volume = Sound.quieter(Sound.volume);
 		Sound.SELECT.play();
-		if (Sound.volume == Sound.MIN_VOLUME) buttons[QUIETER].enabled = false;
+		if (Sound.volume == Sound.MIN_VOLUME) {
+			buttons[QUIETER].enabled = false;
+			selectedButton = LOUDER;
+		}
 		if (Sound.volume < Sound.MAX_VOLUME) buttons[LOUDER].enabled = true;
 	}
 	
 	private void louder() {
 		Sound.volume = Sound.louder(Sound.volume);
 		Sound.SELECT.play();
-		if (Sound.volume == Sound.MAX_VOLUME) buttons[LOUDER].enabled = false;
+		if (Sound.volume == Sound.MAX_VOLUME) {
+			buttons[LOUDER].enabled = false;
+			selectedButton = QUIETER;
+		}
 		if (Sound.volume > Sound.MIN_VOLUME) buttons[QUIETER].enabled = true;
 	}
 	
@@ -141,6 +161,10 @@ public class MainMenuState extends BasicState {
 		for (Button b : buttons) {
 			b.render(g);
 		}
+		
+		g.setFont(RPG.font.deriveFont(20f));
+		g.setColor(Colour.offWhite);
+		g.drawString("Volume: " + (((Sound.volume + 24) / 3) * 10), 1065, 22);
 	}
 	
 }

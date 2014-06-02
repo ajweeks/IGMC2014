@@ -13,7 +13,7 @@ public class CreditState extends BasicState {
 	Button back;
 	
 	public CreditState() {
-		back = new Button(RPG.SIZE.width / 2 - 100 / 2, RPG.SIZE.height - 120, 100, 75, "Back", Colour.button, Colour.hButton, Colour.offWhite);
+		back = new Button(RPG.SIZE.width / 2 - 110 / 2, RPG.SIZE.height - 120, 110, 75, "Back", Colour.button, Colour.hButton, Colour.offWhite);
 		back.setSelected();
 	}
 	
@@ -36,6 +36,7 @@ public class CreditState extends BasicState {
 		g.setColor(Color.WHITE);
 		String[] message = new String[] { RPG.GAME_TITLE + " is a 2D (insert game genre) game made by AJ Weeks in June 2014 for",
 				"the Indie Game Maker Contest 2014." };
+		//LATER Add scrolling credits??
 		for (int i = 0; i < message.length; i++) {
 			g.drawString(message[i], RPG.SIZE.width / 2 - 510, RPG.SIZE.height / 2 - 200 + i * 45);
 		}

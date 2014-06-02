@@ -31,7 +31,11 @@ public class StateManager {
 		}
 	}
 	
-	public String getCurrentState() {
+	public int getCurrentStateIndex() {
+		return states.indexOf(currentState);
+	}
+	
+	public String getCurrentStateSimpleName() {
 		return currentState.getClass().getSimpleName();
 	}
 	

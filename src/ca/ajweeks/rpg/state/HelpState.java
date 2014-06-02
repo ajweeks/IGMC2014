@@ -15,7 +15,7 @@ public class HelpState extends BasicState {
 	private Button back;
 	
 	public HelpState() {
-		back = new Button(RPG.SIZE.width / 2 - 100 / 2, RPG.SIZE.height - 120, 100, 75, "Back", Colour.button, Colour.hButton, Colour.offWhite);
+		back = new Button(RPG.SIZE.width / 2 - 100 / 2, RPG.SIZE.height - 120, 110, 75, "Back", Colour.button, Colour.hButton, Colour.offWhite);
 		back.setSelected();
 	}
 	
@@ -31,13 +31,8 @@ public class HelpState extends BasicState {
 			if (page < 0) page = MAX_PAGES - 1;
 		}
 		
-		if (RPG.input.enter) {
+		if (back.isDown() || RPG.input.esc || RPG.input.enter) {
 			RPG.input.enter = false;
-			Sound.SELECT.play();
-			RPG.sm.enterState(StateManager.MAIN_MENU_STATE);
-		}
-		
-		if (back.isDown() || RPG.input.esc) {
 			RPG.input.esc = false;
 			Sound.SELECT.play();
 			RPG.sm.enterState(StateManager.MAIN_MENU_STATE);
@@ -48,16 +43,32 @@ public class HelpState extends BasicState {
 	public void render(Graphics g) {
 		g.setColor(Colour.offBlack);
 		g.fillRect(0, 0, RPG.SIZE.width, RPG.SIZE.height);
+		String[] message;
 		
 		switch (page) {
 		case 0:
-			g.setColor(Colour.offWhite);
-			g.setFont(RPG.font.deriveFont(34f));
-			g.drawString("", RPG.SIZE.width / 2 - 40, RPG.SIZE.height / 2);
+			g.setFont(RPG.font.deriveFont(24f));
+			g.setColor(Color.WHITE);
+			message = new String[] { "One!" };
+			for (int i = 0; i < message.length; i++) {
+				g.drawString(message[i], RPG.SIZE.width / 2 - 510, RPG.SIZE.height / 2 - 200 + i * 45);
+			}
 			break;
 		case 1:
+			g.setFont(RPG.font.deriveFont(24f));
+			g.setColor(Color.WHITE);
+			message = new String[] { "Two!" };
+			for (int i = 0; i < message.length; i++) {
+				g.drawString(message[i], RPG.SIZE.width / 2 - 510, RPG.SIZE.height / 2 - 200 + i * 45);
+			}
 			break;
 		case 2:
+			g.setFont(RPG.font.deriveFont(24f));
+			g.setColor(Color.WHITE);
+			message = new String[] { "Three!" };
+			for (int i = 0; i < message.length; i++) {
+				g.drawString(message[i], RPG.SIZE.width / 2 - 510, RPG.SIZE.height / 2 - 200 + i * 45);
+			}
 			break;
 		}
 		

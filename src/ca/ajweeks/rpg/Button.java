@@ -55,10 +55,10 @@ public class Button {
 	/** @return <code>true</code> if the mouse is being clicked in this button (but not dragged into it) */
 	public boolean isDown() {
 		if (!enabled) return false;
-		if (RPG.input.x > this.x && RPG.input.x < this.x + this.width && RPG.input.y > this.y && RPG.input.y < this.y + this.height) {
-			this.hover = true;
+		if (RPG.input.x > x && RPG.input.x < x + width && RPG.input.y > y && RPG.input.y < y + height) {
+			hover = true;
 			if (RPG.input.leftMouse && !RPG.leftWasDown) return true;
-		} else this.hover = false;
+		} else hover = false;
 		return false;
 	}
 	
@@ -75,9 +75,7 @@ public class Button {
 		g.setColor(tColour);
 		g.drawString(text, x + width / 8, (int) (y + height * 0.65));
 		
-		if (hasImage) {
-			g.drawImage(image, x + 5, y + 5, null);
-		}
+		if (hasImage) g.drawImage(image, x + 2, y + 2, null);
 		
 		if (!enabled) {
 			g.setColor(new Color(125, 125, 125, 125));
