@@ -34,7 +34,7 @@ public class RenderDebugOverlay {
 		
 		g.setFont(RPG.debugFont);
 		g.setColor(Color.WHITE);
-		g.drawString(RPG.fps + " FPS", x + 3, y + 11);
+		g.drawString(RPG.fps + " FPS", x + 3, y + 12);
 	}
 	
 	private static void currentState(Graphics g, int x, int y) {
@@ -43,43 +43,43 @@ public class RenderDebugOverlay {
 		g.fillRect(x, y, (int) (msg.length() * 6.5), 15);
 		
 		g.setColor(Color.WHITE);
-		g.drawString(msg, x + 3, y + 11);
+		g.drawString(msg, x + 3, y + 12);
 	}
 	
 	private static void onGround(Graphics g, int x, int y) {
 		g.setColor(Colour.translucentBlack);
-		g.fillRect(x, y, 95, 15);
+		g.fillRect(x, y, GameState.player.onGround ? 90 : 95, 15);
 		g.setFont(RPG.debugFont);
 		g.setColor(Color.WHITE);
-		g.drawString("onGround: " + GameState.player.onGround, x + 3, y + 11);
+		g.drawString("onGround: " + GameState.player.onGround, x + 3, y + 12);
 	}
 	
 	private static void xy(Graphics g, int x, int y) {
-		g.setColor(Colour.translucentBlack);
-		g.fillRect(x, y, GameState.player.x > 1000 ? 53 : GameState.player.x < 100 ? 39 : 45, 15);
 		g.setFont(RPG.debugFont);
-		g.setColor(Color.WHITE);
-		g.drawString("x = " + GameState.player.x, x + 3, y + 11);
 		
 		g.setColor(Colour.translucentBlack);
-		g.fillRect(x, y + 15, GameState.player.y <= -1000 ? 53 : GameState.player.y > 100 ? 45 : 39, 15);
-		g.setFont(RPG.debugFont);
+		g.fillRect(x, y, GameState.player.x > 1000 ? 53 : GameState.player.x < 100 ? GameState.player.x < 10 ? 33 : 39 : 45, 15);
 		g.setColor(Color.WHITE);
-		g.drawString("y = " + GameState.player.y, x + 3, y + 25);
+		g.drawString("x = " + GameState.player.x, x + 3, y + 12);
+		
+		g.setColor(Colour.translucentBlack);
+		g.fillRect(x, y + 15, GameState.player.y > 1000 ? 53 : GameState.player.y < 100 ? GameState.player.y < 10 ? 33 : 39 : 45, 15);
+		g.setColor(Color.WHITE);
+		g.drawString("y = " + GameState.player.y, x + 3, y + 26);
 	}
 	
 	private static void xaya(Graphics g, int x, int y) {
+		g.setFont(RPG.debugFont);
+		
 		g.setColor(Colour.translucentBlack);
 		g.fillRect(x, y, 45, 15);
-		g.setFont(RPG.debugFont);
 		g.setColor(Color.WHITE);
-		g.drawString("xa = " + GameState.player.xa, x + 3, y + 11);
+		g.drawString("xa = " + GameState.player.xa, x + 3, y + 12);
 		
 		g.setColor(Colour.translucentBlack);
 		g.fillRect(x, y + 15, 45, 15);
-		g.setFont(RPG.debugFont);
 		g.setColor(Color.WHITE);
-		g.drawString("ya = " + GameState.player.ya, x + 3, y + 25);
+		g.drawString("ya = " + GameState.player.ya, x + 3, y + 26);
 	}
 	
 }

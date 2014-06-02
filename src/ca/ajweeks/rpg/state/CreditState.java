@@ -19,9 +19,7 @@ public class CreditState extends BasicState {
 	
 	@Override
 	public void update() {
-		if (back.isDown() || RPG.input.esc || RPG.input.enter) {
-			RPG.input.esc = false;
-			RPG.input.enter = false;
+		if (back.isDown() || RPG.input.esc.clicked || RPG.input.enter.clicked) {
 			Sound.SELECT.play();
 			RPG.sm.enterState(StateManager.MAIN_MENU_STATE);
 		}

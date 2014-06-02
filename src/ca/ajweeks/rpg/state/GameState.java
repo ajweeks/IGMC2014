@@ -20,7 +20,7 @@ public class GameState extends BasicState {
 	}
 	
 	public void update() {
-		if (RPG.input.esc) {
+		if (RPG.input.esc.clicked) {
 			Sound.SELECT.play();
 			RPG.sm.enterState(StateManager.MAIN_MENU_STATE);
 		}

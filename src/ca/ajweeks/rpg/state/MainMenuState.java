@@ -47,23 +47,20 @@ public class MainMenuState extends BasicState {
 			if (buttons[i].hover && buttons[i].enabled && !Input.mouseIsStill) selectedButton = i;
 		}
 		
-		if (RPG.input.up) {
-			RPG.input.up = false;
+		if (RPG.input.up.clicked) {
 			do {
 				previousButton(); //previous enabled button
 			} while (!buttons[selectedButton].enabled);
 		}
 		
-		if (RPG.input.tab || RPG.input.down) {
-			RPG.input.tab = false;
-			RPG.input.down = false;
+		if (RPG.input.tab.clicked || RPG.input.down.clicked) {
+			
 			do {
 				nextButton(); //previous enabled button
 			} while (!buttons[selectedButton].enabled);
 		}
 		
-		if (RPG.input.enter) {
-			RPG.input.enter = false;
+		if (RPG.input.enter.clicked) {
 			switch (selectedButton) {
 			case PLAY:
 				if (buttons[PLAY].enabled) startGame();

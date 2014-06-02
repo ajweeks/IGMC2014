@@ -57,7 +57,7 @@ public class Button {
 		if (!enabled) return false;
 		if (RPG.input.x > x && RPG.input.x < x + width && RPG.input.y > y && RPG.input.y < y + height) {
 			hover = true;
-			if (RPG.input.leftMouse && !RPG.leftWasDown) return true;
+			if (RPG.input.lM.clicked) return true;
 		} else hover = false;
 		return false;
 	}

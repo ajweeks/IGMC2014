@@ -21,19 +21,15 @@ public class HelpState extends BasicState {
 	
 	@Override
 	public void update() {
-		if (RPG.input.right) {
-			RPG.input.right = false;
+		if (RPG.input.right.clicked) {
 			page++;
 			if (page >= MAX_PAGES) page = 0;
-		} else if (RPG.input.left) {
-			RPG.input.left = false;
+		} else if (RPG.input.left.clicked) {
 			page--;
 			if (page < 0) page = MAX_PAGES - 1;
 		}
 		
-		if (back.isDown() || RPG.input.esc || RPG.input.enter) {
-			RPG.input.enter = false;
-			RPG.input.esc = false;
+		if (back.isDown() || RPG.input.esc.clicked || RPG.input.enter.clicked) {
 			Sound.SELECT.play();
 			RPG.sm.enterState(StateManager.MAIN_MENU_STATE);
 		}

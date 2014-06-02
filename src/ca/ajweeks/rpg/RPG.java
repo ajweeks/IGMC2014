@@ -24,6 +24,7 @@ public class RPG extends JFrame implements Runnable {
 	public static boolean leftWasDown;
 	public static Font font;
 	public static Font debugFont;
+	private boolean renderDebug = true;
 	
 	private Canvas canvas;
 	
@@ -70,7 +71,7 @@ public class RPG extends JFrame implements Runnable {
 	public void update() {
 		sm.update();
 		input.update();
-		leftWasDown = input.leftMouse;
+		leftWasDown = input.lM.clicked;
 		updates++;
 	}
 	
@@ -88,7 +89,8 @@ public class RPG extends JFrame implements Runnable {
 		
 		sm.render(g);
 		
-		if (input.debug) RenderDebugOverlay.render(g);
+		if (input.F3.clicked) renderDebug = !renderDebug;
+		if (renderDebug) RenderDebugOverlay.render(g);
 		
 		g.dispose();
 		buffer.show();
@@ -104,7 +106,7 @@ public class RPG extends JFrame implements Runnable {
 			render();
 			try {
 				//TODO Add better game loop..
-				Thread.sleep(1000 / 120);
+				Thread.sleep(1000 / 60);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
