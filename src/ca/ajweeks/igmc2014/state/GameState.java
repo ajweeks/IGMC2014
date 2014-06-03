@@ -1,12 +1,12 @@
-package ca.ajweeks.rpg.state;
+package ca.ajweeks.igmc2014.state;
 
 import java.awt.Color;
 import java.awt.Graphics;
 
-import ca.ajweeks.rpg.RPG;
-import ca.ajweeks.rpg.Sound;
-import ca.ajweeks.rpg.entity.Player;
-import ca.ajweeks.rpg.level.Level;
+import ca.ajweeks.igmc2014.Game;
+import ca.ajweeks.igmc2014.Sound;
+import ca.ajweeks.igmc2014.entity.Player;
+import ca.ajweeks.igmc2014.level.Level;
 
 public class GameState extends BasicState {
 	
@@ -20,9 +20,9 @@ public class GameState extends BasicState {
 	}
 	
 	public void update() {
-		if (RPG.input.esc.clicked) {
+		if (Game.input.esc.clicked) {
 			Sound.SELECT.play();
-			RPG.sm.enterState(StateManager.MAIN_MENU_STATE);
+			Game.sm.enterState(StateManager.MAIN_MENU_STATE);
 		}
 		
 		level.update();
@@ -30,7 +30,7 @@ public class GameState extends BasicState {
 	
 	public void render(Graphics g) {
 		g.setColor(Color.ORANGE);
-		g.fillRect(0, 0, RPG.SIZE.width, RPG.SIZE.height);
+		g.fillRect(0, 0, Game.SIZE.width, Game.SIZE.height);
 		
 		level.render(g);
 	}

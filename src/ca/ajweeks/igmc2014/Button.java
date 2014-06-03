@@ -1,4 +1,4 @@
-package ca.ajweeks.rpg;
+package ca.ajweeks.igmc2014;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -55,15 +55,15 @@ public class Button {
 	/** @return <code>true</code> if the mouse is being clicked in this button (but not dragged into it) */
 	public boolean isDown() {
 		if (!enabled) return false;
-		if (RPG.input.x > x && RPG.input.x < x + width && RPG.input.y > y && RPG.input.y < y + height) {
+		if (Game.input.x > x && Game.input.x < x + width && Game.input.y > y && Game.input.y < y + height) {
 			hover = true;
-			if (RPG.input.lM.clicked) return true;
+			if (Game.input.lM.clicked) return true;
 		} else hover = false;
 		return false;
 	}
 	
 	public void render(Graphics g) {
-		g.setFont(RPG.font.deriveFont(34f));
+		g.setFont(Game.font.deriveFont(34f));
 		if (selected) {
 			g.setColor(Colour.offWhite);
 			g.fillRoundRect(x - 3, y - 3, width + 6, height + 6, 25, 25);

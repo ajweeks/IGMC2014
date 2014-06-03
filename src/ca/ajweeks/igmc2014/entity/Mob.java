@@ -1,4 +1,4 @@
-package ca.ajweeks.rpg.entity;
+package ca.ajweeks.igmc2014.entity;
 
 public class Mob extends Entity {
 	public int xa, ya;

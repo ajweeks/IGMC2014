@@ -1,4 +1,4 @@
-package ca.ajweeks.rpg;
+package ca.ajweeks.igmc2014;
 
 import java.io.File;
 import java.io.IOException;

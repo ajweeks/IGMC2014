@@ -1,9 +1,9 @@
-package ca.ajweeks.rpg.level;
+package ca.ajweeks.igmc2014.level;
 
 import java.awt.Graphics;
 import java.util.ArrayList;
 
-import ca.ajweeks.rpg.entity.Entity;
+import ca.ajweeks.igmc2014.entity.Entity;
 
 public class Level {
 	

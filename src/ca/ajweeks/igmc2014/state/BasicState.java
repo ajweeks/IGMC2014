@@ -1,4 +1,4 @@
-package ca.ajweeks.rpg.state;
+package ca.ajweeks.igmc2014.state;
 
 import java.awt.Graphics;
 

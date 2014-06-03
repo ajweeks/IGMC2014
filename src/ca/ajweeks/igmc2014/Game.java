@@ -1,4 +1,4 @@
-package ca.ajweeks.rpg;
+package ca.ajweeks.igmc2014;
 
 import java.awt.Canvas;
 import java.awt.Color;
@@ -10,10 +10,10 @@ import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
 
-import ca.ajweeks.rpg.input.Input;
-import ca.ajweeks.rpg.state.StateManager;
+import ca.ajweeks.igmc2014.input.Input;
+import ca.ajweeks.igmc2014.state.StateManager;
 
-public class RPG extends JFrame implements Runnable {
+public class Game extends JFrame implements Runnable {
 	private static final long serialVersionUID = 1L;
 	
 	public static final String GAME_TITLE = "IGMC 2014";
@@ -35,7 +35,7 @@ public class RPG extends JFrame implements Runnable {
 	
 	public static volatile boolean running = false;
 	
-	public RPG() {
+	public Game() {
 		super(GAME_TITLE);
 		
 		canvas = new Canvas();
@@ -133,7 +133,7 @@ public class RPG extends JFrame implements Runnable {
 	}
 	
 	public static void main(String[] args) {
-		new Thread(new RPG()).start();
+		new Thread(new Game()).start();
 	}
 	
 }

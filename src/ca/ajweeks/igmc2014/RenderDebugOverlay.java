@@ -1,10 +1,10 @@
-package ca.ajweeks.rpg;
+package ca.ajweeks.igmc2014;
 
 import java.awt.Color;
 import java.awt.Graphics;
 
-import ca.ajweeks.rpg.state.GameState;
-import ca.ajweeks.rpg.state.StateManager;
+import ca.ajweeks.igmc2014.state.GameState;
+import ca.ajweeks.igmc2014.state.StateManager;
 
 public class RenderDebugOverlay {
 	
@@ -12,7 +12,7 @@ public class RenderDebugOverlay {
 		fps(g, 2, 2);
 		ups(g, 2, 17);
 		currentState(g, 2, 32);
-		if (RPG.sm.getCurrentStateIndex() == StateManager.GAME_STATE) {
+		if (Game.sm.getCurrentStateIndex() == StateManager.GAME_STATE) {
 			onGround(g, 2, 47);
 			xaya(g, 2, 62);
 			xy(g, 2, 92);
@@ -23,22 +23,22 @@ public class RenderDebugOverlay {
 		g.setColor(Colour.translucentBlack);
 		g.fillRect(x, y, 52, 15);
 		
-		g.setFont(RPG.debugFont);
+		g.setFont(Game.debugFont);
 		g.setColor(Color.WHITE);
-		g.drawString(RPG.ups + " UPS", x + 3, y + 11);
+		g.drawString(Game.ups + " UPS", x + 3, y + 11);
 	}
 	
 	private static void fps(Graphics g, int x, int y) {
 		g.setColor(Colour.translucentBlack);
 		g.fillRect(x, y, 50, 15);
 		
-		g.setFont(RPG.debugFont);
+		g.setFont(Game.debugFont);
 		g.setColor(Color.WHITE);
-		g.drawString(RPG.fps + " FPS", x + 3, y + 12);
+		g.drawString(Game.fps + " FPS", x + 3, y + 12);
 	}
 	
 	private static void currentState(Graphics g, int x, int y) {
-		String msg = "Current state: " + RPG.sm.getCurrentStateSimpleName();
+		String msg = "Current state: " + Game.sm.getCurrentStateSimpleName();
 		g.setColor(Colour.translucentBlack);
 		g.fillRect(x, y, (int) (msg.length() * 6.5), 15);
 		
@@ -49,13 +49,13 @@ public class RenderDebugOverlay {
 	private static void onGround(Graphics g, int x, int y) {
 		g.setColor(Colour.translucentBlack);
 		g.fillRect(x, y, GameState.player.onGround ? 90 : 95, 15);
-		g.setFont(RPG.debugFont);
+		g.setFont(Game.debugFont);
 		g.setColor(Color.WHITE);
 		g.drawString("onGround: " + GameState.player.onGround, x + 3, y + 12);
 	}
 	
 	private static void xy(Graphics g, int x, int y) {
-		g.setFont(RPG.debugFont);
+		g.setFont(Game.debugFont);
 		
 		g.setColor(Colour.translucentBlack);
 		g.fillRect(x, y, GameState.player.x > 1000 ? 53 : GameState.player.x < 100 ? GameState.player.x < 10 ? 33 : 39 : 45, 15);
@@ -69,7 +69,7 @@ public class RenderDebugOverlay {
 	}
 	
 	private static void xaya(Graphics g, int x, int y) {
-		g.setFont(RPG.debugFont);
+		g.setFont(Game.debugFont);
 		
 		g.setColor(Colour.translucentBlack);
 		g.fillRect(x, y, 45, 15);

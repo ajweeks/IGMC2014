@@ -1,4 +1,4 @@
-package ca.ajweeks.rpg.input;
+package ca.ajweeks.igmc2014.input;
 
 import java.awt.Canvas;
 import java.awt.event.KeyEvent;
@@ -8,7 +8,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
-import ca.ajweeks.rpg.entity.Player;
+import ca.ajweeks.igmc2014.entity.Player;
 
 public class Input implements MouseMotionListener, MouseListener, KeyListener {
 	

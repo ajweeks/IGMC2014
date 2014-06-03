@@ -1,9 +1,9 @@
-package ca.ajweeks.rpg.entity;
+package ca.ajweeks.igmc2014.entity;
 
 import java.awt.Color;
 import java.awt.Graphics;
 
-import ca.ajweeks.rpg.RPG;
+import ca.ajweeks.igmc2014.Game;
 
 public class Player extends Mob {
 	
@@ -16,36 +16,36 @@ public class Player extends Mob {
 	private int height = 220;
 	
 	public Player() {
-		x = RPG.SIZE.width / 2 - width / 2;
-		y = RPG.SIZE.height / 2 - height / 2;
+		x = Game.SIZE.width / 2 - width / 2;
+		y = Game.SIZE.height / 2 - height / 2;
 	}
 	
 	@Override
 	public void update() {
-		if (RPG.input.right.down && xa == 0) xa = 1;
-		if (RPG.input.left.down && xa == 0) xa = -1;
+		if (Game.input.right.down && xa == 0) xa = 1;
+		if (Game.input.left.down && xa == 0) xa = -1;
 		
-		if (xa == 1 && !RPG.input.right.down) xa = 0;
-		if (xa == -1 && !RPG.input.left.down) xa = 0;
+		if (xa == 1 && !Game.input.right.down) xa = 0;
+		if (xa == -1 && !Game.input.left.down) xa = 0;
 		
-		if (!RPG.input.right.down && !RPG.input.left.down) xa = 0;
+		if (!Game.input.right.down && !Game.input.left.down) xa = 0;
 		
 		x += xa * speed;
-		if (x + width > RPG.SIZE.width) x = RPG.SIZE.width - width;
+		if (x + width > Game.SIZE.width) x = Game.SIZE.width - width;
 		if (x < 0) x = 0;
-		if (y > RPG.SIZE.height - height) {
+		if (y > Game.SIZE.height - height) {
 			onGround = true;
 			ya = 0;
-			y = RPG.SIZE.height - height + 1;
+			y = Game.SIZE.height - height + 1;
 		} else onGround = false;
 		
-		if (RPG.input.space.clicked && !onGround) {
+		if (Game.input.space.clicked && !onGround) {
 			if (!hasDoubleJumped) {
 				hasDoubleJumped = true;
 				onGround = false;
 				ya = -20;
 			}
-		} else if (RPG.input.space.clicked && onGround) {
+		} else if (Game.input.space.clicked && onGround) {
 			hasDoubleJumped = false;
 			onGround = false;
 			ya = -20;
