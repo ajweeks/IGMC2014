@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import ca.ajweeks.igmc2014.Game;
+import ca.ajweeks.igmc2014.state.GameState;
 
 public class Player extends Mob {
 	
@@ -12,12 +13,13 @@ public class Player extends Mob {
 	public boolean hasDoubleJumped = false;
 	public boolean onGround;
 	
-	private int width = 100;
-	private int height = 220;
+	private GameState gs;
 	
-	public Player() {
+	public Player(GameState gs) {
+		super(110, 200);
 		x = Game.SIZE.width / 2 - width / 2;
 		y = Game.SIZE.height / 2 - height / 2;
+		this.gs = gs;
 	}
 	
 	@Override
@@ -37,6 +39,10 @@ public class Player extends Mob {
 			onGround = true;
 			ya = 0;
 			y = Game.SIZE.height - height + 1;
+		}else if(gs.mobIntersects(this)) {
+				onGround = true;
+				ya = 0;
+				y = 300;
 		} else onGround = false;
 		
 		if (Game.input.space.clicked && !onGround) {
@@ -54,7 +60,6 @@ public class Player extends Mob {
 		//TODO decrease gravity
 		ya++;
 		y += ya;
-		
 	}
 	
 	@Override

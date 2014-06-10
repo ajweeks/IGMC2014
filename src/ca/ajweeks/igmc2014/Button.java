@@ -63,7 +63,7 @@ public class Button {
 	}
 	
 	public void render(Graphics g) {
-		g.setFont(Game.font.deriveFont(34f));
+		g.setFont(Game.font34.deriveFont(34f));
 		if (selected) {
 			g.setColor(Colour.offWhite);
 			g.fillRoundRect(x - 3, y - 3, width + 6, height + 6, 25, 25);

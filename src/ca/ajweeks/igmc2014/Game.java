@@ -22,8 +22,9 @@ public class Game extends JFrame implements Runnable {
 	public static StateManager sm;
 	public static Input input;
 	public static boolean leftWasDown;
-	public static Font font;
-	public static Font debugFont;
+	public static Font font34;
+	public static Font font24;
+	public static Font fontDebug;
 	private boolean renderDebug = true;
 	
 	private Canvas canvas;
@@ -40,9 +41,10 @@ public class Game extends JFrame implements Runnable {
 		
 		canvas = new Canvas();
 		canvas.setSize(SIZE);
-		font = getFonts();
-		debugFont = font.deriveFont(12f);
-		canvas.setFont(font);
+		font34 = getFonts();
+		font24 = font34.deriveFont(24f);
+		fontDebug = font34.deriveFont(12f);
+		canvas.setFont(font34);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		add(canvas);
@@ -82,7 +84,7 @@ public class Game extends JFrame implements Runnable {
 			return;
 		}
 		Graphics g = buffer.getDrawGraphics();
-		g.setFont(font);
+		g.setFont(font34);
 		
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, SIZE.width, SIZE.height);

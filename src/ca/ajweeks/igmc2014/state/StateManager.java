@@ -8,7 +8,7 @@ public class StateManager {
 	public static final int MAIN_MENU_STATE = 0;
 	public static final int HELP = 1;
 	public static final int GAME_STATE = 2;
-	public static final int CREDITS = 3;
+	public static final int ABOUT = 3;
 	
 	private ArrayList<BasicState> states;
 	private BasicState currentState;
@@ -18,7 +18,7 @@ public class StateManager {
 		states.add(new MainMenuState());
 		states.add(new HelpState());
 		states.add(new GameState());
-		states.add(new CreditState());
+		states.add(new AboutState());
 		
 		currentState = states.get(MAIN_MENU_STATE);
 	}

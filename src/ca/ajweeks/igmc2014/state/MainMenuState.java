@@ -18,7 +18,7 @@ public class MainMenuState extends BasicState {
 	
 	private static final int PLAY = 0;
 	private static final int HELP = 1;
-	private static final int CREDITS = 2;
+	private static final int ABOUT = 2;
 	private static final int QUIT = 3;
 	private static final int QUIETER = 4;
 	private static final int LOUDER = 5;
@@ -32,9 +32,10 @@ public class MainMenuState extends BasicState {
 		quieter = new ImageIcon("res/quieter.png").getImage();
 		
 		//TODO make all buttons same width, but have centered text
-		buttons = new Button[] { new Button(Game.SIZE.width / 2 - 115 / 2, 125, 115, 75, "Play!", Colour.button, Colour.hButton, Colour.offWhite),
+		buttons = new Button[] {
+				new Button(Game.SIZE.width / 2 - 115 / 2, 125, 115, 75, "Play!", Colour.button, Colour.hButton, Colour.offWhite),
 				new Button(Game.SIZE.width / 2 - 100 / 2, 225, 100, 75, "Help", Colour.button, Colour.hButton, Colour.offWhite),
-				new Button(Game.SIZE.width / 2 - 155 / 2, 325, 155, 75, "Credits", Colour.button, Colour.hButton, Colour.offWhite),
+				new Button(Game.SIZE.width / 2 - 124 / 2, 325, 124, 75, "About", Colour.button, Colour.hButton, Colour.offWhite),
 				new Button(Game.SIZE.width / 2 - 100 / 2, 425, 100, 75, "Quit", Colour.button, Colour.hButton, Colour.offWhite),
 				new Button(Game.SIZE.width - 130, 30, 50, 50, "", Colour.button, Colour.hButton, Colour.offWhite, quieter),
 				new Button(Game.SIZE.width - 70, 30, 50, 50, "", Colour.button, Colour.hButton, Colour.offWhite, louder) };
@@ -54,7 +55,6 @@ public class MainMenuState extends BasicState {
 		}
 		
 		if (Game.input.tab.clicked || Game.input.down.clicked) {
-			
 			do {
 				nextButton(); //previous enabled button
 			} while (!buttons[selectedButton].enabled);
@@ -68,8 +68,8 @@ public class MainMenuState extends BasicState {
 			case HELP:
 				if (buttons[HELP].enabled) help();
 				break;
-			case CREDITS:
-				if (buttons[CREDITS].enabled) credits();
+			case ABOUT:
+				if (buttons[ABOUT].enabled) about();
 				break;
 			case QUIT:
 				if (buttons[QUIT].enabled) Game.stop();
@@ -85,9 +85,7 @@ public class MainMenuState extends BasicState {
 		
 		if (buttons[PLAY].isDown()) startGame();
 		if (buttons[HELP].isDown()) help();
-		if (buttons[CREDITS].isDown()) {
-			credits();
-		}
+		if (buttons[ABOUT].isDown()) about();
 		if (buttons[QUIT].isDown()) Game.stop();
 		if (buttons[LOUDER].isDown()) louder();
 		if (buttons[QUIETER].isDown()) quieter();
@@ -126,9 +124,9 @@ public class MainMenuState extends BasicState {
 		Game.sm.enterState(StateManager.HELP);
 	}
 	
-	private void credits() {
+	private void about() {
 		Sound.SELECT.play();
-		Game.sm.enterState(StateManager.CREDITS);
+		Game.sm.enterState(StateManager.ABOUT);
 	}
 	
 	private void quieter() {
@@ -159,7 +157,7 @@ public class MainMenuState extends BasicState {
 			b.render(g);
 		}
 		
-		g.setFont(Game.font.deriveFont(20f));
+		g.setFont(Game.font34.deriveFont(20f));
 		g.setColor(Colour.offWhite);
 		g.drawString("Volume: " + (((Sound.volume + 24) / 3) * 10), 1065, 22);
 	}
