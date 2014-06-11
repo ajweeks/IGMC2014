@@ -2,6 +2,7 @@ package ca.ajweeks.igmc2014.state;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
 
 import ca.ajweeks.igmc2014.Game;
 import ca.ajweeks.igmc2014.gfx.Button;
@@ -14,42 +15,74 @@ public class HelpState extends BasicState {
 	private int page = 0;
 	private int xoff = 0;
 	private int dir = 0;
+	private int scrollSpeed = 50;
 	private Button back;
+	
+	public ArrowButton left;
+	public ArrowButton right;
 	
 	public HelpState() {
 		back = new Button(Game.SIZE.width / 2 - 100 / 2, Game.SIZE.height - 120, 110, 75, "Back", Colour.button, Colour.hButton,
 				Colour.offWhite);
 		back.setSelected();
+		
+		left = new ArrowButton(20, 260, 0, 0, "", null, null, null, ArrowButton.LEFT);
+		right = new ArrowButton(Game.SIZE.width - 20 - 55, 260, 0, 0, "", null, null, null, ArrowButton.RIGHT);
 	}
 	
 	@Override
 	public void update() {
-		if (Game.input.lM.clicked) {
-			if (Game.input.y >= 640 && Game.input.y <= 665) {
-				
-			}
-		}
 		if (Game.input.right.clicked) {
-			if (dir == 0) {
-				page++;
-				if (page > MAX_PAGES - 1) page = MAX_PAGES - 1;
-				else dir = 1;
+			if (page < MAX_PAGES - 1) {
+				Sound.SELECT.play();
+				changePage(1);
 			}
 		} else if (Game.input.left.clicked) {
-			if (dir == 0) {
-				page--;
-				if (page < 0) page = 0;
-				else dir = -1;
+			if (page > 0) {
+				Sound.SELECT.play();
+				changePage(-1);
 			}
 		}
 		
-		xoff += dir * 50;
-		if (xoff % Game.SIZE.width == 0) dir = 0;
+		xoff += dir * scrollSpeed;
+		
+		if (dir == 1) {
+			if (xoff >= page * Game.SIZE.width) {
+				xoff = page * Game.SIZE.width;
+				dir = 0;
+			}
+		} else if (dir == -1) {
+			if (xoff <= page * Game.SIZE.width) {
+				xoff = page * Game.SIZE.width;
+				dir = 0;
+			}
+		}
 		
 		if (back.isDown() || Game.input.esc.clicked || Game.input.space.clicked || Game.input.enter.clicked) { //Change if we ever put add more buttons!
 			Sound.SELECT.play();
 			Game.sm.enterState(StateManager.MAIN_MENU_STATE);
 		}
+		
+		if (right.isDown()) {
+			if (page < MAX_PAGES - 1) {
+				Sound.SELECT.play();
+				changePage(1);
+			}
+		}
+		
+		if (left.isDown()) {
+			if (page > 0) {
+				Sound.SELECT.play();
+				changePage(-1);
+			}
+		}
+	}
+	
+	private void changePage(int dir) {
+		page += dir;
+		if (page < 0) page = 0;
+		else if (page > MAX_PAGES - 1) page = MAX_PAGES - 1;
+		else this.dir = dir;
 	}
 	
 	@Override
@@ -62,7 +95,8 @@ public class HelpState extends BasicState {
 		g.setColor(Color.WHITE);
 		
 		//One
-		message = new String[] { "Controls:", "", "-WASD or arrow keys to move.", "-Space to jump", "-Esc to exit to main menu", "-Shift to sprint" };
+		message = new String[] { "Controls:", "", "-WASD or arrow keys to move.", "-Space to jump", "-Esc to exit to main menu",
+				"-Shift to sprint" };
 		for (int i = 0; i < message.length; i++) {
 			g.drawString(message[i], (Game.SIZE.width / 2) - (g.getFontMetrics().stringWidth(message[i]) / 2) - xoff,
 					Game.SIZE.height / 2 - 200 + i * (g.getFontMetrics().getHeight()));
@@ -91,6 +125,8 @@ public class HelpState extends BasicState {
 		}
 		
 		back.render(g);
+		left.render(g);
+		right.render(g);
 	}
 	
 }

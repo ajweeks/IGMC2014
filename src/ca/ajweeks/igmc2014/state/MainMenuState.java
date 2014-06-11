@@ -33,10 +33,10 @@ public class MainMenuState extends BasicState {
 		
 		//TODO make all buttons same width, but have centered text
 		buttons = new Button[] {
-				new Button(Game.SIZE.width / 2 - 115 / 2, 125, 115, 75, "Play!", Colour.button, Colour.hButton, Colour.offWhite),
-				new Button(Game.SIZE.width / 2 - 100 / 2, 225, 100, 75, "Help", Colour.button, Colour.hButton, Colour.offWhite),
+				new Button(Game.SIZE.width / 2 - 110 / 2, 125, 110, 75, "Play!", Colour.button, Colour.hButton, Colour.offWhite),
+				new Button(Game.SIZE.width / 2 - 95 / 2, 225, 95, 75, "Help", Colour.button, Colour.hButton, Colour.offWhite),
 				new Button(Game.SIZE.width / 2 - 124 / 2, 325, 124, 75, "About", Colour.button, Colour.hButton, Colour.offWhite),
-				new Button(Game.SIZE.width / 2 - 100 / 2, 425, 100, 75, "Quit", Colour.button, Colour.hButton, Colour.offWhite),
+				new Button(Game.SIZE.width / 2 - 90 / 2, 425, 90, 75, "Quit", Colour.button, Colour.hButton, Colour.offWhite),
 				new Button(Game.SIZE.width - 130, 30, 50, 50, "", Colour.button, Colour.hButton, Colour.offWhite, quieter),
 				new Button(Game.SIZE.width - 70, 30, 50, 50, "", Colour.button, Colour.hButton, Colour.offWhite, louder) };
 		
