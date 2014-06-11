@@ -1,5 +1,24 @@
 GENRE
-2D platformer / RPG mix? (Mario, with objectives)
+-2D platformer / RPG mix? (Mario, with objectives)
 
 THEME
-??
+-green, lots of plants
+-colourful
+-jungle?
+-different areas (biomes)
+-hell area?
+-heaven area?
+
+STORYLINE
+-You are an adventurer who finds himself in a small town with no recollection of his past. Most of the town's people are friendly and want to help you try
+to remember who you are, and where your home is. (END GAME: (spoilers!!) you realize that you are already at home (or rather, you don't want to go back to
+wherever it is you lived before as you enjoy your new life here.)) Some of the town's people want you gone, and go out of their way to see that happens.
+
+CORE MECHANICS
+-double jump
+-??
+
+FEATURES
+-inventory (backpack?)
+-objectives
+-achievements

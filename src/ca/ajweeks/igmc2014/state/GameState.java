@@ -5,10 +5,10 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 
 import ca.ajweeks.igmc2014.Game;
-import ca.ajweeks.igmc2014.Sound;
 import ca.ajweeks.igmc2014.entity.Mob;
 import ca.ajweeks.igmc2014.entity.Player;
 import ca.ajweeks.igmc2014.level.Level;
+import ca.ajweeks.igmc2014.sound.Sound;
 
 public class GameState extends BasicState {
 	

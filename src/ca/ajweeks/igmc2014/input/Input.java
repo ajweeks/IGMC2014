@@ -50,6 +50,7 @@ public class Input implements MouseMotionListener, MouseListener, KeyListener {
 	public Key enter = new Key();
 	public Key esc = new Key();
 	public Key F3 = new Key();
+	public Key F8 = new Key(); //Screenshot
 	
 	public void releaseAll() {
 		for (int i = 0; i < keys.size(); i++) {
@@ -97,6 +98,7 @@ public class Input implements MouseMotionListener, MouseListener, KeyListener {
 	public void toggle(KeyEvent e, boolean pressed) {
 		if (e.getKeyCode() == KeyEvent.VK_ESCAPE) esc.toggle(pressed);
 		if (e.getKeyCode() == KeyEvent.VK_F3) F3.toggle(pressed);
+		if (e.getKeyCode() == KeyEvent.VK_F8) F8.toggle(pressed);
 		
 		if (e.getKeyCode() == KeyEvent.VK_UP) up.toggle(pressed);
 		if (e.getKeyCode() == KeyEvent.VK_W) up.toggle(pressed);

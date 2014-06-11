@@ -1,4 +1,4 @@
-package ca.ajweeks.igmc2014;
+package ca.ajweeks.igmc2014.sound;
 
 import java.io.File;
 import java.io.IOException;

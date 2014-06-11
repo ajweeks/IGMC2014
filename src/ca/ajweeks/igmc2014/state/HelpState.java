@@ -3,10 +3,10 @@ package ca.ajweeks.igmc2014.state;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import ca.ajweeks.igmc2014.Button;
-import ca.ajweeks.igmc2014.Colour;
 import ca.ajweeks.igmc2014.Game;
-import ca.ajweeks.igmc2014.Sound;
+import ca.ajweeks.igmc2014.gfx.Button;
+import ca.ajweeks.igmc2014.gfx.Colour;
+import ca.ajweeks.igmc2014.sound.Sound;
 
 public class HelpState extends BasicState {
 	
@@ -46,7 +46,7 @@ public class HelpState extends BasicState {
 		xoff += dir * 50;
 		if (xoff % Game.SIZE.width == 0) dir = 0;
 		
-		if (back.isDown() || Game.input.esc.clicked || Game.input.enter.clicked) { //Change if we ever put add more buttons!
+		if (back.isDown() || Game.input.esc.clicked || Game.input.space.clicked || Game.input.enter.clicked) { //Change if we ever put add more buttons!
 			Sound.SELECT.play();
 			Game.sm.enterState(StateManager.MAIN_MENU_STATE);
 		}
@@ -62,7 +62,7 @@ public class HelpState extends BasicState {
 		g.setColor(Color.WHITE);
 		
 		//One
-		message = new String[] { "1" };
+		message = new String[] { "Controls:", "", "-WASD or arrow keys to move.", "-Space to jump", "-Esc to exit to main menu", "-Shift to sprint" };
 		for (int i = 0; i < message.length; i++) {
 			g.drawString(message[i], (Game.SIZE.width / 2) - (g.getFontMetrics().stringWidth(message[i]) / 2) - xoff,
 					Game.SIZE.height / 2 - 200 + i * (g.getFontMetrics().getHeight()));

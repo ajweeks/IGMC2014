@@ -5,11 +5,11 @@ import java.awt.Image;
 
 import javax.swing.ImageIcon;
 
-import ca.ajweeks.igmc2014.Button;
-import ca.ajweeks.igmc2014.Colour;
 import ca.ajweeks.igmc2014.Game;
-import ca.ajweeks.igmc2014.Sound;
+import ca.ajweeks.igmc2014.gfx.Button;
+import ca.ajweeks.igmc2014.gfx.Colour;
 import ca.ajweeks.igmc2014.input.Input;
+import ca.ajweeks.igmc2014.sound.Sound;
 
 public class MainMenuState extends BasicState {
 	
@@ -60,7 +60,7 @@ public class MainMenuState extends BasicState {
 			} while (!buttons[selectedButton].enabled);
 		}
 		
-		if (Game.input.enter.clicked) {
+		if (Game.input.enter.clicked || Game.input.space.clicked) {
 			switch (selectedButton) {
 			case PLAY:
 				if (buttons[PLAY].enabled) startGame();

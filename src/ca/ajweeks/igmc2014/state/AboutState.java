@@ -5,10 +5,10 @@ import java.awt.Graphics;
 
 import com.sun.xml.internal.ws.util.StringUtils;
 
-import ca.ajweeks.igmc2014.Button;
-import ca.ajweeks.igmc2014.Colour;
 import ca.ajweeks.igmc2014.Game;
-import ca.ajweeks.igmc2014.Sound;
+import ca.ajweeks.igmc2014.gfx.Button;
+import ca.ajweeks.igmc2014.gfx.Colour;
+import ca.ajweeks.igmc2014.sound.Sound;
 
 public class AboutState extends BasicState {
 	
@@ -22,7 +22,7 @@ public class AboutState extends BasicState {
 	
 	@Override
 	public void update() {
-		if (back.isDown() || Game.input.esc.clicked || Game.input.enter.clicked) {
+		if (back.isDown() || Game.input.esc.clicked || Game.input.space.clicked || Game.input.enter.clicked) {
 			Sound.SELECT.play();
 			Game.sm.enterState(StateManager.MAIN_MENU_STATE);
 		}

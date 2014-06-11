@@ -1,15 +1,28 @@
 package ca.ajweeks.igmc2014;
 
+import java.awt.AWTException;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GraphicsEnvironment;
+import java.awt.HeadlessException;
+import java.awt.Image;
+import java.awt.Rectangle;
+import java.awt.Robot;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
+import ca.ajweeks.igmc2014.gfx.RenderDebugOverlay;
 import ca.ajweeks.igmc2014.input.Input;
 import ca.ajweeks.igmc2014.state.StateManager;
 
@@ -18,23 +31,24 @@ public class Game extends JFrame implements Runnable {
 	
 	public static final String GAME_TITLE = "IGMC 2014";
 	public static final Dimension SIZE = new Dimension(1200, 675);
+	public static volatile boolean running = false;
 	
 	public static StateManager sm;
 	public static Input input;
 	public static boolean leftWasDown;
+	
 	public static Font font34;
 	public static Font font24;
 	public static Font fontDebug;
-	private boolean renderDebug = true;
-	
-	private Canvas canvas;
 	
 	public static int ups = 0;
 	public static int fps = 0;
 	public int updates = 0;
 	public int frames = 0;
 	
-	public static volatile boolean running = false;
+	private Canvas canvas;
+	private boolean renderDebug = true;
+	private List<Image> icon;
 	
 	public Game() {
 		super(GAME_TITLE);
@@ -46,10 +60,17 @@ public class Game extends JFrame implements Runnable {
 		fontDebug = font34.deriveFont(12f);
 		canvas.setFont(font34);
 		
+		icon = new ArrayList<Image>();
+		icon.add(new ImageIcon("res/icon512.png").getImage());
+		icon.add(new ImageIcon("res/icon256.png").getImage());
+		icon.add(new ImageIcon("res/icon128.png").getImage());
+		icon.add(new ImageIcon("res/icon32.png").getImage());
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		add(canvas);
 		setResizable(false);
 		pack();
+		setIconImages(icon);
 		setLocationRelativeTo(null);
 		setVisible(true);
 		
@@ -89,6 +110,23 @@ public class Game extends JFrame implements Runnable {
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, SIZE.width, SIZE.height);
 		
+		if (input.F8.down) {
+			input.F8.down = false;
+			BufferedImage image = null;
+			try {
+				image = new Robot()
+						.createScreenCapture(new Rectangle(this.getX() + 3, this.getY() + 25, SIZE.width, SIZE.height)); //+25 to account for windows border
+			} catch (HeadlessException | AWTException e) {
+				e.printStackTrace();
+			}
+			
+			try {
+				ImageIO.write(image, "png", new File("screenshot.png"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+		}
 		sm.render(g);
 		
 		if (input.F3.clicked) renderDebug = !renderDebug;

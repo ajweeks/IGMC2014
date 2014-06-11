@@ -1,8 +1,9 @@
-package ca.ajweeks.igmc2014;
+package ca.ajweeks.igmc2014.gfx;
 
 import java.awt.Color;
 import java.awt.Graphics;
 
+import ca.ajweeks.igmc2014.Game;
 import ca.ajweeks.igmc2014.state.GameState;
 import ca.ajweeks.igmc2014.state.StateManager;
 
@@ -14,8 +15,9 @@ public class RenderDebugOverlay {
 		currentState(g, 2, 32);
 		if (Game.sm.getCurrentStateIndex() == StateManager.GAME_STATE) {
 			onGround(g, 2, 47);
-			xaya(g, 2, 62);
-			xy(g, 2, 92);
+			hasDoubleJumped(g, 2, 62);
+			xaya(g, 2, 77);
+			xy(g, 2, 107);
 		}
 	}
 	
@@ -52,6 +54,14 @@ public class RenderDebugOverlay {
 		g.setFont(Game.fontDebug);
 		g.setColor(Color.WHITE);
 		g.drawString("onGround: " + GameState.player.onGround, x + 3, y + 12);
+	}
+	
+	private static void hasDoubleJumped(Graphics g, int x, int y) {
+		g.setColor(Colour.translucentBlack);
+		g.fillRect(x, y, GameState.player.hasDoubleJumped ? 140 : 145, 15);
+		g.setFont(Game.fontDebug);
+		g.setColor(Color.WHITE);
+		g.drawString("hasDoubleJumped: " + GameState.player.hasDoubleJumped, x + 3, y + 12);
 	}
 	
 	private static void xy(Graphics g, int x, int y) {

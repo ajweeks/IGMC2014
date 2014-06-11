@@ -1,19 +1,21 @@
-package ca.ajweeks.igmc2014;
+package ca.ajweeks.igmc2014.gfx;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 
+import ca.ajweeks.igmc2014.Game;
+
 public class Button {
 	
 	public int x, y, width, height;
 	public boolean hover;
-	private Color colour, hColour, tColour;
-	private String text;
-	private Image image;
-	private boolean hasImage;
 	public boolean enabled;
-	private boolean selected;
+	protected Color colour, hColour, tColour;
+	protected String text;
+	protected Image image;
+	protected boolean hasImage;
+	protected boolean selected;
 	
 	public Button(int x, int y, int width, int height, String text, Color colour, Color hColour, Color tColour) {
 		this.x = x;
