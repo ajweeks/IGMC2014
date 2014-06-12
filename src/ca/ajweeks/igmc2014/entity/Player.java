@@ -6,72 +6,76 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 
 import ca.ajweeks.igmc2014.Game;
-import ca.ajweeks.igmc2014.state.GameState;
 
 public class Player extends Mob {
 	
-	public static int speed = 5;
+	public final static int JUMP_SPEED = -175;
+	
+	public final static int SPRINT_SPEED = 16;
+	public final static int WALK_SPEED = 10;
+	public static int speed = WALK_SPEED;
 	
 	private Image image = new ImageIcon("res/player.png").getImage();
 	
 	public boolean hasDoubleJumped = false;
 	public boolean onGround = false;
 	
-	public int jumps = 0; // can't remember why this is here......
+	//public int jumps = 0; // can't remember why this is here...... to allow for triple jumps maybe? TODO later
 	
-	private GameState gs;
-	
-	public Player(GameState gs) {
+	public Player() {
 		super(110, 200);
 		x = Game.SIZE.width / 2 - width / 2;
 		y = Game.SIZE.height / 2 - height / 2;
-		this.gs = gs;
 	}
 	
 	@Override
-	public void update() {
-		if (Game.input.right.down && xa == 0) xa = 1;
-		if (Game.input.left.down && xa == 0) xa = -1;
+	public void update(double delta) {
+		if (Game.input.right.down && xv == 0) xv = 1;
+		if (Game.input.left.down && xv == 0) xv = -1;
 		
-		if (xa == 1 && !Game.input.right.down) xa = 0;
-		if (xa == -1 && !Game.input.left.down) xa = 0;
+		if (xv == 1 && !Game.input.right.down) xv = 0;
+		if (xv == -1 && !Game.input.left.down) xv = 0;
 		
-		if (!Game.input.right.down && !Game.input.left.down) xa = 0;
+		if (!Game.input.right.down && !Game.input.left.down) xv = 0;
 		
-		x += xa * speed;
+		x += xv * speed * delta;
+		
 		if (x + width > Game.SIZE.width) x = Game.SIZE.width - width;
 		if (x < 0) x = 0;
-		if (y > Game.SIZE.height - height) {
+		if (y > Game.SIZE.height - height-1) {
 			onGround = true;
-			ya = 0;
-			y = Game.SIZE.height - height + 1;
-		} else if (gs.mobIntersects(this)) {
-			onGround = true;
-			ya = 0;
-			y = 300;
+			yv = 0;
+			y = Game.SIZE.height - height;
 		} else onGround = false;
 		
-		if (Game.input.space.clicked && !onGround) {
-			if (!hasDoubleJumped) {
-				hasDoubleJumped = true;
+		if (Game.input.space.clicked) {
+			if (onGround) {
+				hasDoubleJumped = false;
 				onGround = false;
-				ya = -20;
+				yv = JUMP_SPEED;
+			} else { //not on ground
+				if (!hasDoubleJumped) {
+					hasDoubleJumped = true;
+					onGround = false;
+					yv = JUMP_SPEED;
+				}
 			}
-		} else if (Game.input.space.clicked && onGround) {
-			hasDoubleJumped = false;
-			onGround = false;
-			ya = -20;
 		}
 		
-		if(onGround) hasDoubleJumped = false;
-		
-		//TODO decrease gravity
-		ya++;
-		y += ya;
+		if (onGround) hasDoubleJumped = false;
+		else {
+			yv += GRAVITY;
+			System.out.println(yv);
+			y += (yv * delta) / 6;
+		}
 	}
 	
 	@Override
 	public void render(Graphics g) {
 		g.drawImage(image, x, y, null);
+	}
+	
+	public static void setSpeed(int speed) {
+		Player.speed = speed;
 	}
 }

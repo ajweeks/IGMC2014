@@ -1,4 +1,4 @@
-package ca.ajweeks.igmc2014.gfx;
+package ca.ajweeks.igmc2014.entity;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -9,15 +9,15 @@ public class AchievementParticle extends Particle {
 	
 	public String message;
 	
-	public AchievementParticle(int x, int y, int width, int height, int life, float xV, float yV, String message) {
-		super(x, y, width, height, life, xV, yV);
+	public AchievementParticle(int x, int y, int width, int height, int life, int xv, int yv, String message) {
+		super(x, y, width, height, life, xv, yv);
 		this.message = message;
 	}
 	
 	@Override
 	public void render(Graphics g) {
 		int yoff = 0;
-		yoff /= 3;
+		yoff /= 3; //wut?
 		
 		g.setColor(new Color(75, 75, 75, 50));
 		g.fillRect(x, y + yoff, width, height);
@@ -27,7 +27,7 @@ public class AchievementParticle extends Particle {
 	}
 	
 	@Override
-	public void update() {
-		super.update();
+	public void update(double delta) {
+		super.update(delta);
 	}
 }

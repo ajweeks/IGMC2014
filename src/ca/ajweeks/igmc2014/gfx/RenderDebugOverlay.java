@@ -4,93 +4,89 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import ca.ajweeks.igmc2014.Game;
+import ca.ajweeks.igmc2014.entity.Player;
 import ca.ajweeks.igmc2014.state.GameState;
 import ca.ajweeks.igmc2014.state.StateManager;
 
 public class RenderDebugOverlay {
 	
+	private static int ypos = 3;
+	private static int xpos = 3;
+	private static int height = 15;
+	
 	public static void render(Graphics g) {
-		fps(g, 2, 2);
-		ups(g, 2, 17);
-		currentState(g, 2, 32);
+		fps(g);
+		currentState(g);
 		if (Game.sm.getCurrentStateIndex() == StateManager.GAME_STATE) {
-			onGround(g, 2, 47);
-			hasDoubleJumped(g, 2, 62);
-			xaya(g, 2, 77);
-			xy(g, 2, 107);
+			onGround(g);
+			hasDoubleJumped(g);
+			playerSpeed(g);
+			xy(g);
 		}
+		ypos = 3;
 	}
 	
-	private static void ups(Graphics g, int x, int y) {
+	private static void fps(Graphics g) {
 		g.setColor(Colour.translucentBlack);
-		g.fillRect(x, y, 52, 15);
+		g.fillRect(xpos, ypos, 50, 15);
 		
 		g.setFont(Game.fontDebug);
 		g.setColor(Color.WHITE);
-		g.drawString(Game.ups + " UPS", x + 3, y + 11);
+		g.drawString(Game.fps + " FPS", xpos + 3, ypos + 12);
+		ypos += height;
 	}
 	
-	private static void fps(Graphics g, int x, int y) {
-		g.setColor(Colour.translucentBlack);
-		g.fillRect(x, y, 50, 15);
-		
-		g.setFont(Game.fontDebug);
-		g.setColor(Color.WHITE);
-		g.drawString(Game.fps + " FPS", x + 3, y + 12);
-	}
-	
-	private static void currentState(Graphics g, int x, int y) {
+	private static void currentState(Graphics g) {
 		String msg = "Current state: " + Game.sm.getCurrentStateSimpleName();
 		g.setColor(Colour.translucentBlack);
-		g.fillRect(x, y, (int) (msg.length() * 6.5), 15);
+		g.fillRect(xpos, ypos, (int) (msg.length() * 6.5), 15);
 		
 		g.setColor(Color.WHITE);
-		g.drawString(msg, x + 3, y + 12);
+		g.drawString(msg, xpos + 3, ypos + 12);
+		ypos += height;
 	}
 	
-	private static void onGround(Graphics g, int x, int y) {
+	private static void onGround(Graphics g) {
 		g.setColor(Colour.translucentBlack);
-		g.fillRect(x, y, GameState.player.onGround ? 90 : 95, 15);
+		g.fillRect(xpos, ypos, GameState.player.onGround ? 90 : 95, 15);
 		g.setFont(Game.fontDebug);
 		g.setColor(Color.WHITE);
-		g.drawString("onGround: " + GameState.player.onGround, x + 3, y + 12);
+		g.drawString("onGround: " + GameState.player.onGround, xpos + 3, ypos + 12);
+		ypos += height;
 	}
 	
-	private static void hasDoubleJumped(Graphics g, int x, int y) {
+	private static void hasDoubleJumped(Graphics g) {
 		g.setColor(Colour.translucentBlack);
-		g.fillRect(x, y, GameState.player.hasDoubleJumped ? 140 : 145, 15);
+		g.fillRect(xpos, ypos, GameState.player.hasDoubleJumped ? 140 : 145, 15);
 		g.setFont(Game.fontDebug);
 		g.setColor(Color.WHITE);
-		g.drawString("hasDoubleJumped: " + GameState.player.hasDoubleJumped, x + 3, y + 12);
+		g.drawString("hasDoubleJumped: " + GameState.player.hasDoubleJumped, xpos + 3, ypos + 12);
+		ypos += height;
 	}
 	
-	private static void xy(Graphics g, int x, int y) {
+	private static void playerSpeed(Graphics g) {
+		g.setColor(Colour.translucentBlack);
+		g.fillRect(xpos, ypos, 98, 15);
 		g.setFont(Game.fontDebug);
-		
-		g.setColor(Colour.translucentBlack);
-		g.fillRect(x, y, GameState.player.x > 1000 ? 53 : GameState.player.x < 100 ? GameState.player.x < 10 ? 33 : 39 : 45, 15);
 		g.setColor(Color.WHITE);
-		g.drawString("x = " + GameState.player.x, x + 3, y + 12);
-		
-		g.setColor(Colour.translucentBlack);
-		g.fillRect(x, y + 15, GameState.player.y > 1000 ? 53 : GameState.player.y < 100 ? GameState.player.y < 10 ? 33 : 39 : 45,
-				15);
-		g.setColor(Color.WHITE);
-		g.drawString("y = " + GameState.player.y, x + 3, y + 26);
+		g.drawString("player speed: " + Player.speed, xpos + 3, ypos + 12);
+		ypos += height;
 	}
 	
-	private static void xaya(Graphics g, int x, int y) {
+	private static void xy(Graphics g) {
 		g.setFont(Game.fontDebug);
 		
 		g.setColor(Colour.translucentBlack);
-		g.fillRect(x, y, 45, 15);
+		g.fillRect(xpos, ypos,
+				GameState.player.x > 1000 ? 53 : GameState.player.x < 100 ? GameState.player.x < 10 ? 33 : 39 : 45, 15);
 		g.setColor(Color.WHITE);
-		g.drawString("xa = " + GameState.player.xa, x + 3, y + 12);
+		g.drawString("x = " + GameState.player.x, xpos + 3, ypos + 12);
 		
 		g.setColor(Colour.translucentBlack);
-		g.fillRect(x, y + 15, 45, 15);
+		g.fillRect(xpos, ypos + 15, GameState.player.y > 1000 ? 53 : GameState.player.y < 100 ? GameState.player.y < 10 ? 33 : 39
+				: 45, 15);
 		g.setColor(Color.WHITE);
-		g.drawString("ya = " + GameState.player.ya, x + 3, y + 26);
+		g.drawString("y = " + GameState.player.y, xpos + 3, ypos + 26);
+		ypos += height * 2;
 	}
-	
 }

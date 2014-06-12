@@ -9,6 +9,7 @@ public class StateManager {
 	public static final int HELP = 1;
 	public static final int GAME_STATE = 2;
 	public static final int ABOUT = 3;
+	public static final int OPTIONS = 4;
 	
 	private ArrayList<BasicState> states;
 	private BasicState currentState;
@@ -19,6 +20,7 @@ public class StateManager {
 		states.add(new HelpState());
 		states.add(new GameState());
 		states.add(new AboutState());
+		states.add(new OptionState());
 		
 		currentState = states.get(MAIN_MENU_STATE);
 	}
@@ -39,8 +41,8 @@ public class StateManager {
 		return currentState.getClass().getSimpleName();
 	}
 	
-	public void update() {
-		currentState.update();
+	public void update(double delta) {
+		currentState.update(delta);
 	}
 	
 	public void render(Graphics g) {

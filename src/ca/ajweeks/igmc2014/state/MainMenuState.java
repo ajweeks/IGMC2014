@@ -19,9 +19,10 @@ public class MainMenuState extends BasicState {
 	private static final int PLAY = 0;
 	private static final int HELP = 1;
 	private static final int ABOUT = 2;
-	private static final int QUIT = 3;
-	private static final int QUIETER = 4;
-	private static final int LOUDER = 5;
+	private static final int OPTIONS = 3;
+	private static final int QUIT = 4;
+	private static final int QUIETER = 5;
+	private static final int LOUDER = 6;
 	
 	private Button[] buttons;
 	
@@ -36,14 +37,15 @@ public class MainMenuState extends BasicState {
 				new Button(Game.SIZE.width / 2 - 110 / 2, 125, 110, 75, "Play!", Colour.button, Colour.hButton, Colour.offWhite),
 				new Button(Game.SIZE.width / 2 - 95 / 2, 225, 95, 75, "Help", Colour.button, Colour.hButton, Colour.offWhite),
 				new Button(Game.SIZE.width / 2 - 124 / 2, 325, 124, 75, "About", Colour.button, Colour.hButton, Colour.offWhite),
-				new Button(Game.SIZE.width / 2 - 90 / 2, 425, 90, 75, "Quit", Colour.button, Colour.hButton, Colour.offWhite),
+				new Button(Game.SIZE.width / 2 - 160 / 2, 425, 160, 75, "Options", Colour.button, Colour.hButton, Colour.offWhite),
+				new Button(Game.SIZE.width / 2 - 90 / 2, 525, 90, 75, "Quit", Colour.button, Colour.hButton, Colour.offWhite),
 				new Button(Game.SIZE.width - 130, 30, 50, 50, "", Colour.button, Colour.hButton, Colour.offWhite, quieter),
 				new Button(Game.SIZE.width - 70, 30, 50, 50, "", Colour.button, Colour.hButton, Colour.offWhite, louder) };
 		
 		updateSelectedButton();
 	}
 	
-	public void update() {
+	public void update(double delta) {
 		for (int i = 0; i < buttons.length; i++) {
 			if (buttons[i].hover && buttons[i].enabled && !Input.mouseIsStill) selectedButton = i;
 		}
@@ -71,6 +73,9 @@ public class MainMenuState extends BasicState {
 			case ABOUT:
 				if (buttons[ABOUT].enabled) about();
 				break;
+			case OPTIONS:
+				if (buttons[OPTIONS].enabled) options();
+				break;
 			case QUIT:
 				if (buttons[QUIT].enabled) Game.stop();
 				break;
@@ -86,6 +91,7 @@ public class MainMenuState extends BasicState {
 		if (buttons[PLAY].isDown()) startGame();
 		if (buttons[HELP].isDown()) help();
 		if (buttons[ABOUT].isDown()) about();
+		if (buttons[OPTIONS].isDown()) options();
 		if (buttons[QUIT].isDown()) Game.stop();
 		if (buttons[LOUDER].isDown()) louder();
 		if (buttons[QUIETER].isDown()) quieter();
@@ -129,6 +135,11 @@ public class MainMenuState extends BasicState {
 		Game.sm.enterState(StateManager.ABOUT);
 	}
 	
+	private void options() {
+		Sound.SELECT.play();
+		Game.sm.enterState(StateManager.OPTIONS);
+	}
+	
 	private void quieter() {
 		Sound.volume = Sound.quieter(Sound.volume);
 		Sound.SELECT.play();
@@ -159,7 +170,8 @@ public class MainMenuState extends BasicState {
 		
 		g.setFont(Game.font34.deriveFont(20f));
 		g.setColor(Colour.offWhite);
-		g.drawString("Volume: " + (((Sound.volume + 24) / 3) * 10), 1065, 22);
+		int vol = (int) (((Sound.volume + 24) / 3) * 10);
+		g.drawString("Volume: " + vol + "%", 1065, 22);
 	}
 	
 }

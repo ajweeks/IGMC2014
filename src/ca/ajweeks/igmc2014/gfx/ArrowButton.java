@@ -1,4 +1,4 @@
-package ca.ajweeks.igmc2014.state;
+package ca.ajweeks.igmc2014.gfx;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -7,7 +7,6 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 
 import ca.ajweeks.igmc2014.Game;
-import ca.ajweeks.igmc2014.gfx.Button;
 
 public class ArrowButton extends Button {
 	
@@ -43,13 +42,14 @@ public class ArrowButton extends Button {
 		return false;
 	}
 	
-	@Override
-	public void render(Graphics g) {
+	public void render(Graphics g, boolean enabled) {
 		if (dir == LEFT) {
-			if (hover) g.drawImage(arrowBtnLeftON, x, y, null);
+			if (!enabled) return;
+			else if (hover) g.drawImage(arrowBtnLeftON, x, y, null);
 			else g.drawImage(arrowBtnLeftOFF, x, y, null);
 		} else if (dir == RIGHT) {
-			if (hover) g.drawImage(arrowBtnRightON, x, y, null);
+			if (!enabled) return;
+			else if (hover) g.drawImage(arrowBtnRightON, x, y, null);
 			else g.drawImage(arrowBtnRightOFF, x, y, null);
 		}
 	}

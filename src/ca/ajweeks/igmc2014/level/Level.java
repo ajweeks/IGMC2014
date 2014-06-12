@@ -17,9 +17,9 @@ public class Level {
 		entites.add(entity);
 	}
 	
-	public void update() {
+	public void update(double delta) {
 		for (int i = 0; i < entites.size(); i++) {
-			entites.get(i).update();
+			entites.get(i).update(delta);
 		}
 	}
 	

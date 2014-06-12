@@ -31,6 +31,7 @@ public class Game extends JFrame implements Runnable {
 	
 	public static final String GAME_TITLE = "IGMC 2014";
 	public static final Dimension SIZE = new Dimension(1200, 675);
+	public static final int MS_PER_UPDATE = 16;
 	public static volatile boolean running = false;
 	
 	public static StateManager sm;
@@ -41,9 +42,7 @@ public class Game extends JFrame implements Runnable {
 	public static Font font24;
 	public static Font fontDebug;
 	
-	public static int ups = 0;
 	public static int fps = 0;
-	public int updates = 0;
 	public int frames = 0;
 	
 	private Canvas canvas;
@@ -91,11 +90,10 @@ public class Game extends JFrame implements Runnable {
 		return result;
 	}
 	
-	public void update() {
-		sm.update();
+	public void update(double delta) {
+		sm.update(delta);
 		input.update();
 		leftWasDown = input.lM.clicked;
-		updates++;
 	}
 	
 	public void render() {
@@ -139,30 +137,34 @@ public class Game extends JFrame implements Runnable {
 	
 	public void run() {
 		running = true;
-		long before = System.currentTimeMillis();
-		long seconds = 0;
+		long before = System.nanoTime();
+		long fpsTime = 0;
+		final int TARGET_FPS = 60;
+		final int OPTIMAL_TIME = 1_000_000_000 / TARGET_FPS;
 		while (running) {
-			update();
-			render();
-			try {
-				//TODO Add better game loop..
-				Thread.sleep(1000 / 60);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			long now = System.currentTimeMillis();
-			long elapsed = now - before;
+			long now = System.nanoTime();
+			long updateLength = now - before;
+			before = now;
 			
-			seconds += elapsed;
-			if (seconds >= 1000) {
+			double delta = updateLength / ((double) OPTIMAL_TIME);
+			
+			fpsTime += updateLength;
+			if (fpsTime > 1_000_000_000) { //it's been a second
+				fpsTime = 0;
 				fps = frames;
-				ups = updates;
-				seconds = 0;
-				updates = 0;
 				frames = 0;
 			}
 			
-			before = System.currentTimeMillis();
+			update(delta);
+			render();
+			long sleepTime = (before - System.nanoTime() + OPTIMAL_TIME) / 1_000_000;
+			if (sleepTime > 0) {
+				try {
+					Thread.sleep(sleepTime);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 		dispose();
 		System.exit(0);

@@ -10,7 +10,8 @@ public class AI extends Mob {
 	}
 	
 	@Override
-	public void update() {
+	public void update(double delta) {
+		super.update(delta);
 		
 	}
 	

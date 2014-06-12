@@ -3,8 +3,6 @@ package ca.ajweeks.igmc2014.state;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import com.sun.xml.internal.ws.util.StringUtils;
-
 import ca.ajweeks.igmc2014.Game;
 import ca.ajweeks.igmc2014.gfx.Button;
 import ca.ajweeks.igmc2014.gfx.Colour;
@@ -21,7 +19,7 @@ public class AboutState extends BasicState {
 	}
 	
 	@Override
-	public void update() {
+	public void update(double delta) {
 		if (back.isDown() || Game.input.esc.clicked || Game.input.space.clicked || Game.input.enter.clicked) {
 			Sound.SELECT.play();
 			Game.sm.enterState(StateManager.MAIN_MENU_STATE);

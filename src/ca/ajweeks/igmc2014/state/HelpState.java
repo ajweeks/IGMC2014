@@ -2,9 +2,9 @@ package ca.ajweeks.igmc2014.state;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Image;
 
 import ca.ajweeks.igmc2014.Game;
+import ca.ajweeks.igmc2014.gfx.ArrowButton;
 import ca.ajweeks.igmc2014.gfx.Button;
 import ca.ajweeks.igmc2014.gfx.Colour;
 import ca.ajweeks.igmc2014.sound.Sound;
@@ -16,10 +16,10 @@ public class HelpState extends BasicState {
 	private int xoff = 0;
 	private int dir = 0;
 	private int scrollSpeed = 50;
-	private Button back;
 	
-	public ArrowButton left;
-	public ArrowButton right;
+	private Button back;
+	private ArrowButton left;
+	private ArrowButton right;
 	
 	public HelpState() {
 		back = new Button(Game.SIZE.width / 2 - 100 / 2, Game.SIZE.height - 120, 110, 75, "Back", Colour.button, Colour.hButton,
@@ -31,7 +31,7 @@ public class HelpState extends BasicState {
 	}
 	
 	@Override
-	public void update() {
+	public void update(double delta) {
 		if (Game.input.right.clicked) {
 			if (page < MAX_PAGES - 1) {
 				Sound.SELECT.play();
@@ -44,7 +44,9 @@ public class HelpState extends BasicState {
 			}
 		}
 		
-		xoff += dir * scrollSpeed;
+		//TODO add trigonometric scrolling
+		int dest = page * Game.SIZE.width;
+		xoff += dir * scrollSpeed + ((xoff - dest) / 10) * -1;
 		
 		if (dir == 1) {
 			if (xoff >= page * Game.SIZE.width) {
@@ -125,8 +127,8 @@ public class HelpState extends BasicState {
 		}
 		
 		back.render(g);
-		left.render(g);
-		right.render(g);
+		left.render(g, page > 0);
+		right.render(g, page < MAX_PAGES - 1);
 	}
 	
 }

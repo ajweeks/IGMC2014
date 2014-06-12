@@ -115,12 +115,12 @@ public class Input implements MouseMotionListener, MouseListener, KeyListener {
 	
 	public void keyPressed(KeyEvent e) {
 		mouseIsStill = true;
-		if (e.isShiftDown()) Player.speed = 10;
+		if (e.isShiftDown()) Player.setSpeed(Player.SPRINT_SPEED);
 		toggle(e, true);
 	}
 	
 	public void keyReleased(KeyEvent e) {
-		if (!e.isShiftDown()) Player.speed = 5;
+		if (!e.isShiftDown()) Player.setSpeed(Player.WALK_SPEED);
 		toggle(e, false);
 	}
 	

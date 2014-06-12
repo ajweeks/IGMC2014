@@ -5,7 +5,6 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 
 import ca.ajweeks.igmc2014.Game;
-import ca.ajweeks.igmc2014.entity.Mob;
 import ca.ajweeks.igmc2014.entity.Player;
 import ca.ajweeks.igmc2014.level.Level;
 import ca.ajweeks.igmc2014.sound.Sound;
@@ -19,21 +18,17 @@ public class GameState extends BasicState {
 	
 	public GameState() {
 		level = new Level();
-		player = new Player(this);
+		player = new Player();
 		level.addEntity(player);
 	}
 	
-	public void update() {
+	public void update(double delta) {
 		if (Game.input.esc.clicked) {
 			Sound.SELECT.play();
 			Game.sm.enterState(StateManager.MAIN_MENU_STATE);
 		}
 		
-		level.update();
-	}
-	
-	public boolean mobIntersects(Mob mob) {
-		return one.intersects(new Rectangle(mob.x, mob.y, mob.width, mob.height));
+		level.update(delta);
 	}
 	
 	public void render(Graphics g) {
