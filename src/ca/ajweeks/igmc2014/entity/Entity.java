@@ -4,7 +4,7 @@ import java.awt.Graphics;
 
 public class Entity {
 	
-	public int x, y, xv, yv;
+	public int x, y;
 	public static final double GRAVITY = 9.8;
 	
 	public void render(Graphics g) {}

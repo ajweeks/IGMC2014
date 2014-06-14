@@ -8,9 +8,10 @@ public class AchievementParticle extends Particle {
 	public static final String JUMP = "Congrats! You jumped! :D";
 	
 	public String message;
+	private static double v = 1.0;
 	
-	public AchievementParticle(int x, int y, int width, int height, int life, int xv, int yv, String message) {
-		super(x, y, width, height, life, xv, yv);
+	public AchievementParticle(int x, int y, int width, int height, int life, String message) {
+		super(x, y, width, height, life, v, 0, 90);
 		this.message = message;
 	}
 	

@@ -4,17 +4,19 @@ import java.awt.Graphics;
 
 public class Particle extends Entity {
 	
-	public int width, height, life;
+	public int width, height, life, angle;
+	public double v, a;
 	public boolean removed = false;
 	
-	public Particle(int x, int y, int width, int height, int life, int xv, int yv) {
+	public Particle(int x, int y, int width, int height, int life, double v, double a, int angle) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
 		this.life = life;
-		this.xv = xv;
-		this.yv = yv;
+		this.v = v;
+		this.a = a;
+		this.angle = angle;
 	}
 	
 	public void update(double delta) {
@@ -23,8 +25,11 @@ public class Particle extends Entity {
 			removed = true;
 			return;
 		}
-		x += xv;
-		y += yv;
+		v -= a * delta;
+		if (v < 0) v = 0;
+		x += v * Math.sin(angle) * delta;
+		y += v * Math.cos(angle) * delta;
+		
 	}
 	
 	public void render(Graphics g) {}

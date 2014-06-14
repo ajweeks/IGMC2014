@@ -15,10 +15,10 @@ public class Player extends Mob {
 	public final static int WALK_SPEED = 10;
 	public static int speed = WALK_SPEED;
 	
-	private Image image = new ImageIcon("res/player.png").getImage();
-	
 	public boolean hasDoubleJumped = false;
 	public boolean onGround = false;
+	
+	private Image image = new ImageIcon("res/player.png").getImage();
 	
 	//public int jumps = 0; // can't remember why this is here...... to allow for triple jumps maybe? TODO later
 	
@@ -42,7 +42,7 @@ public class Player extends Mob {
 		
 		if (x + width > Game.SIZE.width) x = Game.SIZE.width - width;
 		if (x < 0) x = 0;
-		if (y > Game.SIZE.height - height-1) {
+		if (y > Game.SIZE.height - height - 1) {
 			onGround = true;
 			yv = 0;
 			y = Game.SIZE.height - height;
@@ -65,7 +65,6 @@ public class Player extends Mob {
 		if (onGround) hasDoubleJumped = false;
 		else {
 			yv += GRAVITY;
-			System.out.println(yv);
 			y += (yv * delta) / 6;
 		}
 	}

@@ -49,6 +49,8 @@ public class Game extends JFrame implements Runnable {
 	private boolean renderDebug = true;
 	private List<Image> icon;
 	
+	//TODO list: add screenshots
+	
 	public Game() {
 		super(GAME_TITLE);
 		
@@ -76,8 +78,8 @@ public class Game extends JFrame implements Runnable {
 		canvas.setFocusable(true);
 		canvas.requestFocus();
 		
-		sm = new StateManager();
 		input = new Input(canvas);
+		sm = new StateManager();
 	}
 	
 	private Font getFonts() {
@@ -91,9 +93,9 @@ public class Game extends JFrame implements Runnable {
 	}
 	
 	public void update(double delta) {
-		sm.update(delta);
 		input.update();
 		leftWasDown = input.lM.clicked;
+		sm.update(delta);
 	}
 	
 	public void render() {
@@ -139,8 +141,7 @@ public class Game extends JFrame implements Runnable {
 		running = true;
 		long before = System.nanoTime();
 		long fpsTime = 0;
-		final int TARGET_FPS = 60;
-		final int OPTIMAL_TIME = 1_000_000_000 / TARGET_FPS;
+		final int OPTIMAL_TIME = 1_000_000_000 / 60;
 		while (running) {
 			long now = System.nanoTime();
 			long updateLength = now - before;
@@ -157,6 +158,7 @@ public class Game extends JFrame implements Runnable {
 			
 			update(delta);
 			render();
+			
 			long sleepTime = (before - System.nanoTime() + OPTIMAL_TIME) / 1_000_000;
 			if (sleepTime > 0) {
 				try {
