@@ -6,8 +6,10 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 
 import ca.ajweeks.igmc2014.Game;
+import ca.ajweeks.igmc2014.achievements.Achievement;
+import ca.ajweeks.igmc2014.entity.AchievementParticle;
+import ca.ajweeks.igmc2014.entity.Particle;
 import ca.ajweeks.igmc2014.entity.Player;
-import ca.ajweeks.igmc2014.entity.SmokeParticle;
 import ca.ajweeks.igmc2014.level.Level;
 import ca.ajweeks.igmc2014.sound.Sound;
 
@@ -17,14 +19,16 @@ public class GameState extends BasicState {
 	public static Player player;
 	
 	Rectangle one = new Rectangle(750, 500, 205, 100);
-	ArrayList<SmokeParticle[]> s; //all smoke particles
+	ArrayList<Particle[]> p; //all particles
 	
 	public GameState() {
 		level = new Level();
 		player = new Player();
 		level.addEntity(player);
-		s = new ArrayList<>();
+		p = new ArrayList<>();
 	}
+	
+	boolean firstJump = false;
 	
 	public void update(double delta) {
 		if (Game.input.esc.clicked) {
@@ -32,21 +36,22 @@ public class GameState extends BasicState {
 			Game.sm.enterState(StateManager.MAIN_MENU_STATE);
 		}
 		
-		if (Game.input.lM.down) {
-			Game.input.lM.down = false;
-			s.add(SmokeParticle.randomParticles(50));
+		if (player.hasJumped && !firstJump) {
+			firstJump = true;
+			p.add(new AchievementParticle[] { new AchievementParticle(Game.SIZE.width - 245, 35, 220, 65, 150, Achievement.JUMPER
+					.getMessage()) });
 		}
 		
-		for (int i = 0; i < s.size(); i++) {
+		for (int i = 0; i < p.size(); i++) {
 			boolean removed = true;
 			
-			for (int j = 0; j < s.get(i).length; j++) {
-				s.get(i)[j].update(delta);
-				if (!s.get(i)[j].removed) removed = false; //if theres at least one which is still alive, we don't remove the whole thing 
+			for (int j = 0; j < p.get(i).length; j++) {
+				p.get(i)[j].update(delta);
+				if (!p.get(i)[j].removed) removed = false; //if there's at least one which is still alive, we don't remove the whole thing 
 			}
 			
 			if (removed) {
-				s.remove(s.get(i));
+				p.remove(p.get(i));
 				if (i > 0) i--;
 			}
 		}
@@ -61,9 +66,9 @@ public class GameState extends BasicState {
 		g.setColor(Color.RED);
 		g.fillRect(one.x, one.y, one.width, one.height);
 		
-		for (int i = 0; i < s.size(); i++) {
-			for (int j = 0; j < s.get(i).length; j++) {
-				if (!s.get(i)[j].removed) s.get(i)[j].render(g);
+		for (int i = 0; i < p.size(); i++) {
+			for (int j = 0; j < p.get(i).length; j++) {
+				if (!p.get(i)[j].removed) p.get(i)[j].render(g);
 			}
 		}
 		

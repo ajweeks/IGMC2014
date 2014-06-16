@@ -6,6 +6,7 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 
 import ca.ajweeks.igmc2014.Game;
+import ca.ajweeks.igmc2014.sound.Sound;
 
 public class Player extends Mob {
 	
@@ -28,6 +29,8 @@ public class Player extends Mob {
 		y = Game.SIZE.height / 2 - height / 2;
 	}
 	
+	public boolean hasJumped = false;
+	
 	@Override
 	public void update(double delta) {
 		if (Game.input.right.down && xv == 0) xv = 1;
@@ -49,12 +52,15 @@ public class Player extends Mob {
 		} else onGround = false;
 		
 		if (Game.input.space.clicked) {
+			if(!hasJumped) hasJumped = true;
 			if (onGround) {
+				Sound.JUMP.play();
 				hasDoubleJumped = false;
 				onGround = false;
 				yv = JUMP_SPEED;
 			} else { //not on ground
 				if (!hasDoubleJumped) {
+					Sound.JUMP.play();
 					hasDoubleJumped = true;
 					onGround = false;
 					yv = JUMP_SPEED;

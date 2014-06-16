@@ -3,28 +3,32 @@ package ca.ajweeks.igmc2014.entity;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import ca.ajweeks.igmc2014.Game;
+
 public class AchievementParticle extends Particle {
-	
-	public static final String JUMP = "Congrats! You jumped! :D";
 	
 	public String message;
 	private static double v = 1.0;
 	
 	public AchievementParticle(int x, int y, int width, int height, int life, String message) {
-		super(x, y, width, height, life, v, 0, 90);
+		super(x, y, width, height, life, v, 0.3, 0); //TODO fix acceleration issues
 		this.message = message;
 	}
 	
 	@Override
 	public void render(Graphics g) {
-		int yoff = 0;
-		yoff /= 3; //wut?
+		int yoff = (life + 1) / 5;
+		int alpha = Math.max(0, Math.min(255, life * 5));
 		
-		g.setColor(new Color(75, 75, 75, 50));
-		g.fillRect(x, y + yoff, width, height);
+		g.setColor(new Color(75, 75, 75, alpha));
+		g.fillRect(x, y + yoff - 12, width, height);
 		
-		g.setColor(Color.WHITE);
-		g.drawString(message, x + 5, y + 20 + yoff);
+		g.setFont(Game.font24);
+		g.setColor(new Color(135, 135, 135, alpha));
+		g.drawString("Achievement", x + 5, y + 12 + yoff);
+		
+		g.setColor(new Color(255, 255, 255, alpha));
+		g.drawString(message, x + 5, y + 40 + yoff);
 	}
 	
 	@Override

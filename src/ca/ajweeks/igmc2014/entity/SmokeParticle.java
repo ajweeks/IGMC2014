@@ -10,7 +10,7 @@ public class SmokeParticle extends Particle {
 	
 	private static Random rand = new Random(12489126486132L); //does there really need to be a seed?
 	
-	public SmokeParticle(int x, int y, int width, int height, int life, double v, double a, int angle) {
+	public SmokeParticle(int x, int y, int width, int height, int life, double v, double a, double angle) {
 		super(x, y, width, height, life, v, a, angle);
 	}
 	
@@ -23,12 +23,8 @@ public class SmokeParticle extends Particle {
 	}
 	
 	private static SmokeParticle randomParticle() {
-		int v;
-		do {
-			v = (rand.nextInt(18)) - 9;
-		} while (v > -5 && v < 5);
-		int angle = rand.nextInt(360);
-		return new SmokeParticle(Game.input.x, Game.input.y, 10, 10, rand.nextInt(10) + 50, v, 0.3, angle);
+		double v = (rand.nextInt(10) + 2);
+		return new SmokeParticle(Game.input.x, Game.input.y, 10, 10, rand.nextInt(15) + 45, v, 0.3, rand.nextInt(360));
 	}
 	
 	@Override
@@ -38,10 +34,8 @@ public class SmokeParticle extends Particle {
 	
 	@Override
 	public void render(Graphics g) {
-		int l = life * 4;
-		if (l > 255) l = 255;
-		if (l < 0) l = 0;
-		g.setColor(new Color(150, 150, 150, l));
+		int alpha = Math.max(0, Math.min(255, life * 7));
+		g.setColor(new Color(150, 150, 150, alpha));
 		g.fillRect(x, y, width, height);
 	}
 }

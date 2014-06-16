@@ -10,6 +10,7 @@ public class StateManager {
 	public static final int GAME_STATE = 2;
 	public static final int ABOUT = 3;
 	public static final int OPTIONS = 4;
+	public static final int ACHIEVEMENTS = 5;
 	
 	private ArrayList<BasicState> states;
 	private BasicState currentState;
@@ -21,8 +22,17 @@ public class StateManager {
 		states.add(new GameState());
 		states.add(new AboutState());
 		states.add(new OptionState());
+		states.add(new AchievementState(states.get(MAIN_MENU_STATE)));
 		
 		currentState = states.get(MAIN_MENU_STATE);
+	}
+	
+	public void enterState(BasicState state) {
+		if (states.contains(state)) {
+			currentState = state;
+		} else {
+			new Exception("Invalid state: " + state + "!").printStackTrace();
+		}
 	}
 	
 	public void enterState(int stateIndex) {

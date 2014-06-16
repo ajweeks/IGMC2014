@@ -75,7 +75,7 @@ public class Button {
 		g.fillRoundRect(x, y, width, height, 25, 25);
 		
 		g.setColor(tColour);
-		g.drawString(text, x + width / 8, (int) (y + height * 0.65));
+		g.drawString(text, (int) (x + width / 9.5), (int) (y + height * 0.66));
 		
 		if (hasImage) g.drawImage(image, x + 2, y + 2, null);
 		
