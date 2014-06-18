@@ -4,8 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import ca.ajweeks.igmc2014.Game;
-import ca.ajweeks.igmc2014.gfx.ArrowButton;
-import ca.ajweeks.igmc2014.gfx.Button;
+import ca.ajweeks.igmc2014.button.ArrowButton;
+import ca.ajweeks.igmc2014.button.Button;
 import ca.ajweeks.igmc2014.gfx.Colour;
 import ca.ajweeks.igmc2014.sound.Sound;
 
@@ -96,26 +96,26 @@ public class HelpState extends BasicState {
 		g.setFont(Game.font24);
 		g.setColor(Color.WHITE);
 		
-		//One
 		message = new String[] { "Controls:", "", "-WASD or arrow keys to move.", "-Space to jump", "-Esc to exit to main menu",
 				"-Shift to sprint" };
+		int p = 0;
 		for (int i = 0; i < message.length; i++) {
-			g.drawString(message[i], (Game.SIZE.width / 2) - (g.getFontMetrics().stringWidth(message[i]) / 2) - xoff,
+			g.drawString(message[i], (p * Game.SIZE.width) + (Game.SIZE.width / 2) - (g.getFontMetrics().stringWidth(message[i]) / 2) - xoff,
 					Game.SIZE.height / 2 - 200 + i * (g.getFontMetrics().getHeight()));
 		}
 		
-		//Two
 		message = new String[] { "2" };
+		p = 1;
 		for (int i = 0; i < message.length; i++) {
-			g.drawString(message[i], (1 * Game.SIZE.width) + (Game.SIZE.width / 2)
+			g.drawString(message[i], (p * Game.SIZE.width) + (Game.SIZE.width / 2)
 					- (g.getFontMetrics().stringWidth(message[i]) / 2) - xoff,
 					Game.SIZE.height / 2 - 200 + i * (g.getFontMetrics().getHeight()));
 		}
 		
-		//Three
 		message = new String[] { "3" };
+		p = 2;
 		for (int i = 0; i < message.length; i++) {
-			g.drawString(message[i], (2 * Game.SIZE.width) + (Game.SIZE.width / 2)
+			g.drawString(message[i], (p * Game.SIZE.width) + (Game.SIZE.width / 2)
 					- (g.getFontMetrics().stringWidth(message[i]) / 2) - xoff,
 					Game.SIZE.height / 2 - 200 + i * (g.getFontMetrics().getHeight()));
 		}
@@ -123,7 +123,7 @@ public class HelpState extends BasicState {
 		for (int i = 0; i < MAX_PAGES; i++) {
 			if (i == page) g.setColor(Color.LIGHT_GRAY);
 			else g.setColor(Color.DARK_GRAY);
-			g.fillOval(i * 35 + Game.SIZE.width / 2 - MAX_PAGES * 16, Game.SIZE.height - 35, 25, 25);
+			g.fillOval(i * 36 + Game.SIZE.width / 2 - MAX_PAGES * 14, Game.SIZE.height - 35, 25, 25);
 		}
 		
 		back.render(g);

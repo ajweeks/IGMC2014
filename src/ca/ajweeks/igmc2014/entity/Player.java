@@ -21,7 +21,7 @@ public class Player extends Mob {
 	
 	private Image image = new ImageIcon("res/player.png").getImage();
 	
-	//public int jumps = 0; // can't remember why this is here...... to allow for triple jumps maybe? TODO later
+	//public int jumps = 0; //TODO can't remember why this is here...... to allow for triple jumps maybe?
 	
 	public Player() {
 		super(110, 200);

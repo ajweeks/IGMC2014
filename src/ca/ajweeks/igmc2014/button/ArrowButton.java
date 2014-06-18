@@ -1,4 +1,4 @@
-package ca.ajweeks.igmc2014.gfx;
+package ca.ajweeks.igmc2014.button;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -35,10 +35,12 @@ public class ArrowButton extends Button {
 	@Override
 	public boolean isDown() {
 		if (!enabled) return false;
-		if (Game.input.x > x && Game.input.x < x + width && Game.input.y > y && Game.input.y < y + height) {
-			hover = true;
-			if (Game.input.lM.clicked) return true;
-		} else hover = false;
+		if (dir == RIGHT || dir == LEFT) {
+			if (Game.input.x > x && Game.input.x < x + width) {
+				hover = true;
+				if (Game.input.lM.clicked) return true;
+			} else hover = false;
+		}
 		return false;
 	}
 	

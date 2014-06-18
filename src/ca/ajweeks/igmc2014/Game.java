@@ -22,6 +22,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
+import ca.ajweeks.igmc2014.achievements.AchievementManager;
 import ca.ajweeks.igmc2014.gfx.RenderDebugOverlay;
 import ca.ajweeks.igmc2014.input.Input;
 import ca.ajweeks.igmc2014.state.StateManager;
@@ -35,6 +36,7 @@ public class Game extends JFrame implements Runnable {
 	public static volatile boolean running = false;
 	
 	public static StateManager sm;
+	public static AchievementManager am;
 	public static Input input;
 	public static boolean leftWasDown;
 	
@@ -48,8 +50,6 @@ public class Game extends JFrame implements Runnable {
 	private Canvas canvas;
 	private boolean renderDebug = true;
 	private List<Image> icon;
-	
-	//TODO list: add screenshots
 	
 	public Game() {
 		super(GAME_TITLE);
@@ -80,6 +80,7 @@ public class Game extends JFrame implements Runnable {
 		
 		input = new Input(canvas);
 		sm = new StateManager();
+		am = new AchievementManager();
 	}
 	
 	private Font getFonts() {

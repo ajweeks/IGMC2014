@@ -1,10 +1,11 @@
-package ca.ajweeks.igmc2014.gfx;
+package ca.ajweeks.igmc2014.button;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 
 import ca.ajweeks.igmc2014.Game;
+import ca.ajweeks.igmc2014.gfx.Colour;
 
 public class Button {
 	
@@ -29,6 +30,7 @@ public class Button {
 		this.hover = false;
 		this.enabled = true;
 		this.hasImage = false;
+		this.selected = false;
 	}
 	
 	public Button(int x, int y, int width, int height, String text, Color colour, Color hColour, Color tColour, Image image) {
@@ -44,6 +46,23 @@ public class Button {
 		this.enabled = true;
 		this.image = image;
 		this.hasImage = true;
+		this.selected = false;
+	}
+	
+	/** user default colours (Colour.button etc..) */
+	public Button(int x, int y, int width, int height, String text) {
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
+		this.text = text;
+		this.colour = Colour.button;
+		this.hColour = Colour.hButton;
+		this.tColour = Colour.offWhite;
+		this.hover = false;
+		this.enabled = true;
+		this.hasImage = false;
+		this.selected = false;
 	}
 	
 	public void setDeselected() {

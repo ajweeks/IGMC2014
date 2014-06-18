@@ -4,7 +4,7 @@ import java.awt.Graphics;
 
 import ca.ajweeks.igmc2014.Game;
 import ca.ajweeks.igmc2014.achievements.AchievementManager;
-import ca.ajweeks.igmc2014.gfx.Button;
+import ca.ajweeks.igmc2014.button.Button;
 import ca.ajweeks.igmc2014.gfx.Colour;
 import ca.ajweeks.igmc2014.sound.Sound;
 
