@@ -22,8 +22,7 @@ public class HelpState extends BasicState {
 	private ArrowButton right;
 	
 	public HelpState() {
-		back = new Button(Game.SIZE.width / 2 - 100 / 2, Game.SIZE.height - 120, 110, 75, "Back", Colour.button, Colour.hButton,
-				Colour.offWhite);
+		back = new Button(Game.SIZE.width / 2 - 100 / 2, Game.SIZE.height - 120, 110, 75, "Back");
 		back.setSelected();
 		
 		left = new ArrowButton(20, 260, 0, 0, "", null, null, null, ArrowButton.LEFT);
@@ -100,7 +99,8 @@ public class HelpState extends BasicState {
 				"-Shift to sprint" };
 		int p = 0;
 		for (int i = 0; i < message.length; i++) {
-			g.drawString(message[i], (p * Game.SIZE.width) + (Game.SIZE.width / 2) - (g.getFontMetrics().stringWidth(message[i]) / 2) - xoff,
+			g.drawString(message[i], (p * Game.SIZE.width) + (Game.SIZE.width / 2)
+					- (g.getFontMetrics().stringWidth(message[i]) / 2) - xoff,
 					Game.SIZE.height / 2 - 200 + i * (g.getFontMetrics().getHeight()));
 		}
 		

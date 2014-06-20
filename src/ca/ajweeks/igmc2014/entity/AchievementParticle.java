@@ -20,11 +20,11 @@ public class AchievementParticle extends Particle {
 		int yoff = (life + 1) / 5;
 		int alpha = Math.max(0, Math.min(255, life * 5));
 		
-		g.setColor(new Color(75, 75, 75, alpha));
+		g.setColor(new Color(120, 150, 240, alpha));
 		g.fillRect(x, y + yoff - 12, width, height);
 		
 		g.setFont(Game.font24);
-		g.setColor(new Color(135, 135, 135, alpha));
+		g.setColor(new Color(210, 210, 255, alpha));
 		g.drawString("Achievement", x + 5, y + 12 + yoff);
 		
 		g.setColor(new Color(255, 255, 255, alpha));

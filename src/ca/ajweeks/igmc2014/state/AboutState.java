@@ -13,8 +13,7 @@ public class AboutState extends BasicState {
 	Button back;
 	
 	public AboutState() {
-		back = new Button(Game.SIZE.width / 2 - 110 / 2, Game.SIZE.height - 120, 110, 75, "Back", Colour.button, Colour.hButton,
-				Colour.offWhite);
+		back = new Button(Game.SIZE.width / 2 - 110 / 2, Game.SIZE.height - 120, 110, 75, "Back");
 		back.setSelected();
 	}
 	

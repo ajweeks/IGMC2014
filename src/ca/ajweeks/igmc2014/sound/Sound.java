@@ -11,7 +11,7 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 public enum Sound {
-	SELECT("res/select2.wav"), JUMP("res/jump.wav");
+	SELECT("res/select2.wav"), JUMP("res/jump.wav"), WIZZLE("res/wizzle.wav"), ACHIEVE("res/achieve.wav");
 	
 	public static float volume = -9.0f;
 	public final static float MAX_VOLUME = 6.0f;

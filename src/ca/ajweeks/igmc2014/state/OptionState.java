@@ -7,23 +7,27 @@ import java.io.IOException;
 
 import ca.ajweeks.igmc2014.Game;
 import ca.ajweeks.igmc2014.button.Button;
+import ca.ajweeks.igmc2014.button.ButtonManager;
 import ca.ajweeks.igmc2014.gfx.Colour;
 import ca.ajweeks.igmc2014.sound.Sound;
 
 public class OptionState extends BasicState {
 	
-	private Button back;
-	private Button resetAchievements;
+	public static final int BACK = 0;
+	public static final int RESET_ACHIEVEMENTS = 1;
+	
+	private ButtonManager buttons;
 	private File optionsFile;
 	private String[] options;
 	
 	private boolean changed = false;
 	
 	public OptionState() {
-		back = new Button(Game.SIZE.width / 2 - 100 / 2, Game.SIZE.height - 120, 110, 75, "Back", Colour.button, Colour.hButton,
-				Colour.offWhite);
-		back.setSelected();
-		resetAchievements = new Button(150, 150, 280, 75, "Reset Achivements", Colour.button, Colour.hButton, Colour.offWhite);
+		buttons = new ButtonManager();
+		buttons.addButton(new Button(Game.SIZE.width / 2 - 100 / 2, Game.SIZE.height - 120, 110, 75, "Back"));
+		buttons.addButton(new Button(150, 150, 385, 75, "Reset Achivements"));
+		
+		buttons.setSelectedButton(BACK);
 		
 		options = new String[] {};
 		optionsFile = new File("options.txt");
@@ -48,27 +52,58 @@ public class OptionState extends BasicState {
 	
 	@Override
 	public void update(double delta) {
-		if (back.isDown() || Game.input.space.clicked || Game.input.esc.clicked || Game.input.enter.clicked) {
-			Sound.SELECT.play();
-			Game.sm.enterState(StateManager.MAIN_MENU_STATE);
+		buttons.update();
+		
+		if( Game.input.space.clicked || Game.input.enter.clicked) {
+			switch(buttons.getSelectedButton()) {
+			case BACK:
+				enterState(StateManager.MAIN_MENU_STATE);
+				break;
+			case RESET_ACHIEVEMENTS:
+				resetAchievements();
+				break;
+			}
 		}
 		
-		if (resetAchievements.isDown()) {
-			Sound.SELECT.play();
-			Game.am.resetAchievements();
+		if (Game.input.up.clicked || Game.input.left.clicked) {
+			do {
+				buttons.previousButton(); //set selected buttons to previous enabled button
+			} while (!buttons.getButton(buttons.getSelectedButton()).enabled);
 		}
 		
-		//If anything has been changed, set changed = true;
+		if (Game.input.tab.clicked || Game.input.down.clicked || Game.input.right.clicked) {
+			do {
+				buttons.nextButton(); //previous enabled button
+			} while (!buttons.getButton(buttons.getSelectedButton()).enabled);
+		}
+		
+		if (buttons.getButton(BACK).isDown() || Game.input.esc.clicked) {
+			enterState(StateManager.MAIN_MENU_STATE);
+		}
+		
+		if (buttons.getButton(RESET_ACHIEVEMENTS).isDown()) {
+			resetAchievements();
+		}
 		
 		if (changed) save();
+		buttons.updateSelectedButton();
+	}
+	
+	private void resetAchievements() {
+		Sound.WIZZLE.play();
+		Game.am.resetAchievements();		
+	}
+
+	private void enterState(int id) {
+		Sound.SELECT.play();
+		Game.sm.enterState(id);
 	}
 	
 	@Override
 	public void render(Graphics g) {
 		g.setColor(Colour.offBlack);
 		g.fillRect(0, 0, Game.SIZE.width, Game.SIZE.height);
-		back.render(g);
-		resetAchievements.render(g);
+		buttons.render(g);
 	}
 	
 }

@@ -31,6 +31,9 @@ public class Button {
 		this.enabled = true;
 		this.hasImage = false;
 		this.selected = false;
+		
+		if (colour == Colour.button && hColour == Colour.hButton && tColour == Colour.offWhite)
+			System.err.println("Unneccessary args!, use other constructor!!");
 	}
 	
 	public Button(int x, int y, int width, int height, String text, Color colour, Color hColour, Color tColour, Image image) {
@@ -49,7 +52,7 @@ public class Button {
 		this.selected = false;
 	}
 	
-	/** user default colours (Colour.button etc..) */
+	/** uses default colours (Colour.button etc..) */
 	public Button(int x, int y, int width, int height, String text) {
 		this.x = x;
 		this.y = y;

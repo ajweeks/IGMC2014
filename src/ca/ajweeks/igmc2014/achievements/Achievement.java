@@ -2,7 +2,7 @@ package ca.ajweeks.igmc2014.achievements;
 
 public enum Achievement {
 	
-	JUMPER("Jumper");
+	JUMPER("Jumper"), DOUBLE_JUMPER("Double Jumper");
 	
 	private String message;
 	private boolean done;

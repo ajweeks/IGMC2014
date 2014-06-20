@@ -13,7 +13,7 @@ import ca.ajweeks.igmc2014.entity.Player;
 public class Input implements MouseMotionListener, MouseListener, KeyListener {
 	
 	public class Key {
-		public int presses, absorbs;
+		private boolean absorbed;
 		public boolean clicked, down;
 		
 		public Key() {
@@ -21,13 +21,14 @@ public class Input implements MouseMotionListener, MouseListener, KeyListener {
 		}
 		
 		public void toggle(boolean pressed) {
-			if (pressed != down) down = pressed;
-			if (pressed) presses++;
+			clicked = pressed;
+			down = pressed;
+			if(pressed) absorbed = true;
 		}
 		
 		public void tick() {
-			if (absorbs < presses) {
-				absorbs++;
+			if(absorbed) {
+				absorbed = false;
 				clicked = true;
 			} else {
 				clicked = false;
@@ -49,7 +50,7 @@ public class Input implements MouseMotionListener, MouseListener, KeyListener {
 	public Key tab = new Key();
 	public Key enter = new Key();
 	public Key esc = new Key();
-	public Key F3 = new Key();
+	public Key F3 = new Key(); //Debug overlay
 	public Key F8 = new Key(); //Screenshot
 	
 	public void releaseAll() {
@@ -59,7 +60,7 @@ public class Input implements MouseMotionListener, MouseListener, KeyListener {
 	}
 	
 	public int x, y;
-	public static boolean mouseIsStill = false;
+	public boolean mouseIsStill = false;
 	
 	public void update() {
 		for (int i = 0; i < keys.size(); i++) {

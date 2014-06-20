@@ -47,13 +47,13 @@ public class MainMenuState extends BasicState {
 	public void update(double delta) {
 		buttons.update();
 		
-		if (Game.input.up.clicked) {
+		if (Game.input.up.clicked || Game.input.left.clicked) {
 			do {
 				buttons.previousButton(); //set selected buttons to previous enabled button
 			} while (!buttons.getButton(buttons.getSelectedButton()).enabled);
 		}
 		
-		if (Game.input.tab.clicked || Game.input.down.clicked) {
+		if (Game.input.tab.clicked || Game.input.down.clicked || Game.input.right.clicked) {
 			do {
 				buttons.nextButton(); //previous enabled button
 			} while (!buttons.getButton(buttons.getSelectedButton()).enabled);

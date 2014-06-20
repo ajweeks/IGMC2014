@@ -3,7 +3,7 @@ package ca.ajweeks.igmc2014.button;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
-import ca.ajweeks.igmc2014.input.Input;
+import ca.ajweeks.igmc2014.Game;
 
 public class ButtonManager {
 	
@@ -18,9 +18,8 @@ public class ButtonManager {
 	
 	public void update() {
 		for (int i = 0; i < buttons.size(); i++) {
-			if (buttons.get(i).hover && buttons.get(i).enabled && !Input.mouseIsStill) selectedButton = i;
+			if (buttons.get(i).hover && buttons.get(i).enabled && !Game.input.mouseIsStill) selectedButton = i;
 		}
-		
 	}
 	
 	public void render(Graphics g) {
@@ -45,7 +44,8 @@ public class ButtonManager {
 	}
 	
 	public void setSelectedButton(int i) {
-		selectedButton = i;
+		if (i >= 0 && i <= buttons.size()) selectedButton = i;
+		else System.err.println("Invalid selected button: " + i);
 	}
 	
 	public Button getButton(int i) {
@@ -64,12 +64,9 @@ public class ButtonManager {
 	
 	public void addButton(Button b) {
 		if (!buttons.contains(b)) buttons.add(b);
-		if (selectedButton == -1) selectedButton = 0;
+		if (selectedButton == -1) {
+			selectedButton = 0;
+			buttons.get(selectedButton).selected = true;
+		}
 	}
-	
-	public void removeButton(Button b) {
-		if (buttons.contains(b)) buttons.remove(b);
-		if (buttons.size() <= 0) selectedButton = -1;
-	}
-	
 }
