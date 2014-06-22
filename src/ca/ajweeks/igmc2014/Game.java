@@ -32,7 +32,7 @@ public class Game extends JFrame implements Runnable {
 	private static final long serialVersionUID = 1L;
 	
 	public static final String GAME_TITLE = "IGMC 2014";
-	public static final Dimension SIZE = new Dimension(1200, 675);
+	public static final Dimension SIZE = new Dimension(1140, 640);
 	public static final int MS_PER_UPDATE = 16;
 	public static volatile boolean running = false;
 	
@@ -173,9 +173,11 @@ public class Game extends JFrame implements Runnable {
 	
 	public void run() {
 		running = true;
+		
 		long before = System.nanoTime();
 		long fpsTime = 0;
 		final int OPTIMAL_TIME = 1_000_000_000 / 60;
+		
 		while (running) {
 			long now = System.nanoTime();
 			long updateLength = now - before;

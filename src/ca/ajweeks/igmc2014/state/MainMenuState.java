@@ -31,14 +31,13 @@ public class MainMenuState extends BasicState {
 		louder = new ImageIcon("res/louder.png").getImage();
 		quieter = new ImageIcon("res/quieter.png").getImage();
 		
-		//TODO make all buttons same width, but have centered text
 		buttons = new ButtonManager();
-		buttons.addButton(new Button(Game.SIZE.width / 2 - 105 / 2, 75, 105, 75, "Play!"));
-		buttons.addButton(new Button(Game.SIZE.width / 2 - 92 / 2, 175, 92, 75, "Help"));
-		buttons.addButton(new Button(Game.SIZE.width / 2 - 120 / 2, 275, 120, 75, "About"));
-		buttons.addButton(new Button(Game.SIZE.width / 2 - 157 / 2, 375, 157, 75, "Options"));
-		buttons.addButton(new Button(Game.SIZE.width / 2 - 275 / 2, 475, 275, 75, "Achievements"));
-		buttons.addButton(new Button(Game.SIZE.width / 2 - 86 / 2, 575, 86, 75, "Quit"));
+		buttons.addButton(new Button(Game.SIZE.width / 2 - 250 / 2, 35, 250, 75, "Play!"));
+		buttons.addButton(new Button(Game.SIZE.width / 2 - 250 / 2, 135, 250, 75, "Help"));
+		buttons.addButton(new Button(Game.SIZE.width / 2 - 250 / 2, 235, 250, 75, "About"));
+		buttons.addButton(new Button(Game.SIZE.width / 2 - 250 / 2, 335, 250, 75, "Options"));
+		buttons.addButton(new Button(Game.SIZE.width / 2 - 250 / 2, 435, 250, 75, "Achievements"));
+		buttons.addButton(new Button(Game.SIZE.width / 2 - 250 / 2, 535, 250, 75, "Quit"));
 		buttons.addButton(new Button(Game.SIZE.width - 130, 30, 50, 50, "", Colour.button, Colour.hButton, Colour.offWhite,
 				quieter));
 		buttons.addButton(new Button(Game.SIZE.width - 70, 30, 50, 50, "", Colour.button, Colour.hButton, Colour.offWhite, louder));
@@ -134,7 +133,6 @@ public class MainMenuState extends BasicState {
 		g.setFont(Game.font34.deriveFont(20f));
 		g.setColor(Colour.offWhite);
 		int vol = (int) (((Sound.volume + 24) / 3) * 10);
-		g.drawString("Volume: " + vol + "%", 1065, 22);
+		g.drawString("Volume: " + vol + "%", 1005, 22);
 	}
-	
 }

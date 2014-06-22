@@ -25,7 +25,7 @@ public class OptionState extends BasicState {
 	public OptionState() {
 		buttons = new ButtonManager();
 		buttons.addButton(new Button(Game.SIZE.width / 2 - 100 / 2, Game.SIZE.height - 120, 110, 75, "Back"));
-		buttons.addButton(new Button(150, 150, 385, 75, "Reset Achivements"));
+		buttons.addButton(new Button(150, 30, 355, 75, "Reset Achivements"));
 		
 		buttons.setSelectedButton(BACK);
 		

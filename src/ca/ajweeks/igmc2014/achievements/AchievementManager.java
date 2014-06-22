@@ -25,8 +25,9 @@ public class AchievementManager implements Serializable {
 			Sound.ACHIEVE.play();
 			JUMPER.setAchieved(true);
 		} else if (!DOUBLE_JUMPER.isAchieved() && label.equals(DOUBLE_JUMPER.getMessage())) {
-			Game.addParticle(new AchievementParticle[] { new AchievementParticle(Game.SIZE.width - 245, 35, 220, 65, 150, DOUBLE_JUMPER
-					.getMessage()) });
+			//TODO fix double jump achievement being falsely given when player jumps at beginning of game
+			Game.addParticle(new AchievementParticle[] { new AchievementParticle(Game.SIZE.width - 245, 35, 220, 65, 150,
+					DOUBLE_JUMPER.getMessage()) });
 			Sound.ACHIEVE.play();
 			DOUBLE_JUMPER.setAchieved(true);
 		} else return false;

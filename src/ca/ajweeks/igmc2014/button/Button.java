@@ -97,7 +97,8 @@ public class Button {
 		g.fillRoundRect(x, y, width, height, 25, 25);
 		
 		g.setColor(tColour);
-		g.drawString(text, (int) (x + width / 9.5), (int) (y + height * 0.66));
+		g.drawString(text, x + (width / 2) - (g.getFontMetrics().stringWidth(text) / 2), y + (height / 2)
+				+ (g.getFontMetrics().getHeight() / 4));
 		
 		if (hasImage) g.drawImage(image, x + 2, y + 2, null);
 		
