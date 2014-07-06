@@ -36,8 +36,8 @@ public class AboutState extends BasicState {
 		
 		g.setFont(Game.font24);
 		g.setColor(Color.WHITE);
-		String[] message = new String[] { Game.GAME_TITLE + " is a 2D platformer game made by AJ Weeks in June 2014 for",
-				"the Indie Game Maker Contest 2014." };
+		String[] message = new String[] { Game.GAME_TITLE + " is a 2D platformer game made by AJ Weeks in June 2014",
+				"originally for the Indie Game Maker Contest 2014. (But not finished on time)" };
 		for (int i = 0; i < message.length; i++) {
 			int xoff = (int) (Game.input.x / 80);
 			int yoff = (int) (Game.input.y / 100) + 300;

@@ -22,8 +22,6 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
-import ca.ajweeks.igmc2014.achievements.AchievementManager;
-import ca.ajweeks.igmc2014.entity.Particle;
 import ca.ajweeks.igmc2014.gfx.RenderDebugOverlay;
 import ca.ajweeks.igmc2014.input.Input;
 import ca.ajweeks.igmc2014.state.StateManager;
@@ -37,7 +35,6 @@ public class Game extends JFrame implements Runnable {
 	public static volatile boolean running = false;
 	
 	public static StateManager sm;
-	public static AchievementManager am;
 	public static Input input;
 	public static boolean leftWasDown;
 	
@@ -45,14 +42,13 @@ public class Game extends JFrame implements Runnable {
 	public static Font font24;
 	public static Font fontDebug;
 	
-	private static ArrayList<Particle[]> p; //all particles
-	
 	public static int fps = 0;
 	public int frames = 0;
 	
 	private Canvas canvas;
-	private boolean renderDebug = true;
 	private List<Image> icon;
+	
+	private boolean renderDebug = true;
 	
 	public Game() {
 		super(GAME_TITLE);
@@ -83,8 +79,6 @@ public class Game extends JFrame implements Runnable {
 		
 		input = new Input(canvas);
 		sm = new StateManager();
-		am = new AchievementManager();
-		p = new ArrayList<>();
 	}
 	
 	private Font getFonts() {
@@ -101,25 +95,6 @@ public class Game extends JFrame implements Runnable {
 		input.update();
 		leftWasDown = input.lM.clicked;
 		sm.update(delta);
-		
-		//Update particles
-		for (int i = 0; i < p.size(); i++) {
-			boolean removed = true;
-			
-			for (int j = 0; j < p.get(i).length; j++) {
-				p.get(i)[j].update(delta);
-				if (!p.get(i)[j].removed) removed = false; //if there's at least one which is still alive, we don't remove the whole thing 
-			}
-			
-			if (removed) {
-				p.remove(p.get(i));
-				if (i > 0) i--;
-			}
-		}
-	}
-	
-	public static void addParticle(Particle[] p) {
-		Game.p.add(p);
 	}
 	
 	public void render() {
@@ -134,8 +109,7 @@ public class Game extends JFrame implements Runnable {
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, SIZE.width, SIZE.height);
 		
-		if (input.F8.down) {
-			input.F8.down = false;
+		if (input.F8.clicked) {
 			BufferedImage image = null;
 			try {
 				image = new Robot()
@@ -153,14 +127,6 @@ public class Game extends JFrame implements Runnable {
 		}
 		
 		sm.render(g);
-		
-		//TODO if several achievements are to be rendered, make them take turns
-		//particles
-		for (int i = 0; i < p.size(); i++) {
-			for (int j = 0; j < p.get(i).length; j++) {
-				if (!p.get(i)[j].removed) p.get(i)[j].render(g);
-			}
-		}
 		
 		//Must be last thing drawn
 		if (input.F3.clicked) renderDebug = !renderDebug;

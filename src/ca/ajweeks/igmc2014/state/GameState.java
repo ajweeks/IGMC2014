@@ -5,19 +5,20 @@ import java.awt.Graphics;
 
 import ca.ajweeks.igmc2014.Game;
 import ca.ajweeks.igmc2014.entity.Player;
+import ca.ajweeks.igmc2014.gfx.Camera;
 import ca.ajweeks.igmc2014.level.Level;
 import ca.ajweeks.igmc2014.sound.Sound;
 
 public class GameState extends BasicState {
 	
-	private Level level;
+	public Level level;
 	public static Player player;
-	
+	public static Camera camera;
 	
 	public GameState() {
-		level = new Level();
-		player = new Player();
-		level.addEntity(player);
+		player = new Player(this);
+		level = new Level(player);
+		camera = new Camera(player);
 	}
 	
 	public void update(double delta) {
@@ -26,6 +27,7 @@ public class GameState extends BasicState {
 			Game.sm.enterState(StateManager.MAIN_MENU_STATE);
 		}
 		
+		camera.update(delta);
 		level.update(delta);
 	}
 	

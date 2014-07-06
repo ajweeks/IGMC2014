@@ -1,48 +1,60 @@
 package ca.ajweeks.igmc2014.level;
 
 import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
-
-import ca.ajweeks.igmc2014.Game;
-import ca.ajweeks.igmc2014.entity.Entity;
+import ca.ajweeks.igmc2014.entity.Coin;
+import ca.ajweeks.igmc2014.entity.Player;
+import ca.ajweeks.igmc2014.state.GameState;
 
 public class Level {
 	
-	private static final int CHUNK_WIDTH = 10;
-	private static final int TILE_WIDTH = 64;
+	public static final int CHUNK_WIDTH = 10;
+	public Chunk[][] chunks = new Chunk[2][3]; //3 wide, 2 tall
+	public Player player;
 	
-	private static final int BLANK = 0;
-	private static final int DIRT = 1;
-	private static final int GRASS = 2;
-	private static final int GRASS_LEFT = 3;
-	private static final int GRASS_RIGHT = 4;
+	private ArrayList<Coin> coins = new ArrayList<>();
 	
-	private Image blank = new ImageIcon("res/tiles/BLANK.png").getImage();
-	private Image dirt = new ImageIcon("res/tiles/DIRT.png").getImage();
-	private Image grass = new ImageIcon("res/tiles/GRASS.png").getImage();
-	private Image grassLeft = new ImageIcon("res/tiles/GRASS_LEFT.png").getImage();
-	private Image grassRight = new ImageIcon("res/tiles/GRASS_RIGHT.png").getImage();
-	
-	private ArrayList<Entity> entites;
-	private int[][][] chunks = new int[1][2][CHUNK_WIDTH * CHUNK_WIDTH]; //2 wide, 1 tall
-	
-	public Level() {
-		entites = new ArrayList<>();
+	public Level(Player player) {
+		this.player = player;
 		
-		chunks[0][0] = new Chunk(CHUNK_WIDTH, "levels/level_0_0.txt").getChunk();
-		chunks[0][1] = new Chunk(CHUNK_WIDTH, "levels/level_0_1.txt").getChunk();
+		chunks[0][0] = new Chunk(CHUNK_WIDTH, "levels/0_0.txt", 0, 0);
+		chunks[0][1] = new Chunk(CHUNK_WIDTH, "levels/0_1.txt", 0, 1);
+		chunks[0][2] = new Chunk(CHUNK_WIDTH, "levels/0_2.txt", 0, 2);
+		chunks[1][0] = new Chunk(CHUNK_WIDTH, "levels/1_0.txt", 1, 0);
+		chunks[1][1] = new Chunk(CHUNK_WIDTH, "levels/1_1.txt", 1, 1);
+		chunks[1][2] = new Chunk(CHUNK_WIDTH, "levels/1_2.txt", 1, 2);
+		
+		//TODO fix coin initialization
+		coins.add(new Coin(3, 4));
+		coins.add(new Coin(4, 4));
+		coins.add(new Coin(5, 4));
+		coins.add(new Coin(6, 4));
+		coins.add(new Coin(3, 5));
+		coins.add(new Coin(4, 5));
+		coins.add(new Coin(5, 5));
+		coins.add(new Coin(6, 5));
 	}
 	
-	public void addEntity(Entity entity) {
-		entites.add(entity);
+	public Rectangle getBlock(int xpos, int ypos) {
+		int chunkY = ypos / (CHUNK_WIDTH * Tile.TILE_WIDTH);
+		int chunkX = xpos / (CHUNK_WIDTH * Tile.TILE_WIDTH);
+		
+		int y = (ypos % (CHUNK_WIDTH * Tile.TILE_WIDTH)) / Tile.TILE_WIDTH;
+		int x = (xpos % (CHUNK_WIDTH * Tile.TILE_WIDTH)) / Tile.TILE_WIDTH;
+		
+		
+		
+ 		return chunks[chunkY][chunkX].tiles[0].getR(); //everything but blanks are taken
 	}
 	
 	public void update(double delta) {
-		for (int i = 0; i < entites.size(); i++) {
-			entites.get(i).update(delta);
+		player.update(delta);
+		
+		for (Coin c : coins) {
+			c.update();
+			if (c.removed) coins.remove(c);
 		}
 	}
 	
@@ -54,34 +66,18 @@ public class Level {
 				for (int k = 0; k < CHUNK_WIDTH; k++) {
 					for (int l = 0; l < CHUNK_WIDTH; l++) {
 						//for each square..
-						int x = l * TILE_WIDTH + j * CHUNK_WIDTH * TILE_WIDTH;
-						int y = Game.SIZE.height - TILE_WIDTH * CHUNK_WIDTH + k * TILE_WIDTH;
-						switch (chunks[i][j][k * CHUNK_WIDTH + l]) {
-						case BLANK:
-							g.drawImage(blank, x, y, null);
-							break;
-						case DIRT:
-							g.drawImage(dirt, x, y, null);
-							break;
-						case GRASS:
-							g.drawImage(grass, x, y, null);
-							break;
-						case GRASS_RIGHT:
-							g.drawImage(grassRight, x, y, null);
-							break;
-						case GRASS_LEFT:
-							g.drawImage(grassLeft, x, y, null);
-							break;
-						}
+						int x = l * Tile.TILE_WIDTH + j * CHUNK_WIDTH * Tile.TILE_WIDTH + GameState.camera.x;
+						int y = Tile.TILE_WIDTH * CHUNK_WIDTH * -i + k * Tile.TILE_WIDTH + GameState.camera.y;
+						chunks[i][j].tiles[k * CHUNK_WIDTH + l].render(x, y, g);
 					}
 				}
 			}
 		}
 		
-		//entities
-		for (Entity e : entites) {
-			e.render(g);
+		for (Coin c : coins) {
+			c.render(g);
 		}
+		
+		player.render(g);
 	}
-	
 }

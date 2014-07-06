@@ -1,8 +1,5 @@
 package ca.ajweeks.igmc2014.gfx;
 
-import java.awt.Graphics;
-
-import ca.ajweeks.igmc2014.Game;
 import ca.ajweeks.igmc2014.entity.Player;
 
 public class Camera {
@@ -11,18 +8,19 @@ public class Camera {
 	public Player player;
 	
 	public Camera(Player player) {
-		x = player.x - Game.SIZE.width / 2;
-		y = player.y - Game.SIZE.height / 2;
 		this.player = player;
 	}
 	
-	public void update(int delta) {
-		this.x = player.x - Game.SIZE.width / 2;
-		this.y = player.y - Game.SIZE.height / 2;
+	public void update(double delta) {
+		this.x = -player.getX() + 200;
+		this.y = -player.getY() + 330;
+		
+		clamp();
 	}
 	
-	public void render(Graphics g) {
-		//......
+	private void clamp() {
+		if (player.getX() < 200) x = 0;
+		if (player.getY() > 330) y = 0;
 	}
 	
 }

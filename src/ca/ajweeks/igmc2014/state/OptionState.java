@@ -14,7 +14,6 @@ import ca.ajweeks.igmc2014.sound.Sound;
 public class OptionState extends BasicState {
 	
 	public static final int BACK = 0;
-	public static final int RESET_ACHIEVEMENTS = 1;
 	
 	private ButtonManager buttons;
 	private File optionsFile;
@@ -25,7 +24,6 @@ public class OptionState extends BasicState {
 	public OptionState() {
 		buttons = new ButtonManager();
 		buttons.addButton(new Button(Game.SIZE.width / 2 - 100 / 2, Game.SIZE.height - 120, 110, 75, "Back"));
-		buttons.addButton(new Button(150, 30, 355, 75, "Reset Achivements"));
 		
 		buttons.setSelectedButton(BACK);
 		
@@ -54,13 +52,10 @@ public class OptionState extends BasicState {
 	public void update(double delta) {
 		buttons.update();
 		
-		if( Game.input.space.clicked || Game.input.enter.clicked) {
-			switch(buttons.getSelectedButton()) {
+		if (Game.input.space.clicked || Game.input.enter.clicked) {
+			switch (buttons.getSelectedButton()) {
 			case BACK:
 				enterState(StateManager.MAIN_MENU_STATE);
-				break;
-			case RESET_ACHIEVEMENTS:
-				resetAchievements();
 				break;
 			}
 		}
@@ -81,19 +76,15 @@ public class OptionState extends BasicState {
 			enterState(StateManager.MAIN_MENU_STATE);
 		}
 		
-		if (buttons.getButton(RESET_ACHIEVEMENTS).isDown()) {
-			resetAchievements();
-		}
-		
 		if (changed) save();
 		buttons.updateSelectedButton();
 	}
 	
-	private void resetAchievements() {
-		Sound.WIZZLE.play();
-		Game.am.resetAchievements();		
-	}
-
+	//	private void resetAchievements() {
+	//		Sound.WIZZLE.play();
+	//		Game.am.resetAchievements();
+	//	}
+	
 	private void enterState(int id) {
 		Sound.SELECT.play();
 		Game.sm.enterState(id);

@@ -28,7 +28,7 @@ public class RenderDebugOverlay {
 	
 	private static void fps(Graphics g) {
 		g.setColor(Colour.translucentBlack);
-		g.fillRect(xpos, ypos, 50, 15);
+		g.fillRect(xpos, ypos, 44, 15);
 		
 		g.setFont(Game.fontDebug);
 		g.setColor(Color.WHITE);
@@ -77,16 +77,14 @@ public class RenderDebugOverlay {
 		g.setFont(Game.fontDebug);
 		
 		g.setColor(Colour.translucentBlack);
-		g.fillRect(xpos, ypos,
-				GameState.player.x > 1000 ? 53 : GameState.player.x < 100 ? GameState.player.x < 10 ? 33 : 39 : 45, 15);
+		g.fillRect(xpos, ypos, g.getFontMetrics().stringWidth(String.valueOf(GameState.player.getX()) + "x = " + 5), 15);
 		g.setColor(Color.WHITE);
-		g.drawString("x = " + GameState.player.x, xpos + 3, ypos + 12);
+		g.drawString("x = " + GameState.player.getX(), xpos + 3, ypos + 12);
 		
 		g.setColor(Colour.translucentBlack);
-		g.fillRect(xpos, ypos + 15, GameState.player.y > 1000 ? 53 : GameState.player.y < 100 ? GameState.player.y < 10 ? 33 : 39
-				: 45, 15);
+		g.fillRect(xpos, ypos + 15, g.getFontMetrics().stringWidth(String.valueOf(GameState.player.getY()) + "y = " + 5), 15);
 		g.setColor(Color.WHITE);
-		g.drawString("y = " + GameState.player.y, xpos + 3, ypos + 26);
+		g.drawString("y = " + GameState.player.getY(), xpos + 3, ypos + 26);
 		ypos += height * 2;
 	}
 }

@@ -40,7 +40,6 @@ public class Input implements MouseMotionListener, MouseListener, KeyListener {
 	
 	public Key lM = new Key();
 	public Key rM = new Key();
-	//TODO make up synonymous with jump ?
 	public Key up = new Key();
 	//TODO delete down?
 	public Key down = new Key();
@@ -60,7 +59,7 @@ public class Input implements MouseMotionListener, MouseListener, KeyListener {
 	}
 	
 	public int x, y;
-	public boolean mouseIsStill = false;
+	public boolean mouseIsStill = true;
 	
 	public void update() {
 		for (int i = 0; i < keys.size(); i++) {

@@ -20,10 +20,9 @@ public class MainMenuState extends BasicState {
 	private static final int HELP = 1;
 	private static final int ABOUT = 2;
 	private static final int OPTIONS = 3;
-	private static final int ACHIEVEMENTS = 4;
-	private static final int QUIT = 5;
-	private static final int QUIETER = 6;
-	private static final int LOUDER = 7;
+	private static final int QUIT = 4;
+	private static final int QUIETER = 5;
+	private static final int LOUDER = 6;
 	
 	private ButtonManager buttons;
 	
@@ -32,12 +31,11 @@ public class MainMenuState extends BasicState {
 		quieter = new ImageIcon("res/quieter.png").getImage();
 		
 		buttons = new ButtonManager();
-		buttons.addButton(new Button(Game.SIZE.width / 2 - 250 / 2, 35, 250, 75, "Play!"));
-		buttons.addButton(new Button(Game.SIZE.width / 2 - 250 / 2, 135, 250, 75, "Help"));
-		buttons.addButton(new Button(Game.SIZE.width / 2 - 250 / 2, 235, 250, 75, "About"));
-		buttons.addButton(new Button(Game.SIZE.width / 2 - 250 / 2, 335, 250, 75, "Options"));
-		buttons.addButton(new Button(Game.SIZE.width / 2 - 250 / 2, 435, 250, 75, "Achievements"));
-		buttons.addButton(new Button(Game.SIZE.width / 2 - 250 / 2, 535, 250, 75, "Quit"));
+		buttons.addButton(new Button(Game.SIZE.width / 2 - 250 / 2, 75, 250, 75, "Play!"));
+		buttons.addButton(new Button(Game.SIZE.width / 2 - 250 / 2, 175, 250, 75, "Help"));
+		buttons.addButton(new Button(Game.SIZE.width / 2 - 250 / 2, 275, 250, 75, "About"));
+		buttons.addButton(new Button(Game.SIZE.width / 2 - 250 / 2, 375, 250, 75, "Options"));
+		buttons.addButton(new Button(Game.SIZE.width / 2 - 250 / 2, 475, 250, 75, "Quit"));
 		buttons.addButton(new Button(Game.SIZE.width - 130, 30, 50, 50, "", Colour.button, Colour.hButton, Colour.offWhite,
 				quieter));
 		buttons.addButton(new Button(Game.SIZE.width - 70, 30, 50, 50, "", Colour.button, Colour.hButton, Colour.offWhite, louder));
@@ -72,9 +70,6 @@ public class MainMenuState extends BasicState {
 			case OPTIONS:
 				if (buttons.getButton(OPTIONS).enabled) enterState(StateManager.OPTIONS);
 				break;
-			case ACHIEVEMENTS:
-				if (buttons.getButton(ACHIEVEMENTS).enabled) enterState(StateManager.ACHIEVEMENTS);
-				break;
 			case QUIT:
 				if (buttons.getButton(QUIT).enabled) Game.stop();
 				break;
@@ -91,7 +86,6 @@ public class MainMenuState extends BasicState {
 		if (buttons.getButton(HELP).isDown()) enterState(StateManager.HELP);
 		if (buttons.getButton(ABOUT).isDown()) enterState(StateManager.ABOUT);
 		if (buttons.getButton(OPTIONS).isDown()) enterState(StateManager.OPTIONS);
-		if (buttons.getButton(ACHIEVEMENTS).isDown()) enterState(StateManager.ACHIEVEMENTS);
 		if (buttons.getButton(QUIT).isDown()) Game.stop();
 		if (buttons.getButton(LOUDER).isDown()) louder();
 		if (buttons.getButton(QUIETER).isDown()) quieter();
