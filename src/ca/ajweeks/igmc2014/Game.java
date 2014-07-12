@@ -32,22 +32,20 @@ public class Game extends JFrame implements Runnable {
 	public static final String GAME_TITLE = "IGMC 2014";
 	public static final Dimension SIZE = new Dimension(1140, 640);
 	public static final int MS_PER_UPDATE = 16;
+	
 	public static volatile boolean running = false;
 	
 	public static StateManager sm;
 	public static Input input;
-	public static boolean leftWasDown;
-	
 	public static Font font34;
 	public static Font font24;
 	public static Font fontDebug;
-	
+	public static boolean leftWasDown;
 	public static int fps = 0;
-	public int frames = 0;
 	
 	private Canvas canvas;
 	private List<Image> icon;
-	
+	private int frames = 0;
 	private boolean renderDebug = true;
 	
 	public Game() {
@@ -59,18 +57,18 @@ public class Game extends JFrame implements Runnable {
 		font24 = font34.deriveFont(24f);
 		fontDebug = font34.deriveFont(12f);
 		canvas.setFont(font34);
+		add(canvas);
 		
 		icon = new ArrayList<Image>();
 		icon.add(new ImageIcon("res/icon512.png").getImage());
 		icon.add(new ImageIcon("res/icon256.png").getImage());
 		icon.add(new ImageIcon("res/icon128.png").getImage());
 		icon.add(new ImageIcon("res/icon32.png").getImage());
+		setIconImages(icon);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		add(canvas);
 		setResizable(false);
 		pack();
-		setIconImages(icon);
 		setLocationRelativeTo(null);
 		setVisible(true);
 		
@@ -95,20 +93,8 @@ public class Game extends JFrame implements Runnable {
 		input.update();
 		leftWasDown = input.lM.clicked;
 		sm.update(delta);
-	}
-	
-	public void render() {
-		BufferStrategy buffer = canvas.getBufferStrategy();
-		if (buffer == null) {
-			canvas.createBufferStrategy(2);
-			return;
-		}
-		Graphics g = buffer.getDrawGraphics();
-		g.setFont(font34);
 		
-		g.setColor(Color.WHITE);
-		g.fillRect(0, 0, SIZE.width, SIZE.height);
-		
+		//screenshot
 		if (input.F8.clicked) {
 			BufferedImage image = null;
 			try {
@@ -123,11 +109,24 @@ public class Game extends JFrame implements Runnable {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			
 		}
+	}
+	
+	public void render() {
+		BufferStrategy buffer = canvas.getBufferStrategy();
+		if (buffer == null) {
+			canvas.createBufferStrategy(2);
+			return;
+		}
+		Graphics g = buffer.getDrawGraphics();
+		g.setFont(font34);
+		
+		g.setColor(Color.WHITE);
+		g.fillRect(0, 0, SIZE.width, SIZE.height);
 		
 		sm.render(g);
 		
+		//Debug overlay
 		//Must be last thing drawn
 		if (input.F3.clicked) renderDebug = !renderDebug;
 		if (renderDebug) RenderDebugOverlay.render(g);

@@ -3,14 +3,14 @@ package ca.ajweeks.igmc2014.state;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
+import ca.ajweeks.igmc2014.sound.Sound;
+
 public class StateManager {
 	
 	public static final int MAIN_MENU_STATE = 0;
 	public static final int HELP = 1;
 	public static final int GAME_STATE = 2;
 	public static final int ABOUT = 3;
-	public static final int OPTIONS = 4;
-	public static final int ACHIEVEMENTS = 5;
 	
 	private ArrayList<BasicState> states;
 	private BasicState currentState;
@@ -21,8 +21,6 @@ public class StateManager {
 		states.add(new HelpState());
 		states.add(new GameState());
 		states.add(new AboutState());
-		states.add(new OptionState());
-		states.add(new AchievementState(states.get(MAIN_MENU_STATE)));
 		
 		currentState = states.get(MAIN_MENU_STATE);
 	}
@@ -37,6 +35,7 @@ public class StateManager {
 	
 	public void enterState(int stateIndex) {
 		if (stateIndex <= states.size()) {
+			Sound.SELECT.play();
 			currentState = states.get(stateIndex);
 		} else {
 			new Exception("Invalid state index: " + stateIndex + "!").printStackTrace();

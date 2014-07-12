@@ -23,7 +23,7 @@ public class HelpState extends BasicState {
 	
 	public HelpState() {
 		back = new Button(Game.SIZE.width / 2 - 100 / 2, Game.SIZE.height - 120, 110, 75, "Back");
-		back.setSelected();
+		back.setSelected(true);
 		
 		left = new ArrowButton(20, 260, 0, 0, "", null, null, null, ArrowButton.LEFT);
 		right = new ArrowButton(Game.SIZE.width - 20 - 55, 260, 0, 0, "", null, null, null, ArrowButton.RIGHT);
@@ -43,7 +43,6 @@ public class HelpState extends BasicState {
 			}
 		}
 		
-		//TODO add trigonometric scrolling
 		int dest = page * Game.SIZE.width;
 		xoff += dir * scrollSpeed + ((xoff - dest) / 10) * -1;
 		
@@ -60,7 +59,6 @@ public class HelpState extends BasicState {
 		}
 		
 		if (back.isDown() || Game.input.esc.clicked || Game.input.space.clicked || Game.input.enter.clicked) { //Change if we ever put add more buttons!
-			Sound.SELECT.play();
 			Game.sm.enterState(StateManager.MAIN_MENU_STATE);
 		}
 		

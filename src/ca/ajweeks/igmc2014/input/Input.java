@@ -23,11 +23,11 @@ public class Input implements MouseMotionListener, MouseListener, KeyListener {
 		public void toggle(boolean pressed) {
 			clicked = pressed;
 			down = pressed;
-			if(pressed) absorbed = true;
+			if (pressed) absorbed = true;
 		}
 		
 		public void tick() {
-			if(absorbed) {
+			if (absorbed) {
 				absorbed = false;
 				clicked = true;
 			} else {
@@ -41,7 +41,6 @@ public class Input implements MouseMotionListener, MouseListener, KeyListener {
 	public Key lM = new Key();
 	public Key rM = new Key();
 	public Key up = new Key();
-	//TODO delete down?
 	public Key down = new Key();
 	public Key left = new Key();
 	public Key right = new Key();
@@ -115,12 +114,12 @@ public class Input implements MouseMotionListener, MouseListener, KeyListener {
 	
 	public void keyPressed(KeyEvent e) {
 		mouseIsStill = true;
-		if (e.isShiftDown()) Player.setSpeed(Player.SPRINT_SPEED);
+		if (e.isShiftDown()) Player.maxHorizontalVelocity = Player.SPRINT_VELOCITY;
 		toggle(e, true);
 	}
 	
 	public void keyReleased(KeyEvent e) {
-		if (!e.isShiftDown()) Player.setSpeed(Player.WALK_SPEED);
+		if (!e.isShiftDown()) Player.maxHorizontalVelocity = Player.WALK_VELOCITY;
 		toggle(e, false);
 	}
 	

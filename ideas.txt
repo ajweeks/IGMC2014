@@ -16,7 +16,7 @@ wherever it is you lived before as you enjoy your new life here.)) Some of the t
 
 CORE MECHANICS
 -double jump
--??
+-wall jump?
 
 FEATURES
 -inventory (backpack?)

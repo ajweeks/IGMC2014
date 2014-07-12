@@ -2,74 +2,72 @@ package ca.ajweeks.igmc2014.level;
 
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Rectangle;
 
 import javax.swing.ImageIcon;
 
 import ca.ajweeks.igmc2014.Game;
 
 public class Tile {
-	
-	public static final int TILE_WIDTH = 64;
-	
-	public static final int BLANK = 0;
-	public static final int DIRT = 1;
-	public static final int GRASS = 2;
-	public static final int GRASS_LEFT = 3;
-	public static final int GRASS_RIGHT = 4;
-	
-	private Image blank = new ImageIcon("res/tiles/BLANK.png").getImage();
-	private Image dirt = new ImageIcon("res/tiles/DIRT.png").getImage();
-	private Image grass = new ImageIcon("res/tiles/GRASS.png").getImage();
-	private Image grassLeft = new ImageIcon("res/tiles/GRASS_LEFT.png").getImage();
-	private Image grassRight = new ImageIcon("res/tiles/GRASS_RIGHT.png").getImage();
-	
-	private Rectangle r;
-	private int x, y;
-	private int type;
-	
-	public int getX() {
-		return x;
+	public enum Type {
+		//@formatter:off
+		BLANK(new ImageIcon("res/tiles/BLANK.png").getImage(), false), 
+		DIRT(new ImageIcon("res/tiles/DIRT.png").getImage(), true), 
+		GRASS(new ImageIcon("res/tiles/GRASS.png").getImage(), true), 
+		GRASS_LEFT(new ImageIcon("res/tiles/GRASS_LEFT.png").getImage(), true), 
+		GRASS_RIGHT(new ImageIcon("res/tiles/GRASS_RIGHT.png").getImage(), true), 
+		COIN(new ImageIcon("res/tiles/BLANK.png").getImage(), false), 
+		NULL(new ImageIcon("res/tiles/BLANK.png").getImage(), false);
+		//@formatter:on
+		
+		private Image image;
+		private boolean solid;
+		
+		Type(Image image, boolean solid) {
+			this.image = image;
+			this.solid = solid;
+		}
+		
+		public boolean isSolid() {
+			return solid;
+		}
+		
+		//TODO make grass tile auto-connect to other grass tiles (then remove grass_left & grass_right)
+		
+		public static Type intToType(int i) {
+			switch (i) {
+			case 0:
+				return BLANK;
+			case 1:
+				return DIRT;
+			case 2:
+				return GRASS;
+			case 3:
+				return GRASS_LEFT;
+			case 4:
+				return GRASS_RIGHT;
+			case 5:
+				return COIN;
+			default:
+				return NULL;
+			}
+		}
 	}
 	
-	public int getY() {
-		return y;
-	}
+	public static final int WIDTH = 64;
 	
-	public int getType() {
+	private Type type;
+	
+	public Type getType() {
 		return type;
 	}
 	
-	public Rectangle getR() {
-		return r;
-	}
-	
-	public Tile(int x, int y, int type) {
-		this.x = x;
-		this.y = y;
-		r = new Rectangle(x, y, TILE_WIDTH, TILE_WIDTH);
+	public Tile(Type type) {
 		this.type = type;
 	}
 	
 	public void render(int x, int y, Graphics g) {
-		if (x > Game.SIZE.width + TILE_WIDTH || y > Game.SIZE.height + TILE_WIDTH || x < -TILE_WIDTH || y < -TILE_WIDTH) return; //no need rendering off screen
-		switch (type) {
-		case BLANK:
-			g.drawImage(blank, x, y, null);
-			break;
-		case DIRT:
-			g.drawImage(dirt, x, y, null);
-			break;
-		case GRASS:
-			g.drawImage(grass, x, y, null);
-			break;
-		case GRASS_RIGHT:
-			g.drawImage(grassRight, x, y, null);
-			break;
-		case GRASS_LEFT:
-			g.drawImage(grassLeft, x, y, null);
-			break;
-		}
+		if (x > Game.SIZE.width + WIDTH || y > Game.SIZE.height + WIDTH || x < -WIDTH || y < -WIDTH) return; //no need rendering off screen
+		g.drawImage(type.image, x, y, null);
 	}
 	
 }

@@ -6,7 +6,6 @@ import java.awt.Graphics;
 import ca.ajweeks.igmc2014.Game;
 import ca.ajweeks.igmc2014.button.Button;
 import ca.ajweeks.igmc2014.gfx.Colour;
-import ca.ajweeks.igmc2014.sound.Sound;
 
 public class AboutState extends BasicState {
 	
@@ -14,13 +13,12 @@ public class AboutState extends BasicState {
 	
 	public AboutState() {
 		back = new Button(Game.SIZE.width / 2 - 110 / 2, Game.SIZE.height - 120, 110, 75, "Back");
-		back.setSelected();
+		back.setSelected(true);
 	}
 	
 	@Override
 	public void update(double delta) {
 		if (back.isDown() || Game.input.esc.clicked || Game.input.space.clicked || Game.input.enter.clicked) {
-			Sound.SELECT.play();
 			Game.sm.enterState(StateManager.MAIN_MENU_STATE);
 		}
 	}

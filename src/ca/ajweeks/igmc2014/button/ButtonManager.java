@@ -30,12 +30,8 @@ public class ButtonManager {
 	
 	public void updateSelectedButton() {
 		for (int i = 0; i < buttons.size(); i++) {
-			if (!buttons.get(i).enabled) {
-				buttons.get(i).setDeselected();
-				continue;
-			}
-			if (i == selectedButton) buttons.get(i).setSelected();
-			else buttons.get(i).setDeselected();
+			if (i == selectedButton && buttons.get(i).enabled) buttons.get(i).setSelected(true);
+			else buttons.get(i).setSelected(false);
 		}
 	}
 	

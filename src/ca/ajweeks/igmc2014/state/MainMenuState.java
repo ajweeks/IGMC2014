@@ -19,10 +19,9 @@ public class MainMenuState extends BasicState {
 	private static final int PLAY = 0;
 	private static final int HELP = 1;
 	private static final int ABOUT = 2;
-	private static final int OPTIONS = 3;
-	private static final int QUIT = 4;
-	private static final int QUIETER = 5;
-	private static final int LOUDER = 6;
+	private static final int QUIT = 3;
+	private static final int QUIETER = 4;
+	private static final int LOUDER = 5;
 	
 	private ButtonManager buttons;
 	
@@ -30,12 +29,13 @@ public class MainMenuState extends BasicState {
 		louder = new ImageIcon("res/louder.png").getImage();
 		quieter = new ImageIcon("res/quieter.png").getImage();
 		
+		int spacing = 100;
+		int yoff = 25;
 		buttons = new ButtonManager();
-		buttons.addButton(new Button(Game.SIZE.width / 2 - 250 / 2, 75, 250, 75, "Play!"));
-		buttons.addButton(new Button(Game.SIZE.width / 2 - 250 / 2, 175, 250, 75, "Help"));
-		buttons.addButton(new Button(Game.SIZE.width / 2 - 250 / 2, 275, 250, 75, "About"));
-		buttons.addButton(new Button(Game.SIZE.width / 2 - 250 / 2, 375, 250, 75, "Options"));
-		buttons.addButton(new Button(Game.SIZE.width / 2 - 250 / 2, 475, 250, 75, "Quit"));
+		buttons.addButton(new Button(Game.SIZE.width / 2 - 250 / 2, yoff + spacing, 250, 75, "Play!"));
+		buttons.addButton(new Button(Game.SIZE.width / 2 - 250 / 2, yoff + spacing * 2, 250, 75, "Help"));
+		buttons.addButton(new Button(Game.SIZE.width / 2 - 250 / 2, yoff + spacing * 3, 250, 75, "About"));
+		buttons.addButton(new Button(Game.SIZE.width / 2 - 250 / 2, yoff + spacing * 4, 250, 75, "Quit"));
 		buttons.addButton(new Button(Game.SIZE.width - 130, 30, 50, 50, "", Colour.button, Colour.hButton, Colour.offWhite,
 				quieter));
 		buttons.addButton(new Button(Game.SIZE.width - 70, 30, 50, 50, "", Colour.button, Colour.hButton, Colour.offWhite, louder));
@@ -47,37 +47,34 @@ public class MainMenuState extends BasicState {
 		if (Game.input.up.clicked || Game.input.left.clicked) {
 			do {
 				buttons.previousButton(); //set selected buttons to previous enabled button
-			} while (!buttons.getButton(buttons.getSelectedButton()).enabled);
+			} while (!buttons.getButton(buttons.getSelectedButton()).isEnabled());
 		}
 		
 		if (Game.input.tab.clicked || Game.input.down.clicked || Game.input.right.clicked) {
 			do {
 				buttons.nextButton(); //previous enabled button
-			} while (!buttons.getButton(buttons.getSelectedButton()).enabled);
+			} while (!buttons.getButton(buttons.getSelectedButton()).isEnabled());
 		}
 		
 		if (Game.input.enter.clicked || Game.input.space.clicked) {
 			switch (buttons.getSelectedButton()) {
 			case PLAY:
-				if (buttons.getButton(PLAY).enabled) enterState(StateManager.GAME_STATE);
+				if (buttons.getButton(PLAY).isEnabled()) enterState(StateManager.GAME_STATE);
 				break;
 			case HELP:
-				if (buttons.getButton(HELP).enabled) enterState(StateManager.HELP);
+				if (buttons.getButton(HELP).isEnabled()) enterState(StateManager.HELP);
 				break;
 			case ABOUT:
-				if (buttons.getButton(ABOUT).enabled) enterState(StateManager.ABOUT);
-				break;
-			case OPTIONS:
-				if (buttons.getButton(OPTIONS).enabled) enterState(StateManager.OPTIONS);
+				if (buttons.getButton(ABOUT).isEnabled()) enterState(StateManager.ABOUT);
 				break;
 			case QUIT:
-				if (buttons.getButton(QUIT).enabled) Game.stop();
+				if (buttons.getButton(QUIT).isEnabled()) Game.stop();
 				break;
 			case QUIETER:
-				if (buttons.getButton(QUIETER).enabled) quieter();
+				if (buttons.getButton(QUIETER).isEnabled()) quieter();
 				break;
 			case LOUDER:
-				if (buttons.getButton(LOUDER).enabled) louder();
+				if (buttons.getButton(LOUDER).isEnabled()) louder();
 				break;
 			}
 		}
@@ -85,7 +82,6 @@ public class MainMenuState extends BasicState {
 		if (buttons.getButton(PLAY).isDown()) enterState(StateManager.GAME_STATE);
 		if (buttons.getButton(HELP).isDown()) enterState(StateManager.HELP);
 		if (buttons.getButton(ABOUT).isDown()) enterState(StateManager.ABOUT);
-		if (buttons.getButton(OPTIONS).isDown()) enterState(StateManager.OPTIONS);
 		if (buttons.getButton(QUIT).isDown()) Game.stop();
 		if (buttons.getButton(LOUDER).isDown()) louder();
 		if (buttons.getButton(QUIETER).isDown()) quieter();
@@ -94,7 +90,6 @@ public class MainMenuState extends BasicState {
 	}
 	
 	private void enterState(int state) {
-		Sound.SELECT.play();
 		Game.sm.enterState(state);
 	}
 	
@@ -102,20 +97,20 @@ public class MainMenuState extends BasicState {
 		Sound.volume = Sound.quieter(Sound.volume);
 		Sound.SELECT.play();
 		if (Sound.volume == Sound.MIN_VOLUME) {
-			buttons.getButton(QUIETER).enabled = false;
+			buttons.getButton(QUIETER).setEnabled(false);
 			buttons.setSelectedButton(LOUDER);
 		}
-		if (Sound.volume < Sound.MAX_VOLUME) buttons.getButton(LOUDER).enabled = true;
+		if (Sound.volume < Sound.MAX_VOLUME) buttons.getButton(LOUDER).setEnabled(true);
 	}
 	
 	private void louder() {
 		Sound.volume = Sound.louder(Sound.volume);
 		Sound.SELECT.play();
 		if (Sound.volume == Sound.MAX_VOLUME) {
-			buttons.getButton(LOUDER).enabled = false;
+			buttons.getButton(LOUDER).setEnabled(false);
 			buttons.setSelectedButton(QUIETER);
 		}
-		if (Sound.volume > Sound.MIN_VOLUME) buttons.getButton(QUIETER).enabled = true;
+		if (Sound.volume > Sound.MIN_VOLUME) buttons.getButton(QUIETER).setEnabled(true);
 	}
 	
 	public void render(Graphics g) {

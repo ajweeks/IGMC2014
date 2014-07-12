@@ -11,12 +11,13 @@ public class Button {
 	
 	public int x, y, width, height;
 	public boolean hover;
-	public boolean enabled;
+	
 	protected Color colour, hColour, tColour;
 	protected String text;
 	protected Image image;
 	protected boolean hasImage;
 	protected boolean selected;
+	protected boolean enabled;
 	
 	public Button(int x, int y, int width, int height, String text, Color colour, Color hColour, Color tColour) {
 		this.x = x;
@@ -68,12 +69,16 @@ public class Button {
 		this.selected = false;
 	}
 	
-	public void setDeselected() {
-		this.selected = false;
+	public void setSelected(boolean isSelected) {
+		this.selected = isSelected;
 	}
 	
-	public void setSelected() {
-		this.selected = true;
+	public void setEnabled(boolean isEnabled) {
+		this.enabled = isEnabled;
+	}
+	
+	public boolean isEnabled() {
+		return enabled;
 	}
 	
 	/** @return <code>true</code> if the mouse is being clicked in this button (but not dragged into it) */

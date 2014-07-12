@@ -10,81 +10,101 @@ import ca.ajweeks.igmc2014.state.StateManager;
 
 public class RenderDebugOverlay {
 	
-	private static int ypos = 3;
-	private static int xpos = 3;
-	private static int height = 15;
-	
 	public static void render(Graphics g) {
-		fps(g);
-		currentState(g);
-		if (Game.sm.getCurrentStateIndex() == StateManager.GAME_STATE) {
-			onGround(g);
-			hasDoubleJumped(g);
-			playerSpeed(g);
-			xy(g);
-		}
-		ypos = 3;
-	}
-	
-	private static void fps(Graphics g) {
-		g.setColor(Colour.translucentBlack);
-		g.fillRect(xpos, ypos, 44, 15);
+		int y = 3;
+		int x = 3;
+		int height = 15;
 		
 		g.setFont(Game.fontDebug);
-		g.setColor(Color.WHITE);
-		g.drawString(Game.fps + " FPS", xpos + 3, ypos + 12);
-		ypos += height;
+		
+		fps(g, x, y + height * 0);
+		currentState(g, x, y + height * 1);
+		if (Game.sm.getCurrentStateIndex() == StateManager.GAME_STATE) {
+			onGround(g, x, y + height * 2);
+			hasDoubleJumped(g, x, y + height * 3);
+			xy(g, x, y + height * 4);
+			xvyv(g, x, y + height * 6);
+			maxHorizontalVelocity(g, x, y + height * 8);
+			verticalVelocity(g, x, y + height * 9);
+		}
 	}
 	
-	private static void currentState(Graphics g) {
+	private static void fps(Graphics g, int x, int y) {
+		g.setColor(Colour.translucentBlack);
+		g.fillRect(x, y, g.getFontMetrics().stringWidth(String.valueOf(Game.fps) + " FPS") + 5, 15);
+		
+		g.setColor(Color.WHITE);
+		g.drawString(Game.fps + " FPS", x + 3, y + 12);
+	}
+	
+	private static void currentState(Graphics g, int x, int y) {
 		String msg = "Current state: " + Game.sm.getCurrentStateSimpleName();
 		g.setColor(Colour.translucentBlack);
-		g.fillRect(xpos, ypos, (int) (msg.length() * 6.5), 15);
+		g.fillRect(x, y, g.getFontMetrics().stringWidth(msg) + 5, 15);
 		
 		g.setColor(Color.WHITE);
-		g.drawString(msg, xpos + 3, ypos + 12);
-		ypos += height;
+		g.drawString(msg, x + 3, y + 12);
 	}
 	
-	private static void onGround(Graphics g) {
+	private static void onGround(Graphics g, int x, int y) {
 		g.setColor(Colour.translucentBlack);
-		g.fillRect(xpos, ypos, GameState.player.onGround ? 90 : 95, 15);
+		g.fillRect(x, y, g.getFontMetrics().stringWidth("onGround: " + String.valueOf(GameState.player.onGround) + 5), 15);
 		g.setFont(Game.fontDebug);
 		g.setColor(Color.WHITE);
-		g.drawString("onGround: " + GameState.player.onGround, xpos + 3, ypos + 12);
-		ypos += height;
+		g.drawString("onGround: " + GameState.player.onGround, x + 3, y + 12);
 	}
 	
-	private static void hasDoubleJumped(Graphics g) {
+	private static void hasDoubleJumped(Graphics g, int x, int y) {
 		g.setColor(Colour.translucentBlack);
-		g.fillRect(xpos, ypos, GameState.player.hasDoubleJumped ? 140 : 145, 15);
+		g.fillRect(x, y, GameState.player.hasDoubleJumped ? 140 : 145, 15);
 		g.setFont(Game.fontDebug);
 		g.setColor(Color.WHITE);
-		g.drawString("hasDoubleJumped: " + GameState.player.hasDoubleJumped, xpos + 3, ypos + 12);
-		ypos += height;
+		g.drawString("hasDoubleJumped: " + GameState.player.hasDoubleJumped, x + 3, y + 12);
 	}
 	
-	private static void playerSpeed(Graphics g) {
+	private static void maxHorizontalVelocity(Graphics g, int x, int y) {
 		g.setColor(Colour.translucentBlack);
-		g.fillRect(xpos, ypos, 98, 15);
+		g.fillRect(x, y,
+				g.getFontMetrics().stringWidth("max horizontal velocity: " + String.valueOf(Player.maxHorizontalVelocity) + 5),
+				15);
 		g.setFont(Game.fontDebug);
 		g.setColor(Color.WHITE);
-		g.drawString("player speed: " + Player.speed, xpos + 3, ypos + 12);
-		ypos += height;
+		g.drawString("max horizontal velocity: " + Player.maxHorizontalVelocity, x + 3, y + 12);
 	}
 	
-	private static void xy(Graphics g) {
+	private static void verticalVelocity(Graphics g, int x, int y) {
+		//		g.setColor(Colour.translucentBlack);
+		//		g.fillRect(x, y, g.getFontMetrics().stringWidth("vertical velocity: " + String.valueOf(Player.vertical_velocity) + 5), 15);
+		//		g.setFont(Game.fontDebug);
+		//		g.setColor(Color.WHITE);
+		//		g.drawString("vertical velocity: " + Player.vertical_velocity, x + 3, y + 12);
+	}
+	
+	private static void xy(Graphics g, int x, int y) {
 		g.setFont(Game.fontDebug);
 		
 		g.setColor(Colour.translucentBlack);
-		g.fillRect(xpos, ypos, g.getFontMetrics().stringWidth(String.valueOf(GameState.player.getX()) + "x = " + 5), 15);
+		g.fillRect(x, y, g.getFontMetrics().stringWidth("x = " + String.valueOf(GameState.player.getX())) + 5, 15);
 		g.setColor(Color.WHITE);
-		g.drawString("x = " + GameState.player.getX(), xpos + 3, ypos + 12);
+		g.drawString("x = " + GameState.player.getX(), x + 3, y + 12);
 		
 		g.setColor(Colour.translucentBlack);
-		g.fillRect(xpos, ypos + 15, g.getFontMetrics().stringWidth(String.valueOf(GameState.player.getY()) + "y = " + 5), 15);
+		g.fillRect(x, y + 15, g.getFontMetrics().stringWidth("y = " + String.valueOf(GameState.player.getY())) + 5, 15);
 		g.setColor(Color.WHITE);
-		g.drawString("y = " + GameState.player.getY(), xpos + 3, ypos + 26);
-		ypos += height * 2;
+		g.drawString("y = " + GameState.player.getY(), x + 3, y + 27);
+	}
+	
+	private static void xvyv(Graphics g, int x, int y) {
+		g.setFont(Game.fontDebug);
+		
+		g.setColor(Colour.translucentBlack);
+		g.fillRect(x, y, g.getFontMetrics().stringWidth("xv = " + String.valueOf(GameState.player.getXv())) + 5, 15);
+		g.setColor(Color.WHITE);
+		g.drawString("xv = " + GameState.player.getXv(), x + 3, y + 12);
+		
+		g.setColor(Colour.translucentBlack);
+		g.fillRect(x, y + 15, g.getFontMetrics().stringWidth("yv = " + String.valueOf(GameState.player.getYv())) + 5, 15);
+		g.setColor(Color.WHITE);
+		g.drawString("yv = " + GameState.player.getYv(), x + 3, y + 27);
 	}
 }
