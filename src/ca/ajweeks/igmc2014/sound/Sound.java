@@ -10,7 +10,7 @@ import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-public enum Sound {
+public enum Sound  {
 	SELECT("res/select2.wav"), JUMP("res/jump.wav"), WIZZLE("res/wizzle.wav"), ACHIEVE("res/achieve.wav");
 	
 	public static float volume = -9.0f;

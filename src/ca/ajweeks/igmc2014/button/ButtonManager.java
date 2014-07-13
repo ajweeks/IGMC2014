@@ -1,9 +1,8 @@
 package ca.ajweeks.igmc2014.button;
 
-import java.awt.Graphics;
 import java.util.ArrayList;
 
-import ca.ajweeks.igmc2014.Game;
+import org.newdawn.slick.Graphics;
 
 public class ButtonManager {
 	
@@ -18,7 +17,7 @@ public class ButtonManager {
 	
 	public void update() {
 		for (int i = 0; i < buttons.size(); i++) {
-			if (buttons.get(i).hover && buttons.get(i).enabled && !Game.input.mouseIsStill) selectedButton = i;
+			if (buttons.get(i).hover && buttons.get(i).enabled) selectedButton = i;
 		}
 	}
 	

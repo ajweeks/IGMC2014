@@ -1,48 +1,63 @@
 package ca.ajweeks.igmc2014.state;
 
-import java.awt.Color;
-import java.awt.Graphics;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Input;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.state.BasicGameState;
+import org.newdawn.slick.state.StateBasedGame;
 
 import ca.ajweeks.igmc2014.Game;
 import ca.ajweeks.igmc2014.button.Button;
 import ca.ajweeks.igmc2014.gfx.Colour;
 
-public class AboutState extends BasicState {
+public class AboutState extends BasicGameState {
 	
-	Button back;
+	private Button back;
 	
-	public AboutState() {
+	@Override
+	public void init(GameContainer gc, StateBasedGame game) throws SlickException {
 		back = new Button(Game.SIZE.width / 2 - 110 / 2, Game.SIZE.height - 120, 110, 75, "Back");
 		back.setSelected(true);
 	}
 	
 	@Override
-	public void update(double delta) {
-		if (back.isDown() || Game.input.esc.clicked || Game.input.space.clicked || Game.input.enter.clicked) {
-			Game.sm.enterState(StateManager.MAIN_MENU_STATE);
-		}
-	}
-	
-	@Override
-	public void render(Graphics g) {
+	public void render(GameContainer gc, StateBasedGame game, org.newdawn.slick.Graphics g) throws SlickException {
+		Input input = gc.getInput();
+		
 		g.setColor(Colour.offBlack);
 		g.fillRect(0, 0, Game.SIZE.width, Game.SIZE.height);
 		
 		g.setColor(new Color(240, 240, 240, 200));
 		g.setFont(Game.font34);
-		g.drawString("About", (Game.SIZE.width / 2) - (g.getFontMetrics().stringWidth("About") / 2), 80);
+		g.drawString("About", (Game.SIZE.width / 2) - (g.getFont().getWidth("About") / 2), 80);
 		
 		g.setFont(Game.font24);
-		g.setColor(Color.WHITE);
+		g.setColor(Color.white);
 		String[] message = new String[] { Game.GAME_TITLE + " is a 2D platformer game made by AJ Weeks in June 2014",
 				"originally for the Indie Game Maker Contest 2014. (But not finished on time)" };
 		for (int i = 0; i < message.length; i++) {
-			int xoff = (int) (Game.input.x / 80);
-			int yoff = (int) (Game.input.y / 100) + 300;
-			g.drawString(message[i], (Game.SIZE.width / 2) + xoff - (g.getFontMetrics().stringWidth(message[i]) / 2), yoff + i
-					* g.getFontMetrics().getHeight());
+			int xoff = (int) (input.getMouseX() / 80);
+			int yoff = (int) (input.getMouseY() / 100) + 300;
+			g.drawString(message[i], (Game.SIZE.width / 2) + xoff - (g.getFont().getWidth(message[i]) / 2), yoff + i
+					* g.getFont().getHeight(message[i]));
 		}
 		
 		back.render(g);
+	}
+	
+	@Override
+	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
+		Input input = gc.getInput();
+		
+		if (back.isDown(input) || input.isKeyPressed(Input.KEY_ESCAPE) || input.isKeyPressed(Input.KEY_SPACE)
+				|| input.isKeyPressed(Input.KEY_ENTER)) {
+			game.enterState(Game.MAINMENU_STATE);
+		}
+	}
+	
+	@Override
+	public int getID() {
+		return Game.ABOUT_STATE;
 	}
 }

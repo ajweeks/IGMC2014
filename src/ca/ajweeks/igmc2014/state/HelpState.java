@@ -1,15 +1,21 @@
 package ca.ajweeks.igmc2014.state;
 
-import java.awt.Color;
-import java.awt.Graphics;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.state.BasicGameState;
+import org.newdawn.slick.state.StateBasedGame;
 
 import ca.ajweeks.igmc2014.Game;
 import ca.ajweeks.igmc2014.button.ArrowButton;
 import ca.ajweeks.igmc2014.button.Button;
 import ca.ajweeks.igmc2014.gfx.Colour;
+import ca.ajweeks.igmc2014.input.Keyboard;
 import ca.ajweeks.igmc2014.sound.Sound;
 
-public class HelpState extends BasicState {
+public class HelpState extends BasicGameState {
 	
 	private static final int MAX_PAGES = 3;
 	private int page = 0;
@@ -21,7 +27,8 @@ public class HelpState extends BasicState {
 	private ArrowButton left;
 	private ArrowButton right;
 	
-	public HelpState() {
+	@Override
+	public void init(GameContainer gc, StateBasedGame game) throws SlickException {
 		back = new Button(Game.SIZE.width / 2 - 100 / 2, Game.SIZE.height - 120, 110, 75, "Back");
 		back.setSelected(true);
 		
@@ -30,13 +37,54 @@ public class HelpState extends BasicState {
 	}
 	
 	@Override
-	public void update(double delta) {
-		if (Game.input.right.clicked) {
+	public void render(GameContainer gc, StateBasedGame game, org.newdawn.slick.Graphics g) throws SlickException {
+		g.setColor(Colour.offBlack);
+		g.fillRect(0, 0, Game.SIZE.width, Game.SIZE.height);
+		
+		g.setFont(Game.font24);
+		g.setColor(Color.white);
+		
+		String[] message = new String[] { "Controls:", "", "-WASD or arrow keys to move.", "-Space to jump",
+				"-Esc to exit to main menu", "-Shift to sprint" };
+		int p = 0;
+		drawMessage(message, g, p);
+		
+		message = new String[] { "2" };
+		p = 1;
+		drawMessage(message, g, p);
+		
+		message = new String[] { "3" };
+		p = 2;
+		drawMessage(message, g, p);
+		
+		for (int i = 0; i < MAX_PAGES; i++) {
+			if (i == page) g.setColor(Color.lightGray);
+			else g.setColor(Color.darkGray);
+			g.fillOval(i * 36 + Game.SIZE.width / 2 - MAX_PAGES * 14, Game.SIZE.height - 35, 25, 25);
+		}
+		
+		back.render(g);
+		left.render(g);
+		right.render(g);
+	}
+	
+	private void drawMessage(String[] message, Graphics g, int p) {
+		for (int i = 0; i < message.length; i++) {
+			g.drawString(message[i], (p * Game.SIZE.width) + (Game.SIZE.width / 2) - (g.getFont().getWidth(message[i]) / 2)
+					- xoff, Game.SIZE.height / 2 - 125 + i * (g.getFont().getLineHeight()));
+		}
+	}
+	
+	@Override
+	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
+		Input input = gc.getInput();
+		
+		if (Keyboard.isRightPressed(game)) {
 			if (page < MAX_PAGES - 1) {
 				Sound.SELECT.play();
 				changePage(1);
 			}
-		} else if (Game.input.left.clicked) {
+		} else if (Keyboard.isLeftPressed(game)) {
 			if (page > 0) {
 				Sound.SELECT.play();
 				changePage(-1);
@@ -58,23 +106,30 @@ public class HelpState extends BasicState {
 			}
 		}
 		
-		if (back.isDown() || Game.input.esc.clicked || Game.input.space.clicked || Game.input.enter.clicked) { //Change if we ever put add more buttons!
-			Game.sm.enterState(StateManager.MAIN_MENU_STATE);
+		if (back.isDown(input) || input.isKeyPressed(Input.KEY_ESCAPE) || input.isKeyPressed(Input.KEY_SPACE)
+				|| input.isKeyPressed(Input.KEY_ENTER)) {
+			game.enterState(Game.MAINMENU_STATE);
 		}
 		
-		if (right.isDown()) {
+		if (right.isDown(input)) {
 			if (page < MAX_PAGES - 1) {
 				Sound.SELECT.play();
 				changePage(1);
 			}
 		}
 		
-		if (left.isDown()) {
+		if (left.isDown(input)) {
 			if (page > 0) {
 				Sound.SELECT.play();
 				changePage(-1);
 			}
 		}
+		
+		if (page > 0) left.setEnabled(true);
+		else left.setEnabled(false);
+		
+		if (page < MAX_PAGES - 1) right.setEnabled(true);
+		else right.setEnabled(false);
 	}
 	
 	private void changePage(int dir) {
@@ -85,48 +140,8 @@ public class HelpState extends BasicState {
 	}
 	
 	@Override
-	public void render(Graphics g) {
-		g.setColor(Colour.offBlack);
-		g.fillRect(0, 0, Game.SIZE.width, Game.SIZE.height);
-		String[] message;
-		
-		g.setFont(Game.font24);
-		g.setColor(Color.WHITE);
-		
-		message = new String[] { "Controls:", "", "-WASD or arrow keys to move.", "-Space to jump", "-Esc to exit to main menu",
-				"-Shift to sprint" };
-		int p = 0;
-		for (int i = 0; i < message.length; i++) {
-			g.drawString(message[i], (p * Game.SIZE.width) + (Game.SIZE.width / 2)
-					- (g.getFontMetrics().stringWidth(message[i]) / 2) - xoff,
-					Game.SIZE.height / 2 - 200 + i * (g.getFontMetrics().getHeight()));
-		}
-		
-		message = new String[] { "2" };
-		p = 1;
-		for (int i = 0; i < message.length; i++) {
-			g.drawString(message[i], (p * Game.SIZE.width) + (Game.SIZE.width / 2)
-					- (g.getFontMetrics().stringWidth(message[i]) / 2) - xoff,
-					Game.SIZE.height / 2 - 200 + i * (g.getFontMetrics().getHeight()));
-		}
-		
-		message = new String[] { "3" };
-		p = 2;
-		for (int i = 0; i < message.length; i++) {
-			g.drawString(message[i], (p * Game.SIZE.width) + (Game.SIZE.width / 2)
-					- (g.getFontMetrics().stringWidth(message[i]) / 2) - xoff,
-					Game.SIZE.height / 2 - 200 + i * (g.getFontMetrics().getHeight()));
-		}
-		
-		for (int i = 0; i < MAX_PAGES; i++) {
-			if (i == page) g.setColor(Color.LIGHT_GRAY);
-			else g.setColor(Color.DARK_GRAY);
-			g.fillOval(i * 36 + Game.SIZE.width / 2 - MAX_PAGES * 14, Game.SIZE.height - 35, 25, 25);
-		}
-		
-		back.render(g);
-		left.render(g, page > 0);
-		right.render(g, page < MAX_PAGES - 1);
+	public int getID() {
+		return Game.HELP_STATE;
 	}
 	
 }

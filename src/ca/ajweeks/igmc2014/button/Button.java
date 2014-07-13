@@ -1,8 +1,9 @@
 package ca.ajweeks.igmc2014.button;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Image;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.Input;
 
 import ca.ajweeks.igmc2014.Game;
 import ca.ajweeks.igmc2014.gfx.Colour;
@@ -18,6 +19,7 @@ public class Button {
 	protected boolean hasImage;
 	protected boolean selected;
 	protected boolean enabled;
+	protected int radius = 10;
 	
 	public Button(int x, int y, int width, int height, String text, Color colour, Color hColour, Color tColour) {
 		this.x = x;
@@ -82,34 +84,34 @@ public class Button {
 	}
 	
 	/** @return <code>true</code> if the mouse is being clicked in this button (but not dragged into it) */
-	public boolean isDown() {
+	public boolean isDown(Input input) {
 		if (!enabled) return false;
-		if (Game.input.x > x && Game.input.x < x + width && Game.input.y > y && Game.input.y < y + height) {
+		if (input.getMouseX() > x && input.getMouseX() < x + width && input.getMouseY() > y && input.getMouseY() < y + height) {
 			hover = true;
-			if (Game.input.lM.clicked) return true;
+			if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) return true;
 		} else hover = false;
 		return false;
 	}
 	
 	public void render(Graphics g) {
-		g.setFont(Game.font34.deriveFont(34f));
+		g.setFont(Game.font34);
 		if (selected) {
 			g.setColor(Colour.offWhite);
-			g.fillRoundRect(x - 3, y - 3, width + 6, height + 6, 25, 25);
+			g.fillRoundRect(x - 3, y - 3, width + 6, height + 6, radius, radius);
 		}
 		
 		g.setColor(hover ? colour : hColour);
-		g.fillRoundRect(x, y, width, height, 25, 25);
+		g.fillRoundRect(x, y, width, height, radius, radius);
 		
 		g.setColor(tColour);
-		g.drawString(text, x + (width / 2) - (g.getFontMetrics().stringWidth(text) / 2), y + (height / 2)
-				+ (g.getFontMetrics().getHeight() / 4));
+		g.drawString(text, x + (width / 2) - (g.getFont().getWidth(text) / 2), y + (height / 2)
+				- (g.getFont().getHeight(text) / 2));
 		
 		if (hasImage) g.drawImage(image, x + 2, y + 2, null);
 		
 		if (!enabled) {
 			g.setColor(new Color(125, 125, 125, 125));
-			g.fillRoundRect(x, y, width, height, 25, 25);
+			g.fillRoundRect(x, y, width, height, radius, radius);
 		}
 	}
 }

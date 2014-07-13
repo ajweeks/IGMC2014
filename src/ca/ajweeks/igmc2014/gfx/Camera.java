@@ -20,7 +20,7 @@ public class Camera {
 		this.level = level;
 	}
 	
-	public void update(double delta) {
+	public void update() {
 		x = -player.getX() * Tile.WIDTH + xoff;
 		y = -player.getY() * Tile.WIDTH + yoff;
 		

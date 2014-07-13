@@ -1,20 +1,27 @@
 package ca.ajweeks.igmc2014.entity;
 
-import java.awt.Graphics;
-import java.awt.Image;
-
-import javax.swing.ImageIcon;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
 
 import ca.ajweeks.igmc2014.level.Tile;
 import ca.ajweeks.igmc2014.state.GameState;
 
 public class Coin {
 	
-	private static Image[] image = new Image[] { new ImageIcon("res/coin0.png").getImage(), new ImageIcon("res/coin1.png").getImage(),
-			new ImageIcon("res/coin2.png").getImage(), new ImageIcon("res/coin3.png").getImage(),
-			new ImageIcon("res/coin4.png").getImage(), new ImageIcon("res/coin5.png").getImage(),
-			new ImageIcon("res/coin6.png").getImage(), new ImageIcon("res/coin7.png").getImage(),
-			new ImageIcon("res/coin8.png").getImage(), new ImageIcon("res/coin9.png").getImage() };
+	private static Image[] image;
+	
+	{
+		try {
+			image = new Image[] { new Image("res/coin0.png"), new Image("res/coin1.png"),
+					new Image("res/coin2.png"), new Image("res/coin3.png"),
+					new Image("res/coin4.png"), new Image("res/coin5.png"),
+					new Image("res/coin6.png"), new Image("res/coin7.png"),
+					new Image("res/coin8.png"), new Image("res/coin9.png") };
+		} catch (SlickException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	private int i = 0;
 	private int ticks = 0;

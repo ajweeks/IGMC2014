@@ -1,29 +1,35 @@
 package ca.ajweeks.igmc2014.level;
 
-import java.awt.Graphics;
-import java.awt.Image;
-
-import javax.swing.ImageIcon;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Rectangle;
 
 import ca.ajweeks.igmc2014.Game;
 
-public class Tile {
+@SuppressWarnings("serial")
+public class Tile extends Rectangle {
+	
 	public enum Type {
 		//@formatter:off
-		BLANK(new ImageIcon("res/tiles/BLANK.png").getImage(), false), 
-		DIRT(new ImageIcon("res/tiles/DIRT.png").getImage(), true), 
-		GRASS(new ImageIcon("res/tiles/GRASS.png").getImage(), true), 
-		GRASS_LEFT(new ImageIcon("res/tiles/GRASS_LEFT.png").getImage(), true), 
-		GRASS_RIGHT(new ImageIcon("res/tiles/GRASS_RIGHT.png").getImage(), true), 
-		COIN(new ImageIcon("res/tiles/BLANK.png").getImage(), false), 
-		NULL(new ImageIcon("res/tiles/BLANK.png").getImage(), false);
+		BLANK("res/tiles/BLANK.png", false), 
+		DIRT("res/tiles/DIRT.png", true), 
+		GRASS("res/tiles/GRASS.png", true), 
+		GRASS_LEFT("res/tiles/GRASS_LEFT.png", true), 
+		GRASS_RIGHT("res/tiles/GRASS_RIGHT.png", true), 
+		COIN("res/tiles/BLANK.png", false), 
+		NULL("res/tiles/BLANK.png", false);
 		//@formatter:on
 		
 		private Image image;
 		private boolean solid;
 		
-		Type(Image image, boolean solid) {
-			this.image = image;
+		Type(String image, boolean solid) {
+			try {
+				this.image = new Image(image);
+			} catch (SlickException e) {
+				e.printStackTrace();
+			}
 			this.solid = solid;
 		}
 		
@@ -61,13 +67,14 @@ public class Tile {
 		return type;
 	}
 	
-	public Tile(Type type) {
+	public Tile(Type type, int x, int y, int height, int width) {
+		super(x, y, width, height);
 		this.type = type;
 	}
 	
 	public void render(int x, int y, Graphics g) {
 		if (x > Game.SIZE.width + WIDTH || y > Game.SIZE.height + WIDTH || x < -WIDTH || y < -WIDTH) return; //no need rendering off screen
-		g.drawImage(type.image, x, y, null);
+		g.drawImage(type.image, x, y);
 	}
 	
 }

@@ -1,31 +1,35 @@
 package ca.ajweeks.igmc2014.button;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Image;
-
-import javax.swing.ImageIcon;
-
-import ca.ajweeks.igmc2014.Game;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.Input;
+import org.newdawn.slick.SlickException;
 
 public class ArrowButton extends Button {
 	
-	//public static final int UP = 0;
-	//public static final int DOWN = 1;
-	public static final int LEFT = 2;
-	public static final int RIGHT = 3;
+	public static final int LEFT = 0;
+	public static final int RIGHT = 1;
+	
+	private static final int WIDTH = 55, HEIGHT = 110;
 	
 	private int dir = 0;
-	private int width = 55, height = 110;
 	
-	public Image arrowBtnRightON = new ImageIcon("res/arrow_btn_right_on.png").getImage().getScaledInstance(width, height,
-			Image.SCALE_SMOOTH);
-	public Image arrowBtnRightOFF = new ImageIcon("res/arrow_btn_right_off.png").getImage().getScaledInstance(width, height,
-			Image.SCALE_SMOOTH);
-	public Image arrowBtnLeftON = new ImageIcon("res/arrow_btn_left_on.png").getImage().getScaledInstance(width, height,
-			Image.SCALE_SMOOTH);
-	public Image arrowBtnLeftOFF = new ImageIcon("res/arrow_btn_left_off.png").getImage().getScaledInstance(width, height,
-			Image.SCALE_SMOOTH);
+	public static Image arrowBtnRightON;
+	public static Image arrowBtnRightOFF;
+	public static Image arrowBtnLeftON;
+	public static Image arrowBtnLeftOFF;
+	
+	{
+		try {
+			arrowBtnRightON = new Image("res/arrow_btn_right_on.png").getScaledCopy(WIDTH, HEIGHT);
+			arrowBtnRightOFF = new Image("res/arrow_btn_right_off.png").getScaledCopy(WIDTH, HEIGHT);
+			arrowBtnLeftON = new Image("res/arrow_btn_left_on.png").getScaledCopy(WIDTH, HEIGHT);
+			arrowBtnLeftOFF = new Image("res/arrow_btn_left_off.png").getScaledCopy(WIDTH, HEIGHT);
+		} catch (SlickException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	public ArrowButton(int x, int y, int width, int height, String text, Color colour, Color hColour, Color tColour, int dir) {
 		super(x, y, width, height, text, colour, hColour, tColour);
@@ -33,18 +37,18 @@ public class ArrowButton extends Button {
 	}
 	
 	@Override
-	public boolean isDown() {
+	public boolean isDown(Input input) {
 		if (!enabled) return false;
 		if (dir == RIGHT || dir == LEFT) {
-			if (Game.input.x > x && Game.input.x < x + width) {
+			if (input.getMouseX() > x && input.getMouseX() < x + WIDTH) {
 				hover = true;
-				if (Game.input.lM.clicked) return true;
+				if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) return true;
 			} else hover = false;
 		}
 		return false;
 	}
 	
-	public void render(Graphics g, boolean enabled) {
+	public void render(Graphics g) {
 		if (dir == LEFT) {
 			if (!enabled) return;
 			else if (hover) g.drawImage(arrowBtnLeftON, x, y, null);

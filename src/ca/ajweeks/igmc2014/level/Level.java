@@ -1,12 +1,13 @@
 package ca.ajweeks.igmc2014.level;
 
-import java.awt.Color;
-import java.awt.Graphics;
+import org.newdawn.slick.Color;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.state.StateBasedGame;
 
 import ca.ajweeks.igmc2014.Game;
 import ca.ajweeks.igmc2014.entity.Coin;
 import ca.ajweeks.igmc2014.entity.Player;
-import ca.ajweeks.igmc2014.level.Tile.Type;
 
 public class Level {
 	
@@ -24,24 +25,18 @@ public class Level {
 		chunks[1][2] = new Chunk("levels/1/1_2.txt", 1, 2);
 	}
 	
-	public Type getBlock(double xpos, double ypos) {
-		int chunkY = (int) (ypos / Chunk.WIDTH);
-		int chunkX = (int) (xpos / Chunk.WIDTH);
-		
-		int y = (int) (ypos % (Chunk.WIDTH));
-		int x = (int) (xpos % (Chunk.WIDTH));
-		
-		return chunks[chunkY][chunkX].tiles[y * Chunk.WIDTH + x].getType();
+	public Tile.Type collides(double xpos, double ypos) {
+		return chunks[(int) ypos / Chunk.WIDTH][(int) xpos / Chunk.WIDTH].collides(xpos, ypos);
 	}
 	
-	public void update(double delta) {
+	public void update(GameContainer container, StateBasedGame game, int delta) {
 		for (int i = 0; i < chunks.length; i++) { //rows (y)
 			for (int j = 0; j < chunks[i].length; j++) { //columns (x)
 				chunks[i][j].update(delta);
 			}
 		}
 		
-		player.update(delta);
+		player.update(container, game, delta);
 	}
 	
 	public void render(Graphics g) {
@@ -53,7 +48,7 @@ public class Level {
 		
 		player.render(g);
 		
-		g.setColor(Color.YELLOW);
+		g.setColor(Color.yellow);
 		g.setFont(Game.font24);
 		String s = "x " + String.valueOf(player.getCoins());
 		g.drawString(s, Game.SIZE.width - (14 * s.length()) - 2, Game.SIZE.height - 5);

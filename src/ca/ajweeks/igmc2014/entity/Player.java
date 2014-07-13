@@ -1,17 +1,22 @@
 package ca.ajweeks.igmc2014.entity;
 
-import java.awt.Graphics;
-import java.awt.Image;
-
-import javax.swing.ImageIcon;
+import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
+import org.newdawn.slick.Input;
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.state.StateBasedGame;
 
 import ca.ajweeks.igmc2014.Game;
+import ca.ajweeks.igmc2014.input.Keyboard;
 import ca.ajweeks.igmc2014.level.Chunk;
 import ca.ajweeks.igmc2014.level.Tile;
 import ca.ajweeks.igmc2014.sound.Sound;
 import ca.ajweeks.igmc2014.state.GameState;
 
-public class Player {
+public class Player extends Rectangle {
+	private static final long serialVersionUID = 1L;
 	
 	public static final float JUMP_VELOCITY = 1.2F;
 	public static final float GRAVITY = -0.12F;
@@ -26,18 +31,25 @@ public class Player {
 	public boolean hasDoubleJumped = false;
 	public boolean onGround = false;
 	
-	private Image image = new ImageIcon("res/player.png").getImage();
+	private static Image image;
 	private GameState gs;
 	
-	private double x, y;
-	private double xv, yv;
+	private float xv, yv;
 	private int coins = 0;
 	
+	private static final int SPAWN_X = 3, SPAWN_Y = 5;
+	private static final int WIDTH = 32, HEIGHT = 64;
+	
 	public Player(GameState gs) {
-		x = 3.0;
-		y = 5.0;
+		super(SPAWN_X, SPAWN_Y, WIDTH, HEIGHT);
 		
 		this.gs = gs;
+		
+		try {
+			Player.image = new Image("res/player.png");
+		} catch (SlickException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void addCoins(int coins) {
@@ -56,28 +68,27 @@ public class Player {
 		return yv;
 	}
 	
-	public double getX() {
-		return x;
-	}
-	
-	public double getY() {
-		return y;
-	}
-	
-	public void update(double delta) {
-		if (Game.input.right.down) {
+	public void update(GameContainer gc, StateBasedGame game, int delta) {
+		Input input = game.getContainer().getInput();
+		
+		if (gc.getInput().isKeyPressed(Input.KEY_R)) {
+			x = SPAWN_X;
+			y = SPAWN_Y;
+		}
+		
+		if (Keyboard.isRightDown(game)) {
 			xv += friction;
 			if (xv > maxHorizontalVelocity) xv = maxHorizontalVelocity;
 		}
 		
-		if (Game.input.left.down) {
+		if (Keyboard.isLeftDown(game)) {
 			xv -= friction;
 			if (xv < -maxHorizontalVelocity) xv = -maxHorizontalVelocity;
 		}
 		
-		if (!Game.input.left.down && !Game.input.right.down && xv != 0) { //decelerate horizontal motion
-			double bxv = xv;
-			double axv = Math.abs(xv) - friction;
+		if (!Keyboard.isLeftDown(game) && !Keyboard.isRightDown(game) && xv != 0) { //decelerate horizontal motion
+			float bxv = xv;
+			float axv = Math.abs(xv) - friction;
 			if (axv <= 0) {
 				xv = 0;
 			} else {
@@ -87,7 +98,7 @@ public class Player {
 			}
 		}
 		
-		if (Game.input.space.clicked || Game.input.up.clicked) {
+		if (input.isKeyPressed(Input.KEY_SPACE) || Keyboard.isUpPressed(game)) {
 			if (onGround) {
 				Sound.JUMP.play();
 				hasDoubleJumped = false;
@@ -105,10 +116,10 @@ public class Player {
 		yv += GRAVITY;
 		if (yv < terminalVelocity) yv = terminalVelocity;
 		
-		double bx = x, by = y; //store original values
+		float bx = x, by = y; //store original values
 		
-		x += xv * delta;
-		y += yv * delta;
+		x += xv;
+		y += yv; //TODO * delta
 		
 		if (x < 0) {
 			x = 0; //left side of level
@@ -134,14 +145,14 @@ public class Player {
 		
 		//horizontal
 		if (xv != 0) {
-			if (gs.level.getBlock(x, y).isSolid()) {
+			if (gs.level.collides(x, y).isSolid()) {
 				x = bx;
 			}
 		}
 		
 		//vertical
 		if (yv != 0) {
-			if (gs.level.getBlock(x, yv <= 0 ? y + 1 : y).isSolid()) { //TODO check feet when falling (rather than head)
+			if (gs.level.collides(x, yv <= 0 ? y + 1 : y).isSolid()) { //TODO check feet when falling (rather than head)
 				y = by;
 				
 				if (yv <= 0) {
