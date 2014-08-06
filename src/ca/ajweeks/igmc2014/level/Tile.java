@@ -7,29 +7,15 @@ import org.newdawn.slick.geom.Rectangle;
 
 import ca.ajweeks.igmc2014.Game;
 
-@SuppressWarnings("serial")
 public class Tile extends Rectangle {
+	private static final long serialVersionUID = 1L;
 	
 	public enum Type {
-		//@formatter:off
-		BLANK("res/tiles/BLANK.png", false), 
-		DIRT("res/tiles/DIRT.png", true), 
-		GRASS("res/tiles/GRASS.png", true), 
-		GRASS_LEFT("res/tiles/GRASS_LEFT.png", true), 
-		GRASS_RIGHT("res/tiles/GRASS_RIGHT.png", true), 
-		COIN("res/tiles/BLANK.png", false), 
-		NULL("res/tiles/BLANK.png", false);
-		//@formatter:on
+		BLANK(false), DIRT(true), GRASS(true), GRASS_LEFT(true), GRASS_RIGHT(true), COIN(false), NULL(false);
 		
-		private Image image;
 		private boolean solid;
 		
-		Type(String image, boolean solid) {
-			try {
-				this.image = new Image(image);
-			} catch (SlickException e) {
-				e.printStackTrace();
-			}
+		Type(boolean solid) {
 			this.solid = solid;
 		}
 		
@@ -59,13 +45,24 @@ public class Tile extends Rectangle {
 		}
 	}
 	
+	protected static Image blank, dirt, grass, grassLeft, grassRight, error;
+	
+	{
+		try {
+			blank = new Image("res/tiles/BLANK.png");
+			dirt = new Image("res/tiles/DIRT.png");
+			grass = new Image("res/tiles/GRASS.png");
+			grassLeft = new Image("res/tiles/GRASS_LEFT.png");
+			grassRight = new Image("res/tiles/GRASS_RIGHT.png");
+			error = new Image("res/tiles/ERROR.png");
+		} catch (SlickException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public static final int WIDTH = 64;
 	
 	private Type type;
-	
-	public Type getType() {
-		return type;
-	}
 	
 	public Tile(Type type, int x, int y, int height, int width) {
 		super(x, y, width, height);
@@ -74,7 +71,37 @@ public class Tile extends Rectangle {
 	
 	public void render(int x, int y, Graphics g) {
 		if (x > Game.SIZE.width + WIDTH || y > Game.SIZE.height + WIDTH || x < -WIDTH || y < -WIDTH) return; //no need rendering off screen
-		g.drawImage(type.image, x, y);
+		Image image;
+		switch (type) {
+		case BLANK:
+			image = blank;
+			break;
+		case COIN:
+			image = error;
+			break;
+		case DIRT:
+			image = dirt;
+			break;
+		case GRASS:
+			image = grass;
+			break;
+		case GRASS_LEFT:
+			image = grassLeft;
+			break;
+		case GRASS_RIGHT:
+			image = grassRight;
+			break;
+		case NULL:
+		default:
+			image = error;
+			break;
+		}
+		g.drawImage(image, x, y);
 	}
 	
+	public void update() {}
+	
+	public Type getType() {
+		return type;
+	}
 }

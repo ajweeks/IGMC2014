@@ -2,7 +2,6 @@ package ca.ajweeks.igmc2014.state;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
@@ -12,6 +11,7 @@ import ca.ajweeks.igmc2014.Game;
 import ca.ajweeks.igmc2014.button.ArrowButton;
 import ca.ajweeks.igmc2014.button.Button;
 import ca.ajweeks.igmc2014.gfx.Colour;
+import ca.ajweeks.igmc2014.gfx.RenderDebugOverlay;
 import ca.ajweeks.igmc2014.input.Keyboard;
 import ca.ajweeks.igmc2014.sound.Sound;
 
@@ -44,18 +44,17 @@ public class HelpState extends BasicGameState {
 		g.setFont(Game.font24);
 		g.setColor(Color.white);
 		
-		String[] message = new String[] { "Controls:", "", "-WASD or arrow keys to move.", "-Space to jump",
-				"-Esc to exit to main menu", "-Shift to sprint" };
-		int p = 0;
-		drawMessage(message, g, p);
+		String[][] messages = new String[][] {
+				{ "Controls:", "", "-WASD or arrow keys to move.", "-Space to jump", "-Esc to exit to main menu",
+						"-Shift to sprint" }, { "2" }, { "3" } };
 		
-		message = new String[] { "2" };
-		p = 1;
-		drawMessage(message, g, p);
-		
-		message = new String[] { "3" };
-		p = 2;
-		drawMessage(message, g, p);
+		for (int p = 0; p < messages.length; p++) {
+			for (int i = 0; i < messages[p].length; i++) {
+				g.drawString(messages[p][i], (p * Game.SIZE.width) + (Game.SIZE.width / 2)
+						- (g.getFont().getWidth(messages[p][i]) / 2) - xoff,
+						Game.SIZE.height / 2 - 125 + i * (g.getFont().getLineHeight()));
+			}
+		}
 		
 		for (int i = 0; i < MAX_PAGES; i++) {
 			if (i == page) g.setColor(Color.lightGray);
@@ -66,13 +65,8 @@ public class HelpState extends BasicGameState {
 		back.render(g);
 		left.render(g);
 		right.render(g);
-	}
-	
-	private void drawMessage(String[] message, Graphics g, int p) {
-		for (int i = 0; i < message.length; i++) {
-			g.drawString(message[i], (p * Game.SIZE.width) + (Game.SIZE.width / 2) - (g.getFont().getWidth(message[i]) / 2)
-					- xoff, Game.SIZE.height / 2 - 125 + i * (g.getFont().getLineHeight()));
-		}
+		
+		if (Game.renderDebug) RenderDebugOverlay.render(g);
 	}
 	
 	@Override
@@ -108,7 +102,7 @@ public class HelpState extends BasicGameState {
 		
 		if (back.isDown(input) || input.isKeyPressed(Input.KEY_ESCAPE) || input.isKeyPressed(Input.KEY_SPACE)
 				|| input.isKeyPressed(Input.KEY_ENTER)) {
-			game.enterState(Game.MAINMENU_STATE);
+			game.enterState(Game.MAINMENU_STATE_ID);
 		}
 		
 		if (right.isDown(input)) {
@@ -130,6 +124,8 @@ public class HelpState extends BasicGameState {
 		
 		if (page < MAX_PAGES - 1) right.setEnabled(true);
 		else right.setEnabled(false);
+		
+		if (input.isKeyPressed(Input.KEY_F3)) Game.renderDebug = !Game.renderDebug;
 	}
 	
 	private void changePage(int dir) {
@@ -141,7 +137,7 @@ public class HelpState extends BasicGameState {
 	
 	@Override
 	public int getID() {
-		return Game.HELP_STATE;
+		return Game.HELP_STATE_ID;
 	}
 	
 }

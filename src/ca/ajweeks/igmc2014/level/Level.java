@@ -25,10 +25,6 @@ public class Level {
 		chunks[1][2] = new Chunk("levels/1/1_2.txt", 1, 2);
 	}
 	
-	public Tile.Type collides(double xpos, double ypos) {
-		return chunks[(int) ypos / Chunk.WIDTH][(int) xpos / Chunk.WIDTH].collides(xpos, ypos);
-	}
-	
 	public void update(GameContainer container, StateBasedGame game, int delta) {
 		for (int i = 0; i < chunks.length; i++) { //rows (y)
 			for (int j = 0; j < chunks[i].length; j++) { //columns (x)
@@ -48,10 +44,11 @@ public class Level {
 		
 		player.render(g);
 		
+		//Coins
 		g.setColor(Color.yellow);
 		g.setFont(Game.font24);
 		String s = "x " + String.valueOf(player.getCoins());
-		g.drawString(s, Game.SIZE.width - (14 * s.length()) - 2, Game.SIZE.height - 5);
+		g.drawString(s, Game.SIZE.width - (14 * s.length()) - 2, Game.SIZE.height - 25);
 		g.drawImage(Coin.getFlatCoinImage(), Game.SIZE.width - (14 * (s.length())) - 32, Game.SIZE.height - 28, null);
 	}
 }

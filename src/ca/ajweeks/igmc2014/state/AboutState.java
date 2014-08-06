@@ -10,6 +10,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import ca.ajweeks.igmc2014.Game;
 import ca.ajweeks.igmc2014.button.Button;
 import ca.ajweeks.igmc2014.gfx.Colour;
+import ca.ajweeks.igmc2014.gfx.RenderDebugOverlay;
 
 public class AboutState extends BasicGameState {
 	
@@ -44,20 +45,23 @@ public class AboutState extends BasicGameState {
 		}
 		
 		back.render(g);
+		
+		if (Game.renderDebug) RenderDebugOverlay.render(g);
 	}
 	
 	@Override
 	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
 		Input input = gc.getInput();
 		
+		if (input.isKeyPressed(Input.KEY_F3)) Game.renderDebug = !Game.renderDebug;
 		if (back.isDown(input) || input.isKeyPressed(Input.KEY_ESCAPE) || input.isKeyPressed(Input.KEY_SPACE)
 				|| input.isKeyPressed(Input.KEY_ENTER)) {
-			game.enterState(Game.MAINMENU_STATE);
+			game.enterState(Game.MAINMENU_STATE_ID);
 		}
 	}
 	
 	@Override
 	public int getID() {
-		return Game.ABOUT_STATE;
+		return Game.ABOUT_STATE_ID;
 	}
 }

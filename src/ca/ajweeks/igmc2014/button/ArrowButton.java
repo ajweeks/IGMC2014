@@ -20,7 +20,10 @@ public class ArrowButton extends Button {
 	public static Image arrowBtnLeftON;
 	public static Image arrowBtnLeftOFF;
 	
-	{
+	public ArrowButton(int x, int y, int width, int height, String text, Color colour, Color hColour, Color tColour, int dir) {
+		super(x, y, width, height, text, colour, hColour, tColour);
+		this.dir = dir;
+		
 		try {
 			arrowBtnRightON = new Image("res/arrow_btn_right_on.png").getScaledCopy(WIDTH, HEIGHT);
 			arrowBtnRightOFF = new Image("res/arrow_btn_right_off.png").getScaledCopy(WIDTH, HEIGHT);
@@ -31,18 +34,13 @@ public class ArrowButton extends Button {
 		}
 	}
 	
-	public ArrowButton(int x, int y, int width, int height, String text, Color colour, Color hColour, Color tColour, int dir) {
-		super(x, y, width, height, text, colour, hColour, tColour);
-		this.dir = dir;
-	}
-	
 	@Override
 	public boolean isDown(Input input) {
 		if (!enabled) return false;
 		if (dir == RIGHT || dir == LEFT) {
 			if (input.getMouseX() > x && input.getMouseX() < x + WIDTH) {
 				hover = true;
-				if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) return true;
+				if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) return true;
 			} else hover = false;
 		}
 		return false;

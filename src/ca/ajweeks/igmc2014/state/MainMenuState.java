@@ -12,13 +12,11 @@ import ca.ajweeks.igmc2014.Game;
 import ca.ajweeks.igmc2014.button.Button;
 import ca.ajweeks.igmc2014.button.ButtonManager;
 import ca.ajweeks.igmc2014.gfx.Colour;
+import ca.ajweeks.igmc2014.gfx.RenderDebugOverlay;
 import ca.ajweeks.igmc2014.input.Keyboard;
 import ca.ajweeks.igmc2014.sound.Sound;
 
 public class MainMenuState extends BasicGameState {
-	
-	private Image louder;
-	private Image quieter;
 	
 	private static final int PLAY = 0;
 	private static final int HELP = 1;
@@ -27,6 +25,8 @@ public class MainMenuState extends BasicGameState {
 	private static final int QUIETER = 4;
 	private static final int LOUDER = 5;
 	
+	private Image louder;
+	private Image quieter;
 	private ButtonManager buttons;
 	
 	private void quieter() {
@@ -72,6 +72,8 @@ public class MainMenuState extends BasicGameState {
 	
 	@Override
 	public void render(GameContainer gc, StateBasedGame game, Graphics g) throws SlickException {
+		Input input = gc.getInput();
+		
 		g.setColor(Colour.offBlack);
 		g.fillRect(0, 0, Game.SIZE.width, Game.SIZE.height);
 		
@@ -81,6 +83,9 @@ public class MainMenuState extends BasicGameState {
 		g.setColor(Colour.offWhite);
 		int vol = (int) (((Sound.volume + 24) / 3) * 10);
 		g.drawString("Volume: " + vol + "%", Game.SIZE.width - 164, 4);
+		
+		if (input.isKeyPressed(Input.KEY_F3)) Game.renderDebug = !Game.renderDebug;
+		if (Game.renderDebug) RenderDebugOverlay.render(g);
 	}
 	
 	@Override
@@ -104,13 +109,13 @@ public class MainMenuState extends BasicGameState {
 		if (input.isKeyPressed(Input.KEY_ENTER) || input.isKeyPressed(Input.KEY_SPACE)) {
 			switch (buttons.getSelectedButton()) {
 			case PLAY:
-				if (buttons.getButton(PLAY).isEnabled()) enterState(Game.GAME_STATE, game);
+				if (buttons.getButton(PLAY).isEnabled()) enterState(Game.GAME_STATE_ID, game);
 				break;
 			case HELP:
-				if (buttons.getButton(HELP).isEnabled()) enterState(Game.HELP_STATE, game);
+				if (buttons.getButton(HELP).isEnabled()) enterState(Game.HELP_STATE_ID, game);
 				break;
 			case ABOUT:
-				if (buttons.getButton(ABOUT).isEnabled()) enterState(Game.ABOUT_STATE, game);
+				if (buttons.getButton(ABOUT).isEnabled()) enterState(Game.ABOUT_STATE_ID, game);
 				break;
 			case QUIT:
 				if (buttons.getButton(QUIT).isEnabled()) ((Game) game).stopGame();
@@ -124,9 +129,9 @@ public class MainMenuState extends BasicGameState {
 			}
 		}
 		
-		if (buttons.getButton(PLAY).isDown(input)) enterState(Game.GAME_STATE, game);
-		if (buttons.getButton(HELP).isDown(input)) enterState(Game.HELP_STATE, game);
-		if (buttons.getButton(ABOUT).isDown(input)) enterState(Game.ABOUT_STATE, game);
+		if (buttons.getButton(PLAY).isDown(input)) enterState(Game.GAME_STATE_ID, game);
+		if (buttons.getButton(HELP).isDown(input)) enterState(Game.HELP_STATE_ID, game);
+		if (buttons.getButton(ABOUT).isDown(input)) enterState(Game.ABOUT_STATE_ID, game);
 		if (buttons.getButton(QUIT).isDown(input)) ((Game) game).stopGame();
 		if (buttons.getButton(LOUDER).isDown(input)) louder();
 		if (buttons.getButton(QUIETER).isDown(input)) quieter();
@@ -141,6 +146,6 @@ public class MainMenuState extends BasicGameState {
 	
 	@Override
 	public int getID() {
-		return Game.MAINMENU_STATE;
+		return Game.MAINMENU_STATE_ID;
 	}
 }

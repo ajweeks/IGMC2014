@@ -18,8 +18,6 @@ public class GameState extends BasicGameState {
 	public static Player player;
 	public static Camera camera;
 	
-	private boolean renderDebug = false;
-	
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
 		//TODO add game field
@@ -30,19 +28,19 @@ public class GameState extends BasicGameState {
 	
 	@Override
 	public void render(GameContainer gc, StateBasedGame game, org.newdawn.slick.Graphics g) throws SlickException {
-		Input input = gc.getInput();
-		
-		if (input.isKeyPressed(Input.KEY_F3)) renderDebug = !renderDebug;
-		if (renderDebug) RenderDebugOverlay.render(g);
-		
 		level.render(g);
+		
+		if (Game.renderDebug) RenderDebugOverlay.render(g);
 	}
 	
 	@Override
 	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
 		Input input = gc.getInput();
 		
-		if (input.isKeyPressed(Input.KEY_ESCAPE)) game.enterState(Game.MAINMENU_STATE);
+		//TODO add mouse hovering debugging
+		
+		if (input.isKeyPressed(Input.KEY_ESCAPE)) game.enterState(Game.MAINMENU_STATE_ID);
+		if (input.isKeyPressed(Input.KEY_F3)) Game.renderDebug = !Game.renderDebug;
 		
 		camera.update();
 		level.update(gc, game, delta);
@@ -50,7 +48,7 @@ public class GameState extends BasicGameState {
 	
 	@Override
 	public int getID() {
-		return Game.GAME_STATE;
+		return Game.GAME_STATE_ID;
 	}
 	
 }

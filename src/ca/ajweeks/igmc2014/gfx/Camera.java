@@ -36,7 +36,7 @@ public class Camera {
 			x = -(level.chunks[0].length) * Chunk.WIDTH * Tile.WIDTH + Game.SIZE.width;
 		
 		double maxY = (level.chunks.length - 1) * Tile.WIDTH * Chunk.WIDTH;
-		if (player.getY() * Tile.WIDTH > maxY) y = maxY;
+		if (player.getY() * Tile.WIDTH > maxY) y = (level.chunks.length - 1) * Tile.WIDTH * Chunk.WIDTH + Game.SIZE.height;
 		
 		if(y < 0) y = 0;
 	}

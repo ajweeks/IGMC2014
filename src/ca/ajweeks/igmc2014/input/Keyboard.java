@@ -3,6 +3,7 @@ package ca.ajweeks.igmc2014.input;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.state.StateBasedGame;
 
+/** A class to simplify calls to {@link org.newdawn.slick.Input} */
 public class Keyboard {
 	
 	/** @return true if tab, s, down, d, or right are pressed */
@@ -21,6 +22,13 @@ public class Keyboard {
 		if (input.isKeyPressed(Input.KEY_TAB)) return true;
 		if (Keyboard.isDownPressed(game)) return true;
 		if (Keyboard.isRightPressed(game)) return true;
+		return false;
+	}
+	
+	public static boolean isShiftDown(StateBasedGame game) {
+		Input input = game.getContainer().getInput();
+		if (input.isKeyDown(Input.KEY_LSHIFT)) return true;
+		if (input.isKeyDown(Input.KEY_RSHIFT)) return true;
 		return false;
 	}
 	

@@ -5,46 +5,53 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
 import ca.ajweeks.igmc2014.level.Tile;
-import ca.ajweeks.igmc2014.state.GameState;
 
-public class Coin {
+public class Coin extends Tile {
+	private static final long serialVersionUID = 1L;
+	
+	private final int TICKS_PER_FRAME = 7;
 	
 	private static Image[] image;
 	
 	{
 		try {
-			image = new Image[] { new Image("res/coin0.png"), new Image("res/coin1.png"),
-					new Image("res/coin2.png"), new Image("res/coin3.png"),
-					new Image("res/coin4.png"), new Image("res/coin5.png"),
-					new Image("res/coin6.png"), new Image("res/coin7.png"),
-					new Image("res/coin8.png"), new Image("res/coin9.png") };
+			image = new Image[] { new Image("res/coin0.png"), new Image("res/coin1.png"), new Image("res/coin2.png"),
+					new Image("res/coin3.png"), new Image("res/coin4.png"), new Image("res/coin5.png"),
+					new Image("res/coin6.png"), new Image("res/coin7.png"), new Image("res/coin8.png"),
+					new Image("res/coin9.png") };
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	private int i = 0;
+	private int index = 0;
 	private int ticks = 0;
 	
-	public int x, y;
+	public boolean removed = false;
 	
-	public boolean removed;
-	
-	public Coin(int x, int y) {
-		this.x = x;
-		this.y = y;
+	public Coin(int x, int y, int width, int height) {
+		super(Tile.Type.COIN, x, y, width, height);
 	}
 	
+	@Override
 	public void update() {
-		if (ticks++ > 6) {
+		if (removed) return;
+		if (ticks++ >= TICKS_PER_FRAME) {
 			ticks = 0;
-			i++;
-			if (i > image.length - 1) i = 0;
+			index++;
+			if (index > image.length - 1) index = 0;
 		}
 	}
 	
-	public void render(Graphics g, int xoff, int yoff) {
-		g.drawImage(image[i], (int) (x * Tile.WIDTH + GameState.camera.x + xoff), (int) (y * Tile.WIDTH + GameState.camera.y + yoff), null);
+	@Override
+	public void render(int x, int y, Graphics g) {
+		g.drawImage(blank, x, y, null);
+		if (removed) return;
+		g.drawImage(image[index], x + 17, y + 17, null);
+	}
+	
+	public Image getImage() {
+		return image[index];
 	}
 	
 	public static Image getFlatCoinImage() {

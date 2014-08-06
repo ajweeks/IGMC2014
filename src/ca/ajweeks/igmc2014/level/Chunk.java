@@ -3,7 +3,6 @@ package ca.ajweeks.igmc2014.level;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import org.newdawn.slick.Graphics;
 
@@ -15,7 +14,6 @@ public class Chunk {
 	public static final int WIDTH = 10;
 	public Tile[] tiles;
 	
-	private ArrayList<Coin> coins = new ArrayList<>();
 	private int x, y;
 	
 	public Chunk(String fileName, int y, int x) {
@@ -42,10 +40,12 @@ public class Chunk {
 			for (int i = 0; i < c.length; i++) {
 				if (c[i] == ',') continue;
 				else if (String.valueOf(c[i]).matches("[0-9]+")) {
-					result[a] = new Tile(Tile.Type.intToType(Character.getNumericValue(c[i])), x * WIDTH + a % WIDTH, y * WIDTH
-							+ a / WIDTH, Tile.WIDTH, Tile.WIDTH);
-					if (result[a].getType() == Tile.Type.COIN) {
-						coins.add(new Coin(x * WIDTH + a % WIDTH, y * WIDTH + a / WIDTH));
+					Tile t = new Tile(Tile.Type.intToType(Character.getNumericValue(c[i])), x * WIDTH + a % WIDTH, y * WIDTH + a
+							/ WIDTH, 1, 1);
+					if (t.getType() == Tile.Type.COIN) {
+						result[a] = new Coin(x * WIDTH + a % WIDTH, y * WIDTH + a / WIDTH, Tile.WIDTH, Tile.WIDTH);
+					} else {
+						result[a] = t;
 					}
 					a++;
 				}
@@ -56,14 +56,13 @@ public class Chunk {
 		return result;
 	}
 	
-	public Tile.Type collides(double xpos, double ypos) {
-		return tiles[(int) ((ypos * WIDTH) +  (int) xpos)].getType();
+	public Tile getTile(int x, int y) {
+		return tiles[(y * WIDTH) + x];
 	}
 	
 	public void update(double delta) {
-		for (Coin c : coins) {
-			c.update();
-			if (c.removed) coins.remove(c);
+		for (int i = 0; i < tiles.length; i++) {
+			tiles[i].update();
 		}
 	}
 	
@@ -75,10 +74,5 @@ public class Chunk {
 				tiles[k * Chunk.WIDTH + l].render(x, y, g);
 			}
 		}
-		
-		for (Coin c : coins) {
-			c.render(g, x, y);
-		}
 	}
-	
 }
