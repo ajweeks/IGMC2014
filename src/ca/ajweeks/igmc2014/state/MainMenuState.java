@@ -51,6 +51,8 @@ public class MainMenuState extends BasicGameState {
 	
 	@Override
 	public void init(GameContainer gc, StateBasedGame game) throws SlickException {
+		new RenderDebugOverlay((Game) game, (GameState) game.getState(Game.GAME_STATE_ID));
+		
 		try {
 			louder = new Image("res/louder.png");
 			quieter = new Image("res/quieter.png");
@@ -93,7 +95,7 @@ public class MainMenuState extends BasicGameState {
 		Input input = gc.getInput();
 		
 		buttons.update();
-		
+
 		if (Keyboard.isPreviousPressed(game)) {
 			do {
 				buttons.previousButton(); //set selected buttons to previous enabled button

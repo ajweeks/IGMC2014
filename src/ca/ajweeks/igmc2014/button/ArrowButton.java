@@ -47,6 +47,7 @@ public class ArrowButton extends Button {
 	}
 	
 	public void render(Graphics g) {
+		g.setColor(Color.white);
 		if (dir == LEFT) {
 			if (!enabled) return;
 			else if (hover) g.drawImage(arrowBtnLeftON, x, y, null);

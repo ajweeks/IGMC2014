@@ -107,6 +107,7 @@ public class Button {
 		g.drawString(text, x + (width / 2) - (g.getFont().getWidth(text) / 2), y + (height / 2)
 				- (g.getFont().getHeight(text) / 2));
 		
+		g.setColor(Color.white);
 		if (hasImage) g.drawImage(image, x + 2, y + 2, null);
 		
 		if (!enabled) {

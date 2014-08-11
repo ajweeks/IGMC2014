@@ -12,25 +12,19 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import ca.ajweeks.igmc2014.Game;
 import ca.ajweeks.igmc2014.gfx.Colour;
-import ca.ajweeks.igmc2014.gfx.RenderDebugOverlay;
 import ca.ajweeks.igmc2014.gfx.SimpleFont;
 
 public class LoadingState extends BasicGameState {
 	//TODO make things actually load while displaying anim
-	private Game game;
 	
 	private final int DELAY = 10; //# of ticks to show splash screen for
 	private int ticks; //# of ticks that have gone by
 	
 	private SpriteSheet loadingImages;
-	
-	public LoadingState(Game game) {
-		this.game = game;
-	}
+	public Client bugsnag;
 	
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
-		new RenderDebugOverlay(this.game);
 		new Colour();
 		
 		SimpleFont font24 = new SimpleFont(new Font("Consolas", Font.BOLD, 24));
@@ -50,6 +44,8 @@ public class LoadingState extends BasicGameState {
 		}
 		
 		loadingImages = new SpriteSheet(new Image("res/tri_load2.png"), 256, 256);
+		
+		bugsnag = new Client("48e3de13919177cfc5163bda66823970");
 	}
 	
 	@Override
@@ -66,6 +62,7 @@ public class LoadingState extends BasicGameState {
 	
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
+		bugsnag.notify(new RuntimeException("Non-fatal"));
 		if (ticks++ >= DELAY) game.enterState(Game.MAINMENU_STATE_ID);
 	}
 	

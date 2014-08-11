@@ -15,14 +15,13 @@ import ca.ajweeks.igmc2014.level.Level;
 public class GameState extends BasicGameState {
 	
 	public Level level;
-	public static Player player;
-	public static Camera camera;
+	public Player player;
+	public Camera camera;
 	
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
-		//TODO add game field
 		player = new Player(this);
-		level = new Level(player);
+		level = new Level(player, this);
 		camera = new Camera(player, level);
 	}
 	

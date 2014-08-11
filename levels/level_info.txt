@@ -1,0 +1,5 @@
+Levels are split into chunks of 10x10 tiles.
+Chunks are stored in text files with their titles being in the form of: "y_x.txt" with y and x being the positions of that chunk
+E.g.;
+ { 1_0  1_1  1_2  1_3
+   0_0  0_1  0_2  0_3 }

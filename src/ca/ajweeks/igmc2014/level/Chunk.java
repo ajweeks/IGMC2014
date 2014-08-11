@@ -14,9 +14,11 @@ public class Chunk {
 	public static final int WIDTH = 10;
 	public Tile[] tiles;
 	
+	private GameState gs;
 	private int x, y;
 	
-	public Chunk(String fileName, int y, int x) {
+	public Chunk(GameState gs, String fileName, int y, int x) {
+		this.gs = gs;
 		this.x = x;
 		this.y = y;
 		
@@ -28,7 +30,7 @@ public class Chunk {
 		}
 	}
 	
-	/** @return an array of tile objects which correspond to numbers typed in specified file at fileName OR an array of length 0 if the file is empty*/
+	/** @return An array of tile objects which correspond to numbers typed in specified file at fileName OR an array of length 0 if the file is empty */
 	private Tile[] readFile(String fileName) {
 		Tile[] result = new Tile[WIDTH * WIDTH];
 		try (FileReader reader = new FileReader(new File(fileName))) {
@@ -69,8 +71,8 @@ public class Chunk {
 	public void render(Graphics g, int i, int j) {
 		for (int k = 0; k < Chunk.WIDTH; k++) {
 			for (int l = 0; l < Chunk.WIDTH; l++) {
-				int x = (int) (l * Tile.WIDTH + j * Chunk.WIDTH * Tile.WIDTH + GameState.camera.x);
-				int y = (int) (Tile.WIDTH * Chunk.WIDTH * -i + k * Tile.WIDTH + GameState.camera.y);
+				int x = (int) (l * Tile.WIDTH + j * Chunk.WIDTH * Tile.WIDTH + gs.camera.x);
+				int y = (int) (Tile.WIDTH * Chunk.WIDTH * -i + k * Tile.WIDTH + gs.camera.y);
 				tiles[k * Chunk.WIDTH + l].render(x, y, g);
 			}
 		}

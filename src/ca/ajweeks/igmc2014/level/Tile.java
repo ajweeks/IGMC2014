@@ -1,5 +1,6 @@
 package ca.ajweeks.igmc2014.level;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -69,7 +70,10 @@ public class Tile extends Rectangle {
 		this.type = type;
 	}
 	
+	//TODO make all tiles auto-connect to each other
+	
 	public void render(int x, int y, Graphics g) {
+		g.setColor(Color.white);
 		if (x > Game.SIZE.width + WIDTH || y > Game.SIZE.height + WIDTH || x < -WIDTH || y < -WIDTH) return; //no need rendering off screen
 		Image image;
 		switch (type) {
@@ -97,6 +101,9 @@ public class Tile extends Rectangle {
 			break;
 		}
 		g.drawImage(image, x, y);
+		
+//		g.setColor(Color.magenta);
+//		g.fillRect(x, y, this.width * Tile.WIDTH, this.height * Tile.WIDTH);
 	}
 	
 	public void update() {}

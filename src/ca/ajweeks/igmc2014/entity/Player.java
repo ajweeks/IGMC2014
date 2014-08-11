@@ -1,5 +1,6 @@
 package ca.ajweeks.igmc2014.entity;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -130,15 +131,15 @@ public class Player extends Rectangle {
 			xv = 0;
 		}
 		
-		if (y < 1) {
-			y = 1; //bottom of level
+		if (y < height) {
+			y = height; //bottom of level
 			yv = 0;
 			onGround = true;
 		}
 		
 		float levelWidth = gs.level.chunks[0].length * Chunk.WIDTH * Tile.WIDTH - WIDTH;
-		if (x > levelWidth / Tile.WIDTH) {
-			x = levelWidth / Tile.WIDTH;
+		if (x > levelWidth / Tile.WIDTH - width/2) {
+			x = levelWidth / Tile.WIDTH - width/2;
 			xv = 0;
 		}
 		
@@ -151,28 +152,20 @@ public class Player extends Rectangle {
 		if (xv != 0 || yv != 0) {
 			for (int i = 0; i < gs.level.chunks.length; i++) {
 				for (int j = 0; j < gs.level.chunks[i].length; j++) {
-					for (int k = 0; k < Chunk.WIDTH; k++) {
-						for (int l = 0; l < Chunk.WIDTH; l++) {
-							Tile t = gs.level.chunks[i][j].getTile(l, k);
-							if (t.intersects(this)) {
-								if (t.getType() == Tile.Type.COIN) {
-									if(!((Coin) t).removed) {
-										coins++;
-										((Coin) gs.level.chunks[i][j].getTile(l, k)).removed = true;
-									}
-								} else if (t.getType().isSolid()) {
-									System.out.println(t.getX());
-									System.out.println(t.getY());
-									System.out.println(t.getType().toString());
-									System.out.println(getX());
-									System.out.println(getY());
-									System.out.println();
-									x = bx;
-									y = by;
-									
-									xv = 0;
-									onGround = true;
+					for (int k = 0; k < gs.level.chunks[i][j].tiles.length; k++) {
+						Tile t = gs.level.chunks[i][j].tiles[k];
+						if (t.intersects(this)) { //will never work as intended because player's x & y pos are not rendered the same way tile's x & y 
+							if (t.getType() == Tile.Type.COIN) {
+								if (!((Coin) t).isRemoved()) {
+									coins++;
+									((Coin) gs.level.chunks[i][j].tiles[k]).remove();
 								}
+							} else if (t.getType().isSolid()) {
+								//x = bx;
+								//y = by;
+								
+								//xv = 0;
+								//onGround = true;
 							}
 						}
 					}
@@ -187,7 +180,10 @@ public class Player extends Rectangle {
 	}
 	
 	public void render(Graphics g) {
-		g.drawImage(player, (int) (x * Tile.WIDTH + GameState.camera.x),
-				(int) (Game.SIZE.height - y * Tile.WIDTH + GameState.camera.y), null);
+		g.setColor(Color.white);
+		g.drawImage(player, (float) ((float) x * Tile.WIDTH + gs.camera.x), (float) (Game.SIZE.height - y * Tile.WIDTH + gs.camera.y), null);
+//		g.setColor(Color.white);
+//		g.fillRect((float) (x * Tile.WIDTH + gs.camera.x), (float) (Game.SIZE.height - y * Tile.WIDTH + gs.camera.y), width * Tile.WIDTH, height
+//				* Tile.WIDTH);
 	}
 }

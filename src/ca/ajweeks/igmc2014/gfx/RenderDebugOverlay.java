@@ -10,9 +10,11 @@ import ca.ajweeks.igmc2014.state.GameState;
 public class RenderDebugOverlay {
 	
 	private static Game game;
+	private static GameState gs;
 	private static int y, x, height;
 	
-	public RenderDebugOverlay(Game game) {
+	public RenderDebugOverlay(Game game, GameState gs) {
+		RenderDebugOverlay.gs = gs;
 		RenderDebugOverlay.game = game;
 	}
 	
@@ -26,11 +28,11 @@ public class RenderDebugOverlay {
 		drawString(g, Integer.toString(game.getContainer().getFPS()) + " FPS");
 		drawString(g, "Current state: " + game.getCurrentStateSimpleName());
 		if (game.getCurrentStateID() == Game.GAME_STATE_ID) {
-			drawString(g, "hasDoubleJumped: " + GameState.player.hasDoubleJumped);
-			drawString(g, "x = " + GameState.player.getX());
-			drawString(g, "y = " + GameState.player.getY());
-			drawString(g, "xv = " + GameState.player.getXv());
-			drawString(g, "yv = " + GameState.player.getYv());
+			drawString(g, "hasDoubleJumped: " + gs.player.hasDoubleJumped);
+			drawString(g, "x = " + gs.player.getX());
+			drawString(g, "y = " + gs.player.getY());
+			drawString(g, "xv = " + gs.player.getXv());
+			drawString(g, "yv = " + gs.player.getYv());
 			drawString(g, "max xv = " + Player.maxHorizontalVelocity);
 		}
 	}
