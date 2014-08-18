@@ -95,7 +95,7 @@ public class MainMenuState extends BasicGameState {
 		Input input = gc.getInput();
 		
 		buttons.update();
-
+		
 		if (Keyboard.isPreviousPressed(game)) {
 			do {
 				buttons.previousButton(); //set selected buttons to previous enabled button

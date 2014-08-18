@@ -21,7 +21,6 @@ public class LoadingState extends BasicGameState {
 	private int ticks; //# of ticks that have gone by
 	
 	private SpriteSheet loadingImages;
-	public Client bugsnag;
 	
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
@@ -44,8 +43,6 @@ public class LoadingState extends BasicGameState {
 		}
 		
 		loadingImages = new SpriteSheet(new Image("res/tri_load2.png"), 256, 256);
-		
-		bugsnag = new Client("48e3de13919177cfc5163bda66823970");
 	}
 	
 	@Override
@@ -62,7 +59,6 @@ public class LoadingState extends BasicGameState {
 	
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
-		bugsnag.notify(new RuntimeException("Non-fatal"));
 		if (ticks++ >= DELAY) game.enterState(Game.MAINMENU_STATE_ID);
 	}
 	

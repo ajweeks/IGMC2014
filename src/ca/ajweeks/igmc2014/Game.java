@@ -62,7 +62,6 @@ public class Game extends StateBasedGame {
 		agc.setVerbose(false);
 		agc.setShowFPS(false);
 		agc.start();
-		
 	}
 	
 	@Override
