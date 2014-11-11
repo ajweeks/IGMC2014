@@ -1,13 +1,9 @@
 package ca.ajweeks.igmc2014.entity;
 
-import java.awt.Rectangle;
-
 public class BoundingBox {
 	
 	private float x, y;
 	private int width, height;
-	/** represent a pixel precision view of each game object */
-	private Rectangle bounds;
 	
 	/** @param x - the number of tiles from the left of the screen this tile is
 	 *  @param y - the number of tiles from the bottom of the screen this bounding box is
@@ -20,11 +16,21 @@ public class BoundingBox {
 		this.y = y;
 		this.width = width;
 		this.height = height;
-		bounds = new Rectangle((int) (x * scale), (int) (y * scale), width * scale, height * scale);
 	}
 	
-	public Rectangle getBounds() {
-		return bounds;
+	/** @return true if this BoundingBox contains b entirely */
+	public boolean contains(BoundingBox b) {
+		return (b.x > x && b.x < x + width && b.y > y && b.y < y + height);
+	}
+	
+	/** @return true if this BoundingBox touches b at any point */
+	public boolean intersects(BoundingBox b) {
+		if ((b.x > x & b.x < x + width && b.y > y && b.y < b.height) || //b's top left corner is inside this box
+				(b.x + b.width > x && b.x + b.width < x + width && b.y > y && b.y < y + height) || //b's top right corner is inside this box
+				(b.x > x & b.x < x + width && b.y + b.height > y && b.y + b.height < y + height) || //b's bottom left corner is inside this box
+				(b.x + b.width > x && b.x + b.width < x + width && b.y + b.height > y && b.y + b.height < y + height)) { //b's bottom right corner is inside this box
+			return true;
+		} else return false;
 	}
 	
 	public void setX(float x) {

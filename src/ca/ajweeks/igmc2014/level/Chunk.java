@@ -22,7 +22,7 @@ public class Chunk {
 		
 		tiles = readFile(fileName);
 		
-		if (tiles.length == 0) { //file is empty
+		if (tiles == null || tiles.length == 0) { //file is empty
 			System.err.println("Empty file!! File name: " + fileName);
 			return;
 		}

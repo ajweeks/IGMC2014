@@ -9,9 +9,6 @@ import ca.ajweeks.igmc2014.entity.Player;
 
 public class Level {
 	
-	public static final int WIDTH = 4;
-	public static final int HEIGHT = 2;
-	
 	public Chunk[][] chunks;
 	public Player player;
 	
@@ -21,17 +18,19 @@ public class Level {
 		this.game = game;
 		this.player = player;
 		
-		chunks = new Chunk[HEIGHT][WIDTH];
-		
-		chunks[0][0] = new Chunk("levels/" + level + "/0_0.txt", 0, 0);
-		chunks[0][1] = new Chunk("levels/" + level + "/0_1.txt", 0, 1);
-		chunks[0][2] = new Chunk("levels/" + level + "/0_2.txt", 0, 2);
-		chunks[0][3] = new Chunk("levels/" + level + "/0_3.txt", 0, 3);
-		
-		chunks[1][0] = new Chunk("levels/" + level + "/1_0.txt", 1, 0);
-		chunks[1][1] = new Chunk("levels/" + level + "/1_1.txt", 1, 1);
-		chunks[1][2] = new Chunk("levels/" + level + "/1_2.txt", 1, 2);
-		chunks[1][3] = new Chunk("levels/" + level + "/1_3.txt", 1, 3);
+		chunks = new Chunk[][] {
+				{ new Chunk(// 
+						"levels/" + //
+								String.valueOf(level) + //
+								"/0_0.txt", 0, 0), new Chunk("levels/" + String.valueOf(level) + "/0_1.txt", 0, 1),
+						new Chunk("levels/" + String.valueOf(level) + "/0_2.txt", 0, 2),
+						new Chunk("levels/" + String.valueOf(level) + "/0_3.txt", 0, 3) },
+				{
+				
+				new Chunk("levels/" + String.valueOf(level) + "/1_0.txt", 1, 0),
+						new Chunk("levels/" + String.valueOf(level) + "/1_1.txt", 1, 1),
+						new Chunk("levels/" + String.valueOf(level) + "/1_2.txt", 1, 2),
+						new Chunk("levels/" + String.valueOf(level) + "/1_3.txt", 1, 3) } };
 	}
 	
 	public void update(double delta) {
@@ -53,6 +52,7 @@ public class Level {
 		
 		//LATER add foreground objects (& parallax effect)
 		
+		//player
 		player.render(g);
 		
 		//coins

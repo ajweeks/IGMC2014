@@ -1,14 +1,7 @@
 package ca.ajweeks.igmc2014.sound;
 
-import java.io.File;
-import java.io.IOException;
-
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 
 public enum Sound {
 	SELECT("res/sounds/select2.wav"), JUMP("res/sounds/jump.wav"), WIZZLE("res/sounds/wizzle.wav"), ACHIEVE(
@@ -22,15 +15,15 @@ public enum Sound {
 	private FloatControl control;
 	
 	Sound(String filename) {
-//		try {
-//			AudioInputStream inStream = AudioSystem.getAudioInputStream(new File(filename));
-//			clip = AudioSystem.getClip();
-//			clip.open(inStream);
-//			control = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-//		} catch (IOException | LineUnavailableException | UnsupportedAudioFileException e) {
-//			e.printStackTrace();
-//		}
-//		
+		//		try {
+		//			AudioInputStream inStream = AudioSystem.getAudioInputStream(new File(filename));
+		//			clip = AudioSystem.getClip();
+		//			clip.open(inStream);
+		//			control = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+		//		} catch (IOException | LineUnavailableException | UnsupportedAudioFileException e) {
+		//			e.printStackTrace();
+		//		}
+		//		
 	}
 	
 	public static float louder(float n) {
@@ -42,12 +35,12 @@ public enum Sound {
 	}
 	
 	public void play() {
-//		if (volume <= MIN_VOLUME) return; //No sound
-//		control.setValue((float) volume);
-//		
-//		if (clip.isRunning()) clip.stop();
-//		clip.setFramePosition(0);
-//		clip.start();
+		//		if (volume <= MIN_VOLUME) return; //No sound
+		//		control.setValue((float) volume);
+		//		
+		//		if (clip.isRunning()) clip.stop();
+		//		clip.setFramePosition(0);
+		//		clip.start();
 	}
 	
 }

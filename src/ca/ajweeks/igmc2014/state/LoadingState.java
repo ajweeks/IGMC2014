@@ -13,7 +13,7 @@ public class LoadingState extends BasicState {
 	//private final int DELAY = 10; //# of ticks to show splash screen for
 	//private int ticks; //# of ticks that have gone by
 	
-	private SpriteSheet loadingImages;
+	//LATER ADD loading images: private SpriteSheet loadingImages;
 	private Game game;
 	
 	@Override

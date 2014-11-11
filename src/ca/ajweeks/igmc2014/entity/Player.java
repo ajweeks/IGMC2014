@@ -50,26 +50,6 @@ public class Player extends BoundingBox {
 		sprite = new ImageIcon("res/player.png").getImage();
 	}
 	
-	public void addCoins(int coins) {
-		this.coins += coins;
-	}
-	
-	public void removeCoins(int coins) {
-		this.coins -= coins;
-	}
-	
-	public int getCoins() {
-		return coins;
-	}
-	
-	public double getXv() {
-		return xv;
-	}
-	
-	public double getYv() {
-		return yv;
-	}
-	
 	public void update(double delta) {
 		Input input = game.getInput();
 		
@@ -151,20 +131,20 @@ public class Player extends BoundingBox {
 					for (int k = 0; k < gs.level.chunks[i][j].tiles.length; k++) {
 						for (int l = 0; l < gs.level.chunks[i][j].tiles[k].length; l++) {
 							Tile t = gs.level.chunks[i][j].tiles[k][l];
-							if (t.getBounds().intersects(this.getBounds())) { //FIXME col detection will never work as intended because player's x & y pos are not rendered the same way tile's x & y 
-								if (t.getType() == Tile.Type.COIN) {
-									if (!((Coin) t).isRemoved()) {
-										coins++;
-										((Coin) gs.level.chunks[i][j].tiles[k][l]).remove();
-									}
-								} else if (t.getType().isSolid()) {
-									//x = bx;
-									//y = by;
-									
-									//xv = 0;
-									//onGround = true;
-								}
-							}
+							//							if (t.intersects(this)) { //FIXME col detection will never work as intended because player's x & y pos are not rendered the same way tile's x & y 
+							//								if (t.getType() == Tile.Type.COIN) {
+							//									if (!((Coin) t).isRemoved()) {
+							//										coins++;
+							//										((Coin) gs.level.chunks[i][j].tiles[k][l]).remove();
+							//									}
+							//								} else if (t.getType().isSolid()) {
+							//									//x = bx;
+							//									//y = by;
+							//									
+							//									//xv = 0;
+							//									//onGround = true;
+							//								}
+							//							}
 						}
 					}
 				}
@@ -178,11 +158,32 @@ public class Player extends BoundingBox {
 	}
 	
 	public void render(Graphics g) {
-		//		g.setColor(Color.white);
-		//		g.drawImage(sprite, (float) ((float) x * Tile.WIDTH + gs.camera.x), (float) (Game.SIZE.height - y * Tile.WIDTH + gs.camera.y), null);
-		g.setColor(Color.white);
-		g.fillRect((int) (getX() * Tile.PIXEL_WIDTH + GameState.camera.x),
+		g.setColor(Color.RED);
+		g.drawRect((int) (getX() * Tile.PIXEL_WIDTH + GameState.camera.x),
 				(int) (Game.SIZE.height - getY() * Tile.PIXEL_WIDTH + GameState.camera.y), getWidth() * Tile.PIXEL_WIDTH,
 				getHeight() * Tile.PIXEL_WIDTH);
+		g.setColor(Color.white);
+		g.drawImage(sprite, (int) (getX() * getWidth() + GameState.camera.x),
+				(int) (Game.SIZE.height - getY() * getHeight() + GameState.camera.y), null);
+	}
+	
+	public void addCoins(int coins) {
+		this.coins += coins;
+	}
+	
+	public void removeCoins(int coins) {
+		this.coins -= coins;
+	}
+	
+	public int getCoins() {
+		return coins;
+	}
+	
+	public double getXv() {
+		return xv;
+	}
+	
+	public double getYv() {
+		return yv;
 	}
 }
