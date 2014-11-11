@@ -1,8 +1,7 @@
 package ca.ajweeks.igmc2014.button;
 
+import java.awt.Graphics;
 import java.util.ArrayList;
-
-import org.newdawn.slick.Graphics;
 
 public class ButtonManager {
 	

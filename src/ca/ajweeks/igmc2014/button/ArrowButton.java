@@ -1,17 +1,19 @@
 package ca.ajweeks.igmc2014.button;
 
-import org.newdawn.slick.Color;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.Input;
-import org.newdawn.slick.SlickException;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
+
+import javax.swing.ImageIcon;
+
+import ca.ajweeks.igmc2014.input.Input;
 
 public class ArrowButton extends Button {
 	
 	public static final int LEFT = 0;
 	public static final int RIGHT = 1;
 	
-	private static final int WIDTH = 55, HEIGHT = 110;
+	public static final int WIDTH = 55, HEIGHT = 110;
 	
 	private int dir = 0;
 	
@@ -24,23 +26,19 @@ public class ArrowButton extends Button {
 		super(x, y, width, height, text, colour, hColour, tColour);
 		this.dir = dir;
 		
-		try {
-			arrowBtnRightON = new Image("res/arrow_btn_right_on.png").getScaledCopy(WIDTH, HEIGHT);
-			arrowBtnRightOFF = new Image("res/arrow_btn_right_off.png").getScaledCopy(WIDTH, HEIGHT);
-			arrowBtnLeftON = new Image("res/arrow_btn_left_on.png").getScaledCopy(WIDTH, HEIGHT);
-			arrowBtnLeftOFF = new Image("res/arrow_btn_left_off.png").getScaledCopy(WIDTH, HEIGHT);
-		} catch (SlickException e) {
-			e.printStackTrace();
-		}
+		arrowBtnRightON = new ImageIcon("res/arrow_btn_right_on.png").getImage();
+		arrowBtnRightOFF = new ImageIcon("res/arrow_btn_right_off.png").getImage();
+		arrowBtnLeftON = new ImageIcon("res/arrow_btn_left_on.png").getImage();
+		arrowBtnLeftOFF = new ImageIcon("res/arrow_btn_left_off.png").getImage();
 	}
 	
 	@Override
-	public boolean isDown(Input input) {
+	public boolean isClicked(Input input) {
 		if (!enabled) return false;
 		if (dir == RIGHT || dir == LEFT) {
 			if (input.getMouseX() > x && input.getMouseX() < x + WIDTH) {
 				hover = true;
-				if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) return true;
+				if (input.leftMouseClicked()) return true;
 			} else hover = false;
 		}
 		return false;

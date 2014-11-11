@@ -1,75 +1,110 @@
 package ca.ajweeks.igmc2014;
 
+import java.awt.Canvas;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.image.BufferStrategy;
 
-import org.newdawn.slick.AppGameContainer;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.UnicodeFont;
-import org.newdawn.slick.state.StateBasedGame;
+import javax.swing.JFrame;
 
-import ca.ajweeks.igmc2014.state.GameState;
-import ca.ajweeks.igmc2014.state.AboutState;
-import ca.ajweeks.igmc2014.state.HelpState;
-import ca.ajweeks.igmc2014.state.LoadingState;
-import ca.ajweeks.igmc2014.state.MainMenuState;
+import ca.ajweeks.igmc2014.graphics.Colour;
+import ca.ajweeks.igmc2014.input.Input;
+import ca.ajweeks.igmc2014.state.StateManager;
 
-public class Game extends StateBasedGame {
-	
-	public static final int LOADING_STATE_ID = 0;
-	public static final int MAINMENU_STATE_ID = 1;
-	public static final int GAME_STATE_ID = 2;
-	public static final int HELP_STATE_ID = 3;
-	public static final int ABOUT_STATE_ID = 4;
+public class Game extends Canvas implements Runnable {
+	private static final long serialVersionUID = 1L;
 	
 	public static final String GAME_TITLE = "IGMC 2014";
 	public static final Dimension SIZE = new Dimension(1140, 640);
 	
-	public static UnicodeFont font24;
-	public static UnicodeFont font34;
-	public static UnicodeFont fontDebug;
+	public static Font font24;
+	public static Font font34;
+	public static Font fontDebug;
+	public static StateManager sm;
 	
 	public static boolean renderDebug = true; //TODO MAKE FALSE FOR RELEASES
 	
+	private Input input;
+	private JFrame frame;
+	private boolean running = false;
+	private int fps = 0;
+	int frames = 0;
+	
 	public Game() {
-		super(GAME_TITLE);
+		super();
+		setSize(SIZE);
+		
+		sm = new StateManager(this);
+		input = new Input(this);
+		
+		frame = new JFrame(GAME_TITLE);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setResizable(false);
+		frame.add(this);
+		frame.pack();
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
 	}
 	
-	public String getCurrentStateSimpleName() {
-		switch (getCurrentStateID()) {
-		case MAINMENU_STATE_ID:
-			return "Main Menu State";
-		case ABOUT_STATE_ID:
-			return "About State";
-		case GAME_STATE_ID:
-			return "Game State";
-		case HELP_STATE_ID:
-			return "Help State";
-		default:
-			return "Unknown state name! " + getCurrentStateID();
-		}
-	}
-	
-	public void stopGame() {
-		getContainer().exit();
-	}
-	
-	public static void main(String[] args) throws SlickException {
-		AppGameContainer agc = new AppGameContainer(new Game());
-		agc.setDisplayMode(SIZE.width, SIZE.height, false);
-		agc.setTargetFrameRate(60);
-		agc.setAlwaysRender(true);
-		agc.setVerbose(false);
-		agc.setShowFPS(false);
-		agc.start();
+	public static void main(String[] args) {
+		new Thread(new Game()).start();
 	}
 	
 	@Override
-	public void initStatesList(GameContainer gc) throws SlickException {
-		addState(new LoadingState());
-		addState(new MainMenuState());
-		addState(new GameState());
-		addState(new HelpState());
-		addState(new AboutState());
+	public void run() {
+		running = true;
+		
+		long before = System.nanoTime();
+		long elapsed = 0;
+		while (running) {
+			long now = System.nanoTime();
+			long delta = now - before;
+			before = now;
+			elapsed += delta;
+			
+			if (elapsed > 1_000_000) {
+				fps = frames;
+				frames = 0;
+				elapsed = 0;
+			}
+			
+			sm.update(delta);
+			input.tick();
+			
+			BufferStrategy buffer = getBufferStrategy();
+			if (buffer == null) {
+				createBufferStrategy(2);
+				continue;
+			}
+			Graphics g = buffer.getDrawGraphics();
+			
+			g.setColor(Colour.offBlack);
+			g.fillRect(0, 0, SIZE.width, SIZE.height);
+			
+			sm.render(g);
+			frames++;
+			
+			g.dispose();
+			buffer.show();
+		}
+		frame.dispose();
+		System.exit(0);
+	}
+	
+	public void stop() {
+		running = false;
+	}
+	
+	public void enterState(int ID) {
+		sm.enterState(ID, this);
+	}
+	
+	public Input getInput() {
+		return input;
+	}
+	
+	public int getFps() {
+		return fps;
 	}
 }

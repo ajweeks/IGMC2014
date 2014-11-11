@@ -1,53 +1,71 @@
 package ca.ajweeks.igmc2014.state;
 
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Input;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.state.BasicGameState;
-import org.newdawn.slick.state.StateBasedGame;
+import java.awt.Graphics;
 
 import ca.ajweeks.igmc2014.Game;
 import ca.ajweeks.igmc2014.entity.Player;
-import ca.ajweeks.igmc2014.gfx.Camera;
-import ca.ajweeks.igmc2014.gfx.RenderDebugOverlay;
+import ca.ajweeks.igmc2014.graphics.Camera;
+import ca.ajweeks.igmc2014.graphics.RenderDebugOverlay;
+import ca.ajweeks.igmc2014.input.Input;
 import ca.ajweeks.igmc2014.level.Level;
 
-public class GameState extends BasicGameState {
+public class GameState extends BasicState {
+	
+	public static Camera camera;
 	
 	public Level level;
 	public Player player;
-	public Camera camera;
+	
+	private Game game;
+	private Level[] levels;
+	
+	public void enterLevel(int level) {
+		if (level > levels.length - 1 || level < 1) {
+			System.err.println("Invalid level!" + level);
+			return;
+		}
+		this.level = levels[level];
+	}
 	
 	@Override
-	public void init(GameContainer container, StateBasedGame game) throws SlickException {
-		player = new Player(this);
-		level = new Level(player, this);
+	public void init(Game game) {
+		this.game = game;
+		
+		player = new Player(game, this);
+		
+		levels = new Level[] { new Level(player, game, 1) };
+		level = levels[0];
+		
 		camera = new Camera(player, level);
 	}
 	
 	@Override
-	public void render(GameContainer gc, StateBasedGame game, org.newdawn.slick.Graphics g) throws SlickException {
+	public void update(double delta) {
+		Input input = game.getInput();
+		
+		//TODO add mouse hovering debugging
+		
+		if (input.esc.clicked) game.enterState(StateManager.MAINMENU_STATE_ID);
+		if (input.F3.clicked) Game.renderDebug = !Game.renderDebug;
+		
+		camera.update();
+		level.update(delta);
+	}
+	
+	@Override
+	public void render(Graphics g) {
 		level.render(g);
 		
 		if (Game.renderDebug) RenderDebugOverlay.render(g);
 	}
 	
-	@Override
-	public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
-		Input input = gc.getInput();
-		
-		//TODO add mouse hovering debugging
-		
-		if (input.isKeyPressed(Input.KEY_ESCAPE)) game.enterState(Game.MAINMENU_STATE_ID);
-		if (input.isKeyPressed(Input.KEY_F3)) Game.renderDebug = !Game.renderDebug;
-		
-		camera.update();
-		level.update(gc, game, delta);
+	public Player getPlayer() {
+		return player;
 	}
 	
 	@Override
 	public int getID() {
-		return Game.GAME_STATE_ID;
+		return StateManager.GAME_STATE_ID;
 	}
 	
 }

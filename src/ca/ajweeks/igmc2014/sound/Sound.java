@@ -22,15 +22,15 @@ public enum Sound {
 	private FloatControl control;
 	
 	Sound(String filename) {
-		try {
-			AudioInputStream inStream = AudioSystem.getAudioInputStream(new File(filename));
-			clip = AudioSystem.getClip();
-			clip.open(inStream);
-			control = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-		} catch (IOException | LineUnavailableException | UnsupportedAudioFileException e) {
-			e.printStackTrace();
-		}
-		
+//		try {
+//			AudioInputStream inStream = AudioSystem.getAudioInputStream(new File(filename));
+//			clip = AudioSystem.getClip();
+//			clip.open(inStream);
+//			control = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+//		} catch (IOException | LineUnavailableException | UnsupportedAudioFileException e) {
+//			e.printStackTrace();
+//		}
+//		
 	}
 	
 	public static float louder(float n) {
@@ -42,12 +42,12 @@ public enum Sound {
 	}
 	
 	public void play() {
-		if (volume <= MIN_VOLUME) return; //No sound
-		control.setValue((float) volume);
-		
-		if (clip.isRunning()) clip.stop();
-		clip.setFramePosition(0);
-		clip.start();
+//		if (volume <= MIN_VOLUME) return; //No sound
+//		control.setValue((float) volume);
+//		
+//		if (clip.isRunning()) clip.stop();
+//		clip.setFramePosition(0);
+//		clip.start();
 	}
 	
 }

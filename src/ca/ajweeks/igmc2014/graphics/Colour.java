@@ -1,6 +1,6 @@
-package ca.ajweeks.igmc2014.gfx;
+package ca.ajweeks.igmc2014.graphics;
 
-import org.newdawn.slick.Color;
+import java.awt.Color;
 
 public class Colour {
 	public static Color button = new Color(100, 20, 200);

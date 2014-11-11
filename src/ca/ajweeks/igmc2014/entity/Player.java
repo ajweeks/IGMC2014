@@ -1,61 +1,61 @@
 package ca.ajweeks.igmc2014.entity;
 
-import org.newdawn.slick.Color;
-import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.Input;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.state.StateBasedGame;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
+
+import javax.swing.ImageIcon;
 
 import ca.ajweeks.igmc2014.Game;
-import ca.ajweeks.igmc2014.input.Keyboard;
+import ca.ajweeks.igmc2014.input.Input;
 import ca.ajweeks.igmc2014.level.Chunk;
 import ca.ajweeks.igmc2014.level.Tile;
 import ca.ajweeks.igmc2014.sound.Sound;
 import ca.ajweeks.igmc2014.state.GameState;
 
-public class Player extends Rectangle {
-	private static final long serialVersionUID = 1L;
-	
+public class Player extends BoundingBox {
 	public static final float JUMP_VELOCITY = 0.65F;
 	public static final float GRAVITY = -0.05F;
 	
 	public static final float SPRINT_VELOCITY = 0.7F;
 	public static final float WALK_VELOCITY = 0.4F;
 	
-	public static final int SPAWN_X = 2, SPAWN_Y = 5;
-	public static final int WIDTH = 32, HEIGHT = 64;
+	public static final float SPAWN_X = 2.0f, SPAWN_Y = 5.0f;
 	
-	public static float maxHorizontalVelocity = WALK_VELOCITY;
-	public static float terminalVelocity = -18.0F;
-	public static float horizontalAcceleration = 0.02f;
-	public static float friction = 0.035F; //How quickly the player accelerates
+	public static final int WIDTH = 1;
+	public static final int HEIGHT = 2;
+	
+	public float maxHorizontalVelocity = WALK_VELOCITY;
+	public float maxVerticalVelocity = -18.0F; //terminal vertical velocity
+	private float horizontalPositiveAcceleration = 0.013f; //how quickly the player speeds up
+	private float horizontalNegativeAcceleration = 0.035f;  //how quickly the player slows down (once all controls have been released)
 	
 	public boolean hasDoubleJumped = false;
 	public boolean onGround = false;
 	
-	private static Image player;
+	private static Image sprite;
+	private Game game;
+	
 	private GameState gs;
 	
 	private float xv, yv;
 	private int coins = 0;
 	
-	public Player(GameState gs) {
-		super(SPAWN_X, SPAWN_Y, 1, 2);
+	public Player(Game game, GameState gs) {
+		super(SPAWN_X, SPAWN_Y, WIDTH, HEIGHT, Tile.PIXEL_WIDTH);
 		
+		this.game = game;
 		this.gs = gs;
 		
-		try {
-			player = new Image("res/player.png");
-		} catch (SlickException e) {
-			e.printStackTrace();
-		}
+		sprite = new ImageIcon("res/player.png").getImage();
 	}
 	
 	public void addCoins(int coins) {
 		this.coins += coins;
+	}
+	
+	public void removeCoins(int coins) {
+		this.coins -= coins;
 	}
 	
 	public int getCoins() {
@@ -70,40 +70,36 @@ public class Player extends Rectangle {
 		return yv;
 	}
 	
-	public void update(GameContainer gc, StateBasedGame game, int delta) {
-		Input input = game.getContainer().getInput();
+	public void update(double delta) {
+		Input input = game.getInput();
 		
-		if (gc.getInput().isKeyPressed(Input.KEY_R)) { //respawn
-			x = SPAWN_X;
-			y = SPAWN_Y;
+		if (input.r.clicked) { //respawn
+			setX(SPAWN_X);
+			setY(SPAWN_Y);
 		}
 		
-		if (Keyboard.isShiftDown(game)) maxHorizontalVelocity = SPRINT_VELOCITY;
+		if (input.shift.clicked) maxHorizontalVelocity = SPRINT_VELOCITY;
 		else maxHorizontalVelocity = WALK_VELOCITY;
 		
-		if (Keyboard.isRightDown(game)) {
-			xv += horizontalAcceleration;
+		if (input.right.clicked) {
+			xv += horizontalPositiveAcceleration;
 			if (xv > maxHorizontalVelocity) xv = maxHorizontalVelocity;
 		}
 		
-		if (Keyboard.isLeftDown(game)) {
-			xv -= horizontalAcceleration;
+		if (input.left.clicked) {
+			xv -= horizontalPositiveAcceleration;
 			if (xv < -maxHorizontalVelocity) xv = -maxHorizontalVelocity;
 		}
 		
-		if (!Keyboard.isLeftDown(game) && !Keyboard.isRightDown(game) && xv != 0) { //decelerate horizontal motion
-			float bxv = xv;
-			float axv = Math.abs(xv) - friction;
-			if (axv <= 0) {
-				xv = 0;
-			} else {
-				if (bxv < 0) xv = -axv;
-				else if (bxv > 0) xv = axv;
-				else xv = 0;
+		if (!input.left.clicked && !input.right.clicked && xv != 0) { //decelerate horizontal motion by friction
+			if (xv < 0) {
+				if ((xv -= horizontalNegativeAcceleration) < 0) xv = 0;
+			} else if (xv > 0) {
+				if ((xv += horizontalNegativeAcceleration) > 0) xv = 0;
 			}
 		}
 		
-		if (input.isKeyPressed(Input.KEY_SPACE) || Keyboard.isUpPressed(game)) {
+		if (input.space.clicked || input.up.clicked) {
 			if (onGround) {
 				Sound.JUMP.play();
 				hasDoubleJumped = false;
@@ -119,33 +115,33 @@ public class Player extends Rectangle {
 		}
 		
 		yv += GRAVITY;
-		if (yv < terminalVelocity) yv = terminalVelocity;
+		if (yv < maxVerticalVelocity) yv = maxVerticalVelocity;
 		
-		float bx = x, by = y; //store original values
+		float bx = getX(), by = getY(); //store original values
 		
-		x += xv;
-		y += yv;
+		setX(getX() + xv);
+		setY(getY() + yv);
 		
-		if (x < 0) {
-			x = 0; //left side of level
+		if (getX() < 0) { //left side of level
+			setX(0);
 			xv = 0;
 		}
 		
-		if (y < height) {
-			y = height; //bottom of level
+		if (getY() < getHeight()) { //bottom of level
+			setY(getHeight());
 			yv = 0;
 			onGround = true;
 		}
 		
-		float levelWidth = gs.level.chunks[0].length * Chunk.WIDTH * Tile.WIDTH - WIDTH;
-		if (x > levelWidth / Tile.WIDTH - width/2) {
-			x = levelWidth / Tile.WIDTH - width/2;
+		float levelWidth = gs.level.chunks[0].length * Chunk.WIDTH * Tile.PIXEL_WIDTH - (Player.WIDTH * Tile.PIXEL_WIDTH);
+		if (getX() > levelWidth / Tile.PIXEL_WIDTH - getWidth() / 2) {
+			setX(levelWidth / Tile.PIXEL_WIDTH - getWidth() / 2);
 			xv = 0;
 		}
 		
-		float levelHeight = gs.level.chunks.length * Chunk.WIDTH * Tile.WIDTH - HEIGHT;
-		if (y > levelHeight / Tile.WIDTH) {
-			y = levelHeight / Tile.WIDTH;
+		float levelHeight = gs.level.chunks.length * Chunk.WIDTH * Tile.PIXEL_WIDTH - (Player.HEIGHT * Tile.PIXEL_WIDTH);
+		if (getY() > levelHeight / Tile.PIXEL_WIDTH) {
+			setY(levelHeight / Tile.PIXEL_WIDTH);
 			yv = 0;
 		}
 		
@@ -153,19 +149,21 @@ public class Player extends Rectangle {
 			for (int i = 0; i < gs.level.chunks.length; i++) {
 				for (int j = 0; j < gs.level.chunks[i].length; j++) {
 					for (int k = 0; k < gs.level.chunks[i][j].tiles.length; k++) {
-						Tile t = gs.level.chunks[i][j].tiles[k];
-						if (t.intersects(this)) { //will never work as intended because player's x & y pos are not rendered the same way tile's x & y 
-							if (t.getType() == Tile.Type.COIN) {
-								if (!((Coin) t).isRemoved()) {
-									coins++;
-									((Coin) gs.level.chunks[i][j].tiles[k]).remove();
+						for (int l = 0; l < gs.level.chunks[i][j].tiles[k].length; l++) {
+							Tile t = gs.level.chunks[i][j].tiles[k][l];
+							if (t.getBounds().intersects(this.getBounds())) { //FIXME col detection will never work as intended because player's x & y pos are not rendered the same way tile's x & y 
+								if (t.getType() == Tile.Type.COIN) {
+									if (!((Coin) t).isRemoved()) {
+										coins++;
+										((Coin) gs.level.chunks[i][j].tiles[k][l]).remove();
+									}
+								} else if (t.getType().isSolid()) {
+									//x = bx;
+									//y = by;
+									
+									//xv = 0;
+									//onGround = true;
 								}
-							} else if (t.getType().isSolid()) {
-								//x = bx;
-								//y = by;
-								
-								//xv = 0;
-								//onGround = true;
 							}
 						}
 					}
@@ -180,10 +178,11 @@ public class Player extends Rectangle {
 	}
 	
 	public void render(Graphics g) {
+		//		g.setColor(Color.white);
+		//		g.drawImage(sprite, (float) ((float) x * Tile.WIDTH + gs.camera.x), (float) (Game.SIZE.height - y * Tile.WIDTH + gs.camera.y), null);
 		g.setColor(Color.white);
-		g.drawImage(player, (float) ((float) x * Tile.WIDTH + gs.camera.x), (float) (Game.SIZE.height - y * Tile.WIDTH + gs.camera.y), null);
-//		g.setColor(Color.white);
-//		g.fillRect((float) (x * Tile.WIDTH + gs.camera.x), (float) (Game.SIZE.height - y * Tile.WIDTH + gs.camera.y), width * Tile.WIDTH, height
-//				* Tile.WIDTH);
+		g.fillRect((int) (getX() * Tile.PIXEL_WIDTH + GameState.camera.x),
+				(int) (Game.SIZE.height - getY() * Tile.PIXEL_WIDTH + GameState.camera.y), getWidth() * Tile.PIXEL_WIDTH,
+				getHeight() * Tile.PIXEL_WIDTH);
 	}
 }

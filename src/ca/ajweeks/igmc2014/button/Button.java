@@ -1,12 +1,12 @@
 package ca.ajweeks.igmc2014.button;
 
-import org.newdawn.slick.Color;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
-import org.newdawn.slick.Input;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
 
 import ca.ajweeks.igmc2014.Game;
-import ca.ajweeks.igmc2014.gfx.Colour;
+import ca.ajweeks.igmc2014.graphics.Colour;
+import ca.ajweeks.igmc2014.input.Input;
 
 public class Button {
 	
@@ -34,40 +34,18 @@ public class Button {
 		this.enabled = true;
 		this.hasImage = false;
 		this.selected = false;
-		
-		if (colour == Colour.button && hColour == Colour.hButton && tColour == Colour.offWhite)
-			System.err.println("Unneccessary args!, use other constructor!!");
 	}
 	
+	/** Use this constructor if you want to use the default colours (Colour.button etc..) */
+	public Button(int x, int y, int width, int height, String text) {
+		this(x, y, width, height, text, Colour.button, Colour.hButton, Colour.offWhite);
+	}
+	
+	/** Use this constructor if you want to supply an image to display on button */
 	public Button(int x, int y, int width, int height, String text, Color colour, Color hColour, Color tColour, Image image) {
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
-		this.text = text;
-		this.colour = colour;
-		this.hColour = hColour;
-		this.tColour = tColour;
-		this.hover = false;
-		this.enabled = true;
+		this(x, y, width, height, text, colour, hColour, tColour);
 		this.image = image;
 		this.hasImage = true;
-		this.selected = false;
-	}
-	
-	/** uses default colours (Colour.button etc..) */
-	public Button(int x, int y, int width, int height, String text) {
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
-		this.text = text;
-		this.colour = Colour.button;
-		this.hColour = Colour.hButton;
-		this.tColour = Colour.offWhite;
-		this.hover = false;
-		this.enabled = true;
-		this.hasImage = false;
 		this.selected = false;
 	}
 	
@@ -84,11 +62,11 @@ public class Button {
 	}
 	
 	/** @return <code>true</code> if the mouse is being clicked in this button (but not dragged into it) */
-	public boolean isDown(Input input) {
+	public boolean isClicked(Input input) {
 		if (!enabled) return false;
 		if (input.getMouseX() > x && input.getMouseX() < x + width && input.getMouseY() > y && input.getMouseY() < y + height) {
 			hover = true;
-			if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) return true;
+			if (input.leftMouseClicked()) return true;
 		} else hover = false;
 		return false;
 	}
@@ -104,8 +82,8 @@ public class Button {
 		g.fillRoundRect(x, y, width, height, radius, radius);
 		
 		g.setColor(tColour);
-		g.drawString(text, x + (width / 2) - (g.getFont().getWidth(text) / 2), y + (height / 2)
-				- (g.getFont().getHeight(text) / 2));
+		g.drawString(text, x + (width / 2) - (g.getFontMetrics().stringWidth(text) / 2), y + (height / 2)
+				+ (g.getFontMetrics().getHeight() / 4));
 		
 		g.setColor(Color.white);
 		if (hasImage) g.drawImage(image, x + 2, y + 2, null);
