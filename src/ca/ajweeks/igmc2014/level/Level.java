@@ -19,7 +19,7 @@ public class Level {
 		this.player = player;
 		
 		chunks = new Chunk[][] {
-				{ new Chunk(// 
+				{ new Chunk( //using comments to separate this statement to pinpoint the error (occurs on this line)
 						"levels/" + //
 								String.valueOf(level) + //
 								"/0_0.txt", 0, 0), new Chunk("levels/" + String.valueOf(level) + "/0_1.txt", 0, 1),
