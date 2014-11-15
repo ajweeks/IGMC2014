@@ -6,7 +6,13 @@ import ca.ajweeks.igmc2014.Game;
 
 public abstract class BasicState {
 	
-	public abstract void init(Game game);
+	protected Game game;
+	
+	public BasicState(Game game) {
+		this.game = game;
+	}
+	
+	public abstract void init();
 	
 	/** @param delta - the amount of time in ns that have passed since last update */
 	public abstract void update(double delta);

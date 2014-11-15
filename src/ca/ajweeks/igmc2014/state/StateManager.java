@@ -16,26 +16,29 @@ public class StateManager {
 	
 	private ArrayList<BasicState> states;
 	private BasicState currentState;
+	private Game game;
 	
 	public StateManager(Game game) {
+		this.game = game;
 		states = new ArrayList<>();
-		states.add(new LoadingState());
-		states.add(new MainMenuState());
-		states.add(new GameState());
-		states.add(new HelpState());
-		states.add(new AboutState());
+		states.add(new LoadingState(game));
+		states.add(new MainMenuState(game));
+		states.add(new GameState(game));
+		states.add(new HelpState(game));
+		states.add(new AboutState(game));
 		
 		currentState = states.get(LOADING_STATE_ID);
-		init(game);
+		init();
 	}
 	
-	public void init(Game game) {
+	public void init() {
 		for (int i = 0; i < states.size(); i++) {
-			states.get(i).init(game);
+			states.get(i).init();
 		}
 	}
 	
 	public void update(double delta) {
+		if (game.getInput().F3.clicked) Game.renderDebug = !Game.renderDebug;
 		currentState.update(delta);
 	}
 	
@@ -49,6 +52,8 @@ public class StateManager {
 	
 	public String getCurrentStateSimpleName() {
 		switch (getCurrentStateID()) {
+		case LOADING_STATE_ID:
+			return "Loading State";
 		case MAINMENU_STATE_ID:
 			return "Main Menu State";
 		case ABOUT_STATE_ID:

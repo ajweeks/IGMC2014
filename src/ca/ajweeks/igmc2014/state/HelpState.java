@@ -15,6 +15,7 @@ import ca.ajweeks.igmc2014.sound.Sound;
 public class HelpState extends BasicState {
 	
 	private static final int MAX_PAGES = 3;
+	
 	private int page = 0;
 	private int xoff = 0;
 	private int dir = 0;
@@ -24,19 +25,12 @@ public class HelpState extends BasicState {
 	private ArrowButton left;
 	private ArrowButton right;
 	
-	private Game game;
-	
-	private void changePage(int dir) {
-		page += dir;
-		if (page < 0) page = 0;
-		else if (page > MAX_PAGES - 1) page = MAX_PAGES - 1;
-		else this.dir = dir;
+	public HelpState(Game game) {
+		super(game);
 	}
 	
 	@Override
-	public void init(Game game) {
-		this.game = game;
-		
+	public void init() {
 		back = new Button(Game.SIZE.width / 2 - 100 / 2, Game.SIZE.height - 120, 110, 75, "Back");
 		back.setSelected(true);
 		
@@ -98,8 +92,6 @@ public class HelpState extends BasicState {
 		
 		if (page < MAX_PAGES - 1) right.setEnabled(true);
 		else right.setEnabled(false);
-		
-		if (input.F3.clicked) Game.renderDebug = !Game.renderDebug;
 	}
 	
 	@Override
@@ -133,6 +125,13 @@ public class HelpState extends BasicState {
 		right.render(g);
 		
 		if (Game.renderDebug) RenderDebugOverlay.render(g);
+	}
+	
+	private void changePage(int dir) {
+		page += dir;
+		if (page < 0) page = 0;
+		else if (page > MAX_PAGES - 1) page = MAX_PAGES - 1;
+		else this.dir = dir;
 	}
 	
 	@Override

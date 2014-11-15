@@ -25,13 +25,14 @@ public class MainMenuState extends BasicState {
 	private Image louder;
 	private Image quieter;
 	private ButtonManager buttons;
-	private Game game;
+
+	public MainMenuState(Game game) {
+		super(game);
+	}
 	
 	@Override
-	public void init(Game game) {
+	public void init() {
 		new RenderDebugOverlay(game);
-		
-		this.game = game;
 		
 		louder = new ImageIcon("res/louder.png").getImage();
 		quieter = new ImageIcon("res/quieter.png").getImage();

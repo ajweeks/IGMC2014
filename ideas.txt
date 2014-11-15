@@ -20,7 +20,7 @@ CORE MECHANICS
 
 FEATURES
 -inventory (backpack?)
-  -Only have 3 item slots (5? 7? 9?) 
+  -Only have 3 item slots (5? 7? 9?, upgrades?)
 
 -objectives
 -achievements

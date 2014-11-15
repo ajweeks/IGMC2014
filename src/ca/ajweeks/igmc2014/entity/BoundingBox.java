@@ -3,7 +3,7 @@ package ca.ajweeks.igmc2014.entity;
 public class BoundingBox {
 	
 	private float x, y;
-	private int width, height;
+	private float width, height;
 	
 	/** @param x - the number of tiles from the left of the screen this tile is
 	 *  @param y - the number of tiles from the bottom of the screen this bounding box is
@@ -11,7 +11,7 @@ public class BoundingBox {
 	 *  @param height - the number of tiles tall this bounding box is
 	 *  @param scale - the number of pixels per tile)
 	 *  */
-	public BoundingBox(float x, float y, int width, int height, int scale) {
+	public BoundingBox(float x, float y, float width, float height) {
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -49,11 +49,11 @@ public class BoundingBox {
 		return y;
 	}
 	
-	public int getWidth() {
+	public float getWidth() {
 		return width;
 	}
 	
-	public int getHeight() {
+	public float getHeight() {
 		return height;
 	}
 }

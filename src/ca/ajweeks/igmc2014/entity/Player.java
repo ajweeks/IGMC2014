@@ -17,32 +17,32 @@ public class Player extends BoundingBox {
 	public static final float JUMP_VELOCITY = 0.65F;
 	public static final float GRAVITY = -0.05F;
 	
-	public static final float SPRINT_VELOCITY = 0.7F;
-	public static final float WALK_VELOCITY = 0.4F;
+	public static final float SPRINT_VELOCITY = 0.70F;
+	public static final float WALK_VELOCITY = 0.40F;
 	
 	public static final float SPAWN_X = 2.0f, SPAWN_Y = 5.0f;
 	
-	public static final int WIDTH = 1;
-	public static final int HEIGHT = 2;
+	public static final float WIDTH = 1.0f;
+	public static final float HEIGHT = 2.0f;
+	
+	public boolean hasDoubleJumped = false;
+	public boolean onGround = false;
 	
 	public float maxHorizontalVelocity = WALK_VELOCITY;
 	public float maxVerticalVelocity = -18.0F; //terminal vertical velocity
 	private float horizontalPositiveAcceleration = 0.013f; //how quickly the player speeds up
 	private float horizontalNegativeAcceleration = 0.035f;  //how quickly the player slows down (once all controls have been released)
 	
-	public boolean hasDoubleJumped = false;
-	public boolean onGround = false;
-	
 	private static Image sprite;
 	private Game game;
-	
 	private GameState gs;
 	
 	private float xv, yv;
+	//private float xa, ya; //LATER use acceleration properly
 	private int coins = 0;
 	
 	public Player(Game game, GameState gs) {
-		super(SPAWN_X, SPAWN_Y, WIDTH, HEIGHT, Tile.PIXEL_WIDTH);
+		super(SPAWN_X, SPAWN_Y, WIDTH, HEIGHT);
 		
 		this.game = game;
 		this.gs = gs;
@@ -53,12 +53,11 @@ public class Player extends BoundingBox {
 	public void update(double delta) {
 		Input input = game.getInput();
 		
-		if (input.r.clicked) { //respawn
-			setX(SPAWN_X);
-			setY(SPAWN_Y);
+		if (input.r.clicked) { //LATER add a respawn nagger when player is stuck
+			respawn();
 		}
 		
-		if (input.shift.clicked) maxHorizontalVelocity = SPRINT_VELOCITY;
+		if (input.shift.clicked) maxHorizontalVelocity = SPRINT_VELOCITY; //LATER add speed ramping to make slowing down smoother
 		else maxHorizontalVelocity = WALK_VELOCITY;
 		
 		if (input.right.clicked) {
@@ -131,20 +130,20 @@ public class Player extends BoundingBox {
 					for (int k = 0; k < gs.level.chunks[i][j].tiles.length; k++) {
 						for (int l = 0; l < gs.level.chunks[i][j].tiles[k].length; l++) {
 							Tile t = gs.level.chunks[i][j].tiles[k][l];
-							//							if (t.intersects(this)) { //FIXME col detection will never work as intended because player's x & y pos are not rendered the same way tile's x & y 
-							//								if (t.getType() == Tile.Type.COIN) {
-							//									if (!((Coin) t).isRemoved()) {
-							//										coins++;
-							//										((Coin) gs.level.chunks[i][j].tiles[k][l]).remove();
-							//									}
-							//								} else if (t.getType().isSolid()) {
-							//									//x = bx;
-							//									//y = by;
-							//									
-							//									//xv = 0;
-							//									//onGround = true;
-							//								}
-							//							}
+							if (t.intersects(this)) { //FIXME col detection will never work as intended because player's x & y pos are not rendered the same way tile's x & y 
+								if (t.getType() == Tile.Type.COIN) {
+									if (!((Coin) t).isRemoved()) {
+										coins++;
+										((Coin) gs.level.chunks[i][j].tiles[k][l]).remove();
+									}
+								} else if (t.getType().isSolid()) {
+									setX(bx);
+									setY(by);
+									
+									xv = 0;
+									onGround = true;
+								}
+							}
 						}
 					}
 				}
@@ -157,11 +156,17 @@ public class Player extends BoundingBox {
 		}
 	}
 	
+	public void respawn() {
+		setX(SPAWN_X);
+		setY(SPAWN_Y);
+		coins = 0;
+	}
+	
 	public void render(Graphics g) {
 		g.setColor(Color.RED);
 		g.drawRect((int) (getX() * Tile.PIXEL_WIDTH + GameState.camera.x),
-				(int) (Game.SIZE.height - getY() * Tile.PIXEL_WIDTH + GameState.camera.y), getWidth() * Tile.PIXEL_WIDTH,
-				getHeight() * Tile.PIXEL_WIDTH);
+				(int) (Game.SIZE.height - getY() * Tile.PIXEL_WIDTH + GameState.camera.y), (int) getWidth() * Tile.PIXEL_WIDTH,
+				(int) getHeight() * Tile.PIXEL_WIDTH);
 		g.setColor(Color.white);
 		g.drawImage(sprite, (int) (getX() * getWidth() + GameState.camera.x),
 				(int) (Game.SIZE.height - getY() * getHeight() + GameState.camera.y), null);

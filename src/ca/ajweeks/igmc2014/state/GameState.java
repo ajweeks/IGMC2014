@@ -8,6 +8,7 @@ import ca.ajweeks.igmc2014.graphics.Camera;
 import ca.ajweeks.igmc2014.graphics.RenderDebugOverlay;
 import ca.ajweeks.igmc2014.input.Input;
 import ca.ajweeks.igmc2014.level.Level;
+import ca.ajweeks.igmc2014.level.Levels;
 
 public class GameState extends BasicState {
 	
@@ -16,27 +17,19 @@ public class GameState extends BasicState {
 	public Level level;
 	public Player player;
 	
-	private Game game;
-	private Level[] levels;
+	private Level currentLevel;
 	
-	public void enterLevel(int level) {
-		if (level > levels.length - 1 || level < 1) {
-			System.err.println("Invalid level!" + level);
-			return;
-		}
-		this.level = levels[level];
+	public GameState(Game game) {
+		super(game);
 	}
 	
 	@Override
-	public void init(Game game) {
-		this.game = game;
-		
+	public void init() {
 		player = new Player(game, this);
 		
-		levels = new Level[] { new Level(player, game, 1) };
-		level = levels[0];
+		currentLevel = new Level(player, game, Levels.lvlOneChunks);
 		
-		camera = new Camera(player, level);
+		camera = new Camera(player, currentLevel);
 	}
 	
 	@Override
@@ -46,15 +39,14 @@ public class GameState extends BasicState {
 		//TODO add mouse hovering debugging
 		
 		if (input.esc.clicked) game.enterState(StateManager.MAINMENU_STATE_ID);
-		if (input.F3.clicked) Game.renderDebug = !Game.renderDebug;
 		
 		camera.update();
-		level.update(delta);
+		currentLevel.update(delta);
 	}
 	
 	@Override
 	public void render(Graphics g) {
-		level.render(g);
+		currentLevel.render(g);
 		
 		if (Game.renderDebug) RenderDebugOverlay.render(g);
 	}

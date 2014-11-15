@@ -13,12 +13,13 @@ import ca.ajweeks.igmc2014.input.Input;
 public class AboutState extends BasicState {
 	
 	private Button back;
-	private Game game;
+	
+	public AboutState(Game game) {
+		super(game);
+	}
 	
 	@Override
-	public void init(Game game) {
-		this.game = game;
-		
+	public void init() {
 		back = new Button(Game.SIZE.width / 2 - 110 / 2, Game.SIZE.height - 120, 110, 75, "Back");
 		back.setSelected(true);
 	}
@@ -27,7 +28,6 @@ public class AboutState extends BasicState {
 	public void update(double delta) {
 		Input input = game.getInput();
 		
-		if (input.F3.clicked) Game.renderDebug = !Game.renderDebug;
 		if (back.isClicked(input) || input.esc.clicked || input.space.clicked || input.enter.clicked) {
 			game.enterState(StateManager.MAINMENU_STATE_ID);
 		}
