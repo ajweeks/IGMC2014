@@ -29,11 +29,11 @@ public class RenderDebugOverlay {
 		drawString(g, Integer.toString(game.getFps()) + " FPS");
 		drawString(g, "Current state: " + Game.sm.getCurrentStateSimpleName());
 		if (Game.sm.getCurrentStateID() == StateManager.GAME_STATE_ID) {
-			drawString(g, "hasDoubleJumped: " + ((GameState)currentState).getPlayer().hasDoubleJumped);
-			drawString(g, "x = " + ((GameState)currentState).getPlayer().getX());
-			drawString(g, "y = " + ((GameState)currentState).getPlayer().getY());
-			drawString(g, "xv = " + ((GameState)currentState).getPlayer().getXv());
-			drawString(g, "yv = " + ((GameState)currentState).getPlayer().getYv());
+			drawString(g, "hasDoubleJumped: " + ((GameState) currentState).getPlayer().hasDoubleJumped);
+			drawString(g, "x = " + ((GameState) currentState).getPlayer().getX());
+			drawString(g, "y = " + ((GameState) currentState).getPlayer().getY());
+			drawString(g, "xv = " + ((GameState) currentState).getPlayer().getXv());
+			drawString(g, "yv = " + ((GameState) currentState).getPlayer().getYv());
 			drawString(g, "max xv = " + ((GameState) currentState).getPlayer().maxHorizontalVelocity);
 		}
 	}
@@ -42,7 +42,7 @@ public class RenderDebugOverlay {
 		Rectangle2D bounds = g.getFontMetrics().getStringBounds(str, g);
 		
 		g.setColor(Colour.translucentBlack);
-		g.fillRect(x, y, (int) bounds.getWidth() + 5, (int) bounds.getHeight());
+		g.fillRect(x - 1, y - 14, (int) bounds.getWidth() + 8, (int) bounds.getHeight());
 		
 		g.setColor(Color.white);
 		g.drawString(str, x + 3, y + 2);

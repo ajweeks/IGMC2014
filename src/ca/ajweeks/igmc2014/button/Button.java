@@ -6,7 +6,7 @@ import java.awt.Image;
 
 import ca.ajweeks.igmc2014.Game;
 import ca.ajweeks.igmc2014.graphics.Colour;
-import ca.ajweeks.igmc2014.input.Input;
+import ca.ajweeks.igmc2014.input.Mouse;
 
 public class Button {
 	
@@ -62,11 +62,12 @@ public class Button {
 	}
 	
 	/** @return <code>true</code> if the mouse is being clicked in this button (but not dragged into it) */
-	public boolean isClicked(Input input) {
+	public boolean isClicked() {
 		if (!enabled) return false;
-		if (input.getMouseX() > x && input.getMouseX() < x + width && input.getMouseY() > y && input.getMouseY() < y + height) {
+		Mouse mouse = Game.mouse;
+		if (mouse.getX() > x && mouse.getX() < x + width && mouse.getY() > y && mouse.getY() < y + height) {
 			hover = true;
-			if (input.leftMouseClicked()) return true;
+			if (mouse.isLeftClicked()) return true;
 		} else hover = false;
 		return false;
 	}

@@ -6,7 +6,8 @@ import java.awt.Image;
 
 import javax.swing.ImageIcon;
 
-import ca.ajweeks.igmc2014.input.Input;
+import ca.ajweeks.igmc2014.Game;
+import ca.ajweeks.igmc2014.input.Mouse;
 
 public class ArrowButton extends Button {
 	
@@ -33,12 +34,13 @@ public class ArrowButton extends Button {
 	}
 	
 	@Override
-	public boolean isClicked(Input input) {
+	public boolean isClicked() {
 		if (!enabled) return false;
+		Mouse mouse = Game.mouse;
 		if (dir == RIGHT || dir == LEFT) {
-			if (input.getMouseX() > x && input.getMouseX() < x + WIDTH) {
+			if (mouse.getX() > x && mouse.getX() < x + WIDTH) {
 				hover = true;
-				if (input.leftMouseClicked()) return true;
+				if (mouse.isLeftClicked()) return true;
 			} else hover = false;
 		}
 		return false;

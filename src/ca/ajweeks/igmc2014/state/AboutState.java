@@ -8,7 +8,7 @@ import ca.ajweeks.igmc2014.Game;
 import ca.ajweeks.igmc2014.button.Button;
 import ca.ajweeks.igmc2014.graphics.Colour;
 import ca.ajweeks.igmc2014.graphics.RenderDebugOverlay;
-import ca.ajweeks.igmc2014.input.Input;
+import ca.ajweeks.igmc2014.input.Keyboard.Key;
 
 public class AboutState extends BasicState {
 	
@@ -26,9 +26,7 @@ public class AboutState extends BasicState {
 	
 	@Override
 	public void update(double delta) {
-		Input input = game.getInput();
-		
-		if (back.isClicked(input) || input.esc.clicked || input.space.clicked || input.enter.clicked) {
+		if (back.isClicked() || Key.ESC.clicked || Key.SPACE.clicked || Key.ENTER.clicked) {
 			game.enterState(StateManager.MAINMENU_STATE_ID);
 		}
 	}

@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 import ca.ajweeks.igmc2014.Game;
+import ca.ajweeks.igmc2014.input.Keyboard.Key;
 import ca.ajweeks.igmc2014.sound.Sound;
 
 public class StateManager {
@@ -38,7 +39,8 @@ public class StateManager {
 	}
 	
 	public void update(double delta) {
-		if (game.getInput().F3.clicked) Game.renderDebug = !Game.renderDebug;
+		if (Key.F3.clicked) Game.renderDebug = !Game.renderDebug;
+		if (Key.CONTROL.down > -1 && Key.W.clicked) game.stop();
 		currentState.update(delta);
 	}
 	

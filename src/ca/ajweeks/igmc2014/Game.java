@@ -9,7 +9,8 @@ import java.awt.image.BufferStrategy;
 import javax.swing.JFrame;
 
 import ca.ajweeks.igmc2014.graphics.Colour;
-import ca.ajweeks.igmc2014.input.Input;
+import ca.ajweeks.igmc2014.input.Keyboard;
+import ca.ajweeks.igmc2014.input.Mouse;
 import ca.ajweeks.igmc2014.state.StateManager;
 
 public class Game extends Canvas implements Runnable {
@@ -22,10 +23,11 @@ public class Game extends Canvas implements Runnable {
 	public static Font font34;
 	public static Font fontDebug;
 	public static StateManager sm;
+	public static Keyboard keyboard;
+	public static Mouse mouse;
 	
 	public static boolean renderDebug = true; //TODO MAKE FALSE FOR RELEASES
 	
-	private Input input;
 	private JFrame frame;
 	private boolean running = false;
 	private int fps = 0;
@@ -36,7 +38,8 @@ public class Game extends Canvas implements Runnable {
 		setSize(SIZE);
 		
 		sm = new StateManager(this);
-		input = new Input(this);
+		keyboard = new Keyboard(this);
+		mouse = new Mouse(this);
 		
 		frame = new JFrame(GAME_TITLE);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -60,17 +63,19 @@ public class Game extends Canvas implements Runnable {
 		while (running) {
 			long now = System.nanoTime();
 			long delta = now - before;
+			System.out.println(delta);
 			before = now;
 			elapsed += delta;
 			
-			if (elapsed > 1_000_000) {
+			if (elapsed > 1_000_000_00) {
 				fps = frames;
 				frames = 0;
 				elapsed = 0;
 			}
 			
 			sm.update(delta);
-			input.tick();
+			keyboard.update();
+			mouse.update();
 			
 			BufferStrategy buffer = getBufferStrategy();
 			if (buffer == null) {
@@ -98,10 +103,6 @@ public class Game extends Canvas implements Runnable {
 	
 	public void enterState(int ID) {
 		sm.enterState(ID, this);
-	}
-	
-	public Input getInput() {
-		return input;
 	}
 	
 	public int getFps() {

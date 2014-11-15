@@ -9,7 +9,7 @@ import ca.ajweeks.igmc2014.button.ArrowButton;
 import ca.ajweeks.igmc2014.button.Button;
 import ca.ajweeks.igmc2014.graphics.Colour;
 import ca.ajweeks.igmc2014.graphics.RenderDebugOverlay;
-import ca.ajweeks.igmc2014.input.Input;
+import ca.ajweeks.igmc2014.input.Keyboard.Key;
 import ca.ajweeks.igmc2014.sound.Sound;
 
 public class HelpState extends BasicState {
@@ -40,14 +40,12 @@ public class HelpState extends BasicState {
 	
 	@Override
 	public void update(double delta) {
-		Input input = game.getInput();
-		
-		if (input.right.clicked) {
+		if (Key.RIGHT.clicked) {
 			if (page < MAX_PAGES - 1) {
 				Sound.SELECT.play();
 				changePage(1);
 			}
-		} else if (input.left.clicked) {
+		} else if (Key.LEFT.clicked) {
 			if (page > 0) {
 				Sound.SELECT.play();
 				changePage(-1);
@@ -69,18 +67,18 @@ public class HelpState extends BasicState {
 			}
 		}
 		
-		if (back.isClicked(input) || input.esc.clicked || input.space.clicked || input.enter.clicked) {
+		if (back.isClicked() || Key.ESC.clicked || Key.SPACE.clicked || Key.ENTER.clicked) {
 			game.enterState(StateManager.MAINMENU_STATE_ID);
 		}
 		
-		if (right.isClicked(input)) {
+		if (right.isClicked()) {
 			if (page < MAX_PAGES - 1) {
 				Sound.SELECT.play();
 				changePage(1);
 			}
 		}
 		
-		if (left.isClicked(input)) {
+		if (left.isClicked()) {
 			if (page > 0) {
 				Sound.SELECT.play();
 				changePage(-1);

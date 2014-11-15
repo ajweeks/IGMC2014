@@ -6,7 +6,7 @@ import ca.ajweeks.igmc2014.Game;
 import ca.ajweeks.igmc2014.entity.Player;
 import ca.ajweeks.igmc2014.graphics.Camera;
 import ca.ajweeks.igmc2014.graphics.RenderDebugOverlay;
-import ca.ajweeks.igmc2014.input.Input;
+import ca.ajweeks.igmc2014.input.Keyboard.Key;
 import ca.ajweeks.igmc2014.level.Level;
 import ca.ajweeks.igmc2014.level.Levels;
 
@@ -34,11 +34,9 @@ public class GameState extends BasicState {
 	
 	@Override
 	public void update(double delta) {
-		Input input = game.getInput();
-		
 		//TODO add mouse hovering debugging
 		
-		if (input.esc.clicked) game.enterState(StateManager.MAINMENU_STATE_ID);
+		if (Key.ESC.clicked) game.enterState(StateManager.MAINMENU_STATE_ID);
 		
 		camera.update();
 		currentLevel.update(delta);

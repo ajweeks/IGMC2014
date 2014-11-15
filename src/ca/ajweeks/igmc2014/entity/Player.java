@@ -7,7 +7,7 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 
 import ca.ajweeks.igmc2014.Game;
-import ca.ajweeks.igmc2014.input.Input;
+import ca.ajweeks.igmc2014.input.Keyboard.Key;
 import ca.ajweeks.igmc2014.level.Chunk;
 import ca.ajweeks.igmc2014.level.Tile;
 import ca.ajweeks.igmc2014.sound.Sound;
@@ -51,26 +51,24 @@ public class Player extends BoundingBox {
 	}
 	
 	public void update(double delta) {
-		Input input = game.getInput();
-		
-		if (input.r.clicked) { //LATER add a respawn nagger when player is stuck
+		if (Key.R.clicked) { //LATER add a respawn nagger when player is stuck
 			respawn();
 		}
 		
-		if (input.shift.clicked) maxHorizontalVelocity = SPRINT_VELOCITY; //LATER add speed ramping to make slowing down smoother
+		if (Key.SHIFT.clicked) maxHorizontalVelocity = SPRINT_VELOCITY; //LATER add speed ramping to make slowing down smoother
 		else maxHorizontalVelocity = WALK_VELOCITY;
 		
-		if (input.right.clicked) {
+		if (Key.RIGHT.clicked) {
 			xv += horizontalPositiveAcceleration;
 			if (xv > maxHorizontalVelocity) xv = maxHorizontalVelocity;
 		}
 		
-		if (input.left.clicked) {
+		if (Key.LEFT.clicked) {
 			xv -= horizontalPositiveAcceleration;
 			if (xv < -maxHorizontalVelocity) xv = -maxHorizontalVelocity;
 		}
 		
-		if (!input.left.clicked && !input.right.clicked && xv != 0) { //decelerate horizontal motion by friction
+		if (!Key.LEFT.clicked && !Key.RIGHT.clicked && xv != 0) { //decelerate horizontal motion by friction
 			if (xv < 0) {
 				if ((xv -= horizontalNegativeAcceleration) < 0) xv = 0;
 			} else if (xv > 0) {
@@ -78,7 +76,7 @@ public class Player extends BoundingBox {
 			}
 		}
 		
-		if (input.space.clicked || input.up.clicked) {
+		if (Key.SPACE.clicked || Key.UP.clicked) {
 			if (onGround) {
 				Sound.JUMP.play();
 				hasDoubleJumped = false;

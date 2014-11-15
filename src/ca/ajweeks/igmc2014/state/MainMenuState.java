@@ -10,7 +10,7 @@ import ca.ajweeks.igmc2014.button.Button;
 import ca.ajweeks.igmc2014.button.ButtonManager;
 import ca.ajweeks.igmc2014.graphics.Colour;
 import ca.ajweeks.igmc2014.graphics.RenderDebugOverlay;
-import ca.ajweeks.igmc2014.input.Input;
+import ca.ajweeks.igmc2014.input.Keyboard.Key;
 import ca.ajweeks.igmc2014.sound.Sound;
 
 public class MainMenuState extends BasicState {
@@ -25,7 +25,7 @@ public class MainMenuState extends BasicState {
 	private Image louder;
 	private Image quieter;
 	private ButtonManager buttons;
-
+	
 	public MainMenuState(Game game) {
 		super(game);
 	}
@@ -51,23 +51,21 @@ public class MainMenuState extends BasicState {
 	
 	@Override
 	public void update(double delta) {
-		Input input = game.getInput();
-		
 		buttons.update();
 		
-		if (game.getInput().left.clicked || game.getInput().up.clicked) {
+		if (Key.LEFT.clicked || Key.UP.clicked) {
 			do {
 				buttons.previousButton(); //set selected buttons to previous enabled button
 			} while (!buttons.getButton(buttons.getSelectedButton()).isEnabled());
 		}
 		
-		if (game.getInput().right.clicked || game.getInput().down.clicked) {
+		if (Key.RIGHT.clicked || Key.DOWN.clicked) {
 			do {
 				buttons.nextButton(); //previous enabled button
 			} while (!buttons.getButton(buttons.getSelectedButton()).isEnabled());
 		}
 		
-		if (input.enter.clicked || input.space.clicked) {
+		if (Key.ENTER.clicked || Key.SPACE.clicked) {
 			switch (buttons.getSelectedButton()) {
 			case PLAY:
 				if (buttons.getButton(PLAY).isEnabled()) game.enterState(StateManager.GAME_STATE_ID);
@@ -90,20 +88,18 @@ public class MainMenuState extends BasicState {
 			}
 		}
 		
-		if (buttons.getButton(PLAY).isClicked(input)) game.enterState(StateManager.GAME_STATE_ID);
-		if (buttons.getButton(HELP).isClicked(input)) game.enterState(StateManager.HELP_STATE_ID);
-		if (buttons.getButton(ABOUT).isClicked(input)) game.enterState(StateManager.ABOUT_STATE_ID);
-		if (buttons.getButton(QUIT).isClicked(input)) game.stop();
-		if (buttons.getButton(LOUDER).isClicked(input)) louder();
-		if (buttons.getButton(QUIETER).isClicked(input)) quieter();
+		if (buttons.getButton(PLAY).isClicked()) game.enterState(StateManager.GAME_STATE_ID);
+		if (buttons.getButton(HELP).isClicked()) game.enterState(StateManager.HELP_STATE_ID);
+		if (buttons.getButton(ABOUT).isClicked()) game.enterState(StateManager.ABOUT_STATE_ID);
+		if (buttons.getButton(QUIT).isClicked()) game.stop();
+		if (buttons.getButton(LOUDER).isClicked()) louder();
+		if (buttons.getButton(QUIETER).isClicked()) quieter();
 		
 		buttons.updateSelectedButton();
 	}
 	
 	@Override
 	public void render(Graphics g) {
-		Input input = game.getInput();
-		
 		buttons.render(g);
 		
 		g.setFont(Game.font24);
@@ -111,7 +107,7 @@ public class MainMenuState extends BasicState {
 		int vol = (int) (((Sound.volume + 24) / 3) * 10);
 		g.drawString("Volume: " + vol + "%", Game.SIZE.width - 164, 4);
 		
-		if (input.F3.clicked) Game.renderDebug = !Game.renderDebug;
+		if (Key.F3.clicked) Game.renderDebug = !Game.renderDebug;
 		if (Game.renderDebug) RenderDebugOverlay.render(g);
 	}
 	
