@@ -11,7 +11,7 @@ import ca.ajweeks.igmc2014.entity.BoundingBox;
 import ca.ajweeks.igmc2014.state.GameState;
 
 public class Tile extends BoundingBox {
-	public enum Type {
+	public static enum Type {
 		BLANK(false), DIRT(true), GRASS(true), GRASS_LEFT(true), GRASS_RIGHT(true), COIN(false), NULL(false);
 		
 		private boolean solid;
@@ -44,6 +44,16 @@ public class Tile extends BoundingBox {
 				return NULL;
 			}
 		}
+		
+		public static Type[][] intarrayToTypearray(int[][] n) {
+			Type[][] result = new Type[n.length][n[0].length];
+			for (int i = 0; i < n.length; i++) {
+				for (int j = 0; j < n[i].length; j++) {
+					result[i][j] = intToType(n[i][j]);
+				}
+			}
+			return result;
+		}
 	}
 	
 	protected static Image blank, dirt, grass, grassLeft, grassRight, error;
@@ -61,12 +71,24 @@ public class Tile extends BoundingBox {
 	
 	private Type type;
 	
-	public Tile(Type type, int x, int y) {
-		super(x, y, 1, 1, Tile.PIXEL_WIDTH);
+	public Tile(int x, int y, Type type) {
+		super(x, y, 1, 1);
 		this.type = type;
 	}
 	
-	//TODO make all tiles auto-connect to each other
+	public static Tile[][] IntArrayToTileArray(int x, int y, int[][] n) {
+		if (n.length == 0 || n[0].length == 0) return new Tile[][] { {} };
+		Type[][] t = Type.intarrayToTypearray(n); //convert int[][] to Type[][]
+		Tile[][] result = new Tile[t.length][t[0].length];
+		for (int i = 0; i < result.length; i++) {
+			for (int j = 0; j < result[i].length; j++) {
+				result[i][j] = new Tile(x + j, x + i, t[i][j]); //convert Type[][] to Tile[][]
+			}
+		}
+		return result;
+	}
+	
+	//LATER make all tiles auto-connect to each other
 	
 	public void render(Graphics g) {
 		Image image;
@@ -104,9 +126,6 @@ public class Tile extends BoundingBox {
 			return; //no need rendering off screen
 			
 		g.drawImage(image, x, y, null);
-		
-		g.setColor(Color.magenta);
-		g.fillRect(x, y, Tile.PIXEL_WIDTH, Tile.PIXEL_WIDTH);
 	}
 	
 	public void update() {}

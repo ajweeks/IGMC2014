@@ -9,28 +9,12 @@ import ca.ajweeks.igmc2014.entity.Player;
 
 public class Level {
 	
-	public Chunk[][] chunks;
 	public Player player;
+	public Chunk[][] chunks;
 	
-	private Game game;
-	
-	public Level(Player player, Game game, int level) {
-		this.game = game;
+	public Level(Player player, Game game, Chunk[][] chunks) { //LATER game arg is unused
 		this.player = player;
-		
-		chunks = new Chunk[][] {
-				{ new Chunk( //using comments to separate this statement to pinpoint the error (occurs on this line)
-						"levels/" + //
-								String.valueOf(level) + //
-								"/0_0.txt", 0, 0), new Chunk("levels/" + String.valueOf(level) + "/0_1.txt", 0, 1),
-						new Chunk("levels/" + String.valueOf(level) + "/0_2.txt", 0, 2),
-						new Chunk("levels/" + String.valueOf(level) + "/0_3.txt", 0, 3) },
-				{
-				
-				new Chunk("levels/" + String.valueOf(level) + "/1_0.txt", 1, 0),
-						new Chunk("levels/" + String.valueOf(level) + "/1_1.txt", 1, 1),
-						new Chunk("levels/" + String.valueOf(level) + "/1_2.txt", 1, 2),
-						new Chunk("levels/" + String.valueOf(level) + "/1_3.txt", 1, 3) } };
+		this.chunks = chunks;
 	}
 	
 	public void update(double delta) {

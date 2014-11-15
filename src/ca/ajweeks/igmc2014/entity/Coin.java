@@ -28,7 +28,7 @@ public class Coin extends Tile {
 	private boolean removed = false;
 	
 	public Coin(int x, int y) {
-		super(Tile.Type.COIN, x, y);
+		super(x, y, Tile.Type.COIN);
 	}
 	
 	@Override
