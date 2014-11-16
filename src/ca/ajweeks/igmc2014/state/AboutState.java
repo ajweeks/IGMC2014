@@ -7,7 +7,6 @@ import java.awt.geom.Rectangle2D;
 import ca.ajweeks.igmc2014.Game;
 import ca.ajweeks.igmc2014.button.Button;
 import ca.ajweeks.igmc2014.graphics.Colour;
-import ca.ajweeks.igmc2014.graphics.RenderDebugOverlay;
 import ca.ajweeks.igmc2014.input.Keyboard.Key;
 
 public class AboutState extends BasicState {
@@ -53,8 +52,6 @@ public class AboutState extends BasicState {
 		}
 		
 		back.render(g);
-		
-		if (Game.renderDebug) RenderDebugOverlay.render(g);
 	}
 	
 	@Override

@@ -8,7 +8,7 @@ import ca.ajweeks.igmc2014.level.Tile;
 
 public class Camera {
 	
-	public double x, y;
+	public double x, y; //number of pixels the screen is offset to the right and upwards respectively
 	private Player player;
 	private Level level;
 	
@@ -31,14 +31,14 @@ public class Camera {
 		if (player.getX() * Tile.PIXEL_WIDTH < xoff) x = 0;
 		if (player.getY() * Tile.PIXEL_WIDTH < yoff) y = 0;
 		
-		double maxX = level.chunks[0].length * Chunk.WIDTH * Tile.PIXEL_WIDTH - Game.SIZE.width + xoff;
+		double maxX = level.width * Chunk.WIDTH * Tile.PIXEL_WIDTH - Game.SIZE.width + xoff;
 		if (player.getX() * Tile.PIXEL_WIDTH > maxX)
 			x = -(level.chunks[0].length) * Chunk.WIDTH * Tile.PIXEL_WIDTH + Game.SIZE.width;
 		
-		double maxY = (level.chunks.length - 1) * Tile.PIXEL_WIDTH * Chunk.WIDTH;
+		double maxY = (level.height) * Tile.PIXEL_WIDTH * Chunk.WIDTH;
 		if (player.getY() * Tile.PIXEL_WIDTH > maxY)
 			y = (level.chunks.length - 1) * Tile.PIXEL_WIDTH * Chunk.WIDTH + Game.SIZE.height;
 		
-		if (y < 0) y = 0;
+		if (y < -Game.SIZE.height) y = -Game.SIZE.height;
 	}
 }

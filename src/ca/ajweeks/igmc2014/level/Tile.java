@@ -82,7 +82,7 @@ public class Tile extends BoundingBox {
 		Tile[][] result = new Tile[t.length][t[0].length];
 		for (int i = 0; i < result.length; i++) {
 			for (int j = 0; j < result[i].length; j++) {
-				result[i][j] = new Tile(x + j, x + i, t[i][j]); //convert Type[][] to Tile[][]
+				result[i][j] = new Tile(x * Chunk.WIDTH + j, y * Chunk.HEIGHT + i, t[i][j]); //convert Type[][] to Tile[][]
 			}
 		}
 		return result;
@@ -120,7 +120,7 @@ public class Tile extends BoundingBox {
 		g.setColor(Color.white);
 		
 		int x = (int) (getX() * Tile.PIXEL_WIDTH + GameState.camera.x);
-		int y = (int) (Game.SIZE.height - getY() * Tile.PIXEL_WIDTH + GameState.camera.y);
+		int y = (int) (getY() * Tile.PIXEL_WIDTH + GameState.camera.y);
 		
 		if (x > Game.SIZE.width + PIXEL_WIDTH || y > Game.SIZE.height + PIXEL_WIDTH || x < -PIXEL_WIDTH || y < -PIXEL_WIDTH)
 			return; //no need rendering off screen

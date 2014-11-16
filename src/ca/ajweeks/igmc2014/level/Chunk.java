@@ -9,11 +9,7 @@ public class Chunk {
 	
 	public Tile[][] tiles;
 	
-	public int x, y;
-	
-	public Chunk(int x, int y, Tile[][] tiles) {
-		this.x = x;
-		this.y = y;
+	public Chunk(Tile[][] tiles) {
 		this.tiles = tiles;
 	}
 	

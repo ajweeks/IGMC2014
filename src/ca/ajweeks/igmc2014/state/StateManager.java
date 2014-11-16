@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 import ca.ajweeks.igmc2014.Game;
+import ca.ajweeks.igmc2014.graphics.RenderDebugOverlay;
 import ca.ajweeks.igmc2014.input.Keyboard.Key;
 import ca.ajweeks.igmc2014.sound.Sound;
 
@@ -46,6 +47,7 @@ public class StateManager {
 	
 	public void render(Graphics g) {
 		currentState.render(g);
+		if (Game.renderDebug) RenderDebugOverlay.render(g);
 	}
 	
 	public BasicState getCurrentState() {

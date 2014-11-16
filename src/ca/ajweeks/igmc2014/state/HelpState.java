@@ -8,7 +8,6 @@ import ca.ajweeks.igmc2014.Game;
 import ca.ajweeks.igmc2014.button.ArrowButton;
 import ca.ajweeks.igmc2014.button.Button;
 import ca.ajweeks.igmc2014.graphics.Colour;
-import ca.ajweeks.igmc2014.graphics.RenderDebugOverlay;
 import ca.ajweeks.igmc2014.input.Keyboard.Key;
 import ca.ajweeks.igmc2014.sound.Sound;
 
@@ -17,9 +16,9 @@ public class HelpState extends BasicState {
 	private static final int MAX_PAGES = 3;
 	
 	private int page = 0;
-	private int xoff = 0;
-	private int dir = 0;
-	private int scrollSpeed = 50;
+	private int ticks = -1;
+	private float xoff = 0;
+	private float dir = 0;
 	
 	private Button back;
 	private ArrowButton left;
@@ -40,30 +39,37 @@ public class HelpState extends BasicState {
 	
 	@Override
 	public void update(double delta) {
-		if (Key.RIGHT.clicked) {
+		if (Key.RIGHT.clicked || right.isClicked()) {
 			if (page < MAX_PAGES - 1) {
 				Sound.SELECT.play();
-				changePage(1);
+				setDirection(1);
+				ticks = 0;
 			}
-		} else if (Key.LEFT.clicked) {
+		} else if (Key.LEFT.clicked || left.isClicked()) {
 			if (page > 0) {
 				Sound.SELECT.play();
-				changePage(-1);
+				setDirection(-1);
+				ticks = 0;
 			}
 		}
 		
 		int dest = page * Game.SIZE.width;
-		xoff += dir * scrollSpeed + ((xoff - dest) / 10) * -1;
+		if (xoff != dest) { //we aren't on the page we need to be on
+			ticks++;
+			xoff = easeInOutCubic(ticks, xoff, dest, 1500);
+		} else ticks = -1;
 		
 		if (dir == 1) {
 			if (xoff >= page * Game.SIZE.width) {
 				xoff = page * Game.SIZE.width;
 				dir = 0;
+				ticks = -1;
 			}
 		} else if (dir == -1) {
 			if (xoff <= page * Game.SIZE.width) {
 				xoff = page * Game.SIZE.width;
 				dir = 0;
+				ticks = -1;
 			}
 		}
 		
@@ -71,25 +77,17 @@ public class HelpState extends BasicState {
 			game.enterState(StateManager.MAINMENU_STATE_ID);
 		}
 		
-		if (right.isClicked()) {
-			if (page < MAX_PAGES - 1) {
-				Sound.SELECT.play();
-				changePage(1);
-			}
-		}
-		
-		if (left.isClicked()) {
-			if (page > 0) {
-				Sound.SELECT.play();
-				changePage(-1);
-			}
-		}
-		
 		if (page > 0) left.setEnabled(true);
 		else left.setEnabled(false);
 		
 		if (page < MAX_PAGES - 1) right.setEnabled(true);
 		else right.setEnabled(false);
+	}
+	
+	private float easeInOutCubic(float ticks, float startX, float deltaX, float totalTicks) {
+		ticks /= totalTicks;
+		ticks--;
+		return deltaX * (ticks * ticks * ticks + 1) + startX;
 	}
 	
 	@Override
@@ -121,11 +119,9 @@ public class HelpState extends BasicState {
 		back.render(g);
 		left.render(g);
 		right.render(g);
-		
-		if (Game.renderDebug) RenderDebugOverlay.render(g);
 	}
 	
-	private void changePage(int dir) {
+	private void setDirection(float dir) {
 		page += dir;
 		if (page < 0) page = 0;
 		else if (page > MAX_PAGES - 1) page = MAX_PAGES - 1;

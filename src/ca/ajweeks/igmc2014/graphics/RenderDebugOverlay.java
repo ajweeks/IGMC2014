@@ -30,6 +30,7 @@ public class RenderDebugOverlay {
 		drawString(g, "Current state: " + Game.sm.getCurrentStateSimpleName());
 		if (Game.sm.getCurrentStateID() == StateManager.GAME_STATE_ID) {
 			drawString(g, "hasDoubleJumped: " + ((GameState) currentState).getPlayer().hasDoubleJumped);
+			drawString(g, "onGround: " + ((GameState) currentState).getPlayer().onGround);
 			drawString(g, "x = " + ((GameState) currentState).getPlayer().getX());
 			drawString(g, "y = " + ((GameState) currentState).getPlayer().getY());
 			drawString(g, "xv = " + ((GameState) currentState).getPlayer().getXv());

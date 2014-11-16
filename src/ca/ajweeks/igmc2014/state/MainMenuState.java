@@ -53,13 +53,13 @@ public class MainMenuState extends BasicState {
 	public void update(double delta) {
 		buttons.update();
 		
-		if (Key.LEFT.clicked || Key.UP.clicked) {
+		if (Key.LEFT_ARROW.clicked || Key.UP_ARROW.clicked) {
 			do {
 				buttons.previousButton(); //set selected buttons to previous enabled button
 			} while (!buttons.getButton(buttons.getSelectedButton()).isEnabled());
 		}
 		
-		if (Key.RIGHT.clicked || Key.DOWN.clicked) {
+		if (Key.RIGHT_ARROW.clicked || Key.DOWN_ARROW.clicked) {
 			do {
 				buttons.nextButton(); //previous enabled button
 			} while (!buttons.getButton(buttons.getSelectedButton()).isEnabled());
@@ -106,9 +106,6 @@ public class MainMenuState extends BasicState {
 		g.setColor(Colour.offWhite);
 		int vol = (int) (((Sound.volume + 24) / 3) * 10);
 		g.drawString("Volume: " + vol + "%", Game.SIZE.width - 164, 4);
-		
-		if (Key.F3.clicked) Game.renderDebug = !Game.renderDebug;
-		if (Game.renderDebug) RenderDebugOverlay.render(g);
 	}
 	
 	private void quieter() {

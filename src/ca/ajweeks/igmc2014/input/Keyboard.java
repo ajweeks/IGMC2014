@@ -22,13 +22,16 @@ public class Keyboard implements KeyListener {
 				"\'", "\"", false), MINUS("-", "_", false), EQUALS("=", "+", false), TAB("    ", false),
 		
 		//function keys
-		UP("up", true), DOWN("down", true), LEFT("left", true), RIGHT("right", true), ENTER("enter", true), ESC("esc", true), BACKSPACE(
-				"bksp", true), DEL("del", true), SHIFT("shift", true), CONTROL("control", true), HOME("home", true), END("end",
-				true),
+		UP_ARROW("up arrow", true), DOWN_ARROW("down arrow", true), LEFT_ARROW("left arrow", true), RIGHT_ARROW("right arrow",
+				true), ENTER("enter", true), ESC("esc", true), BACKSPACE("bksp", true), DEL("del", true), SHIFT("shift", true), CONTROL(
+				"control", true), HOME("home", true), END("end", true),
 		
 		//F keys
 		F1("F1", true), F2("F2", true), F3("F3", true), F4("F4", true), F5("F5", true), F6("F6", true), F7("F7", true), F8("F8",
-				true), F9("F9", true), F10("F10", true), F11("F11", true), F12("F12", true);
+				true), F9("F9", true), F10("F10", true), F11("F11", true), F12("F12", true),
+		
+		//multiple keys
+		UP("up", true), LEFT("left", true), DOWN("down", true), RIGHT("right", true);
 		
 		public final String text, TEXT;
 		public boolean clicked, isFunctionKey;
@@ -73,6 +76,8 @@ public class Keyboard implements KeyListener {
 	public static boolean insert = false;
 	private static boolean insertChanged = false;
 	
+	//LATER num lock
+	
 	private static void updateCaps(boolean pressed) {
 		if (!capsChanged && pressed) {
 			capsChanged = true;
@@ -112,15 +117,19 @@ public class Keyboard implements KeyListener {
 		//function keys
 		switch (ke.getKeyCode()) {
 		case KeyEvent.VK_UP:
+			Key.UP_ARROW.changed(pressed);
 			Key.UP.changed(pressed);
 			break;
 		case KeyEvent.VK_LEFT:
+			Key.LEFT_ARROW.changed(pressed);
 			Key.LEFT.changed(pressed);
 			break;
 		case KeyEvent.VK_DOWN:
+			Key.DOWN_ARROW.changed(pressed);
 			Key.DOWN.changed(pressed);
 			break;
 		case KeyEvent.VK_RIGHT:
+			Key.RIGHT_ARROW.changed(pressed);
 			Key.RIGHT.changed(pressed);
 			break;
 		case KeyEvent.VK_ENTER:
@@ -233,6 +242,7 @@ public class Keyboard implements KeyListener {
 		//letters
 		case KeyEvent.VK_A:
 			Key.A.changed(pressed);
+			Key.LEFT.changed(pressed);
 			break;
 		case KeyEvent.VK_B:
 			Key.B.changed(pressed);
@@ -242,6 +252,7 @@ public class Keyboard implements KeyListener {
 			break;
 		case KeyEvent.VK_D:
 			Key.D.changed(pressed);
+			Key.RIGHT.changed(pressed);
 			break;
 		case KeyEvent.VK_E:
 			Key.E.changed(pressed);
@@ -287,6 +298,7 @@ public class Keyboard implements KeyListener {
 			break;
 		case KeyEvent.VK_S:
 			Key.S.changed(pressed);
+			Key.DOWN.changed(pressed);
 			break;
 		case KeyEvent.VK_T:
 			Key.T.changed(pressed);
@@ -299,6 +311,7 @@ public class Keyboard implements KeyListener {
 			break;
 		case KeyEvent.VK_W:
 			Key.W.changed(pressed);
+			Key.UP.changed(pressed);
 			break;
 		case KeyEvent.VK_X:
 			Key.X.changed(pressed);

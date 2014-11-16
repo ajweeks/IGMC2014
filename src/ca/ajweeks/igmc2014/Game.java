@@ -58,16 +58,17 @@ public class Game extends Canvas implements Runnable {
 	public void run() {
 		running = true;
 		
+		double NS_PER_TICK = 1_000_000_000 / 60;
 		long before = System.nanoTime();
 		long elapsed = 0;
 		while (running) {
 			long now = System.nanoTime();
 			long delta = now - before;
-			System.out.println(delta);
 			before = now;
 			elapsed += delta;
+			double extra = NS_PER_TICK - delta;
 			
-			if (elapsed > 1_000_000_00) {
+			if (elapsed > 1_000_000_000) { //one second
 				fps = frames;
 				frames = 0;
 				elapsed = 0;
@@ -92,6 +93,14 @@ public class Game extends Canvas implements Runnable {
 			
 			g.dispose();
 			buffer.show();
+			
+			if (extra > 0) {
+				try {
+					Thread.sleep((long) (extra / 1_000_000));
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 		frame.dispose();
 		System.exit(0);
