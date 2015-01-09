@@ -47,13 +47,13 @@ public class ButtonManager {
 	}
 	
 	public void nextButton() {
-		if (selectedButton + 1 > buttons.size() - 1) selectedButton = 0;
-		else selectedButton++;
+		selectedButton++;
+		if (selectedButton > buttons.size() - 1) selectedButton = 0;
 	}
 	
 	public void previousButton() {
-		if (selectedButton - 1 < 0) selectedButton = buttons.size() - 1;
-		else selectedButton--;
+		selectedButton--;
+		if (selectedButton < 0) selectedButton = buttons.size() - 1;
 	}
 	
 	public void addButton(Button b) {

@@ -105,7 +105,7 @@ public class MainMenuState extends BasicState {
 		g.setFont(Game.font24);
 		g.setColor(Colour.offWhite);
 		int vol = (int) (((Sound.volume + 24) / 3) * 10);
-		g.drawString("Volume: " + vol + "%", Game.SIZE.width - 164, 4);
+		g.drawString("Volume: " + vol + "%", Game.SIZE.width - 165, 22);
 	}
 	
 	private void quieter() {

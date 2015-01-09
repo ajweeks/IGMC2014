@@ -34,7 +34,7 @@ public class Mouse implements MouseMotionListener, MouseListener {
 			leftDown = true;
 		}
 		if (e.getButton() == MouseEvent.BUTTON3) {
-			rightClicked = false;
+			rightClicked = true;
 			rightDown = true;
 		}
 	}

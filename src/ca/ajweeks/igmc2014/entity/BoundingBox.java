@@ -1,16 +1,11 @@
 package ca.ajweeks.igmc2014.entity;
 
+/** A representation of a static 2D rectangle */
 public class BoundingBox {
 	
-	private float x, y;
-	private float width, height;
+	protected float x, y;
+	protected float width, height;
 	
-	/** @param x - the number of tiles from the left of the screen this tile is
-	 *  @param y - the number of tiles from the bottom of the screen this bounding box is
-	 *  @param width - the number of tiles wide this bounding box is
-	 *  @param height - the number of tiles tall this bounding box is
-	 *  @param scale - the number of pixels per tile)
-	 *  */
 	public BoundingBox(float x, float y, float width, float height) {
 		this.x = x;
 		this.y = y;
@@ -31,14 +26,6 @@ public class BoundingBox {
 				(b.x + b.width > x && b.x + b.width < x + width && b.y + b.height > y && b.y + b.height < y + height)) { //b's bottom right corner is inside this box
 			return true;
 		} else return false;
-	}
-	
-	public void setX(float x) {
-		this.x = x;
-	}
-	
-	public void setY(float y) {
-		this.y = y;
 	}
 	
 	public float getX() {

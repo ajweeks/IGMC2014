@@ -21,10 +21,10 @@ public class Chunk {
 		}
 	}
 	
-	public void render(Graphics g) {
+	public void render(Level level, Graphics g) {
 		for (int i = 0; i < Chunk.WIDTH; i++) {
 			for (int j = 0; j < Chunk.WIDTH; j++) {
-				tiles[i][j].render(g);
+				tiles[i][j].render(level, g);
 			}
 		}
 	}

@@ -13,9 +13,9 @@ import ca.ajweeks.igmc2014.level.Tile;
 import ca.ajweeks.igmc2014.sound.Sound;
 import ca.ajweeks.igmc2014.state.GameState;
 
-public class Player extends BoundingBox {
-	public static final float JUMP_VELOCITY = -0.55F;
-	public static final float GRAVITY = 0.02F; //ya
+public class Player extends MoveableBoundingBox {
+	public static final float JUMP_VELOCITY = -0.30F;
+	public static final float GRAVITY = 0.01F; //ya
 	
 	public static final float SPRINT_VELOCITY = 0.40F;
 	public static final float WALK_VELOCITY = 0.22F;
@@ -29,14 +29,13 @@ public class Player extends BoundingBox {
 	public boolean onGround = false;
 	
 	public float maxHorizontalVelocity = WALK_VELOCITY;
-	public float maxVerticalVelocity = 18.0F; //terminal vertical velocity
+	public float maxVerticalVelocity = 5.0F; //terminal vertical velocity
 	private float horizontalPositiveAcceleration = 0.013f; //how quickly the player speeds up
 	private float horizontalNegativeAcceleration = 0.055f;  //how quickly the player slows down (once all controls have been released)
 	
 	private static Image sprite;
 	
-	private float xv, yv;
-	private float xa;
+	private float xv = 0, yv = 0;
 	private int coins = 0;
 	
 	public Player() {
@@ -53,17 +52,17 @@ public class Player extends BoundingBox {
 		if (Key.SHIFT.down > -1) maxHorizontalVelocity = SPRINT_VELOCITY; //LATER add speed ramping to make slowing down smoother
 		else maxHorizontalVelocity = WALK_VELOCITY;
 		
-		if (Key.RIGHT.down > -1) {
+		if (Key.RIGHT_ARROW.down > -1) {
 			xv += horizontalPositiveAcceleration;
 			if (xv > maxHorizontalVelocity) xv = maxHorizontalVelocity;
 		}
 		
-		if (Key.LEFT.down > -1) {
+		if (Key.LEFT_ARROW.down > -1) {
 			xv -= horizontalPositiveAcceleration;
 			if (xv < -maxHorizontalVelocity) xv = -maxHorizontalVelocity;
 		}
 		
-		if (Key.LEFT.down == -1 && Key.RIGHT.down == -1 && xv != 0) { //decelerate horizontal motion by friction
+		if (Key.LEFT_ARROW.down == -1 && Key.RIGHT_ARROW.down == -1 && xv != 0) { //decelerate horizontal motion by friction
 			if (xv < 0) {
 				if ((xv -= horizontalNegativeAcceleration) < 0) xv = 0;
 			} else if (xv > 0) {
@@ -71,7 +70,7 @@ public class Player extends BoundingBox {
 			}
 		}
 		
-		if (Key.SPACE.clicked || Key.UP.clicked) {
+		if (Key.SPACE.clicked || Key.UP_ARROW.clicked) {
 			if (onGround) {
 				Sound.JUMP.play();
 				hasDoubleJumped = false;
@@ -88,77 +87,67 @@ public class Player extends BoundingBox {
 		
 		yv += GRAVITY;
 		if (yv > maxVerticalVelocity) yv = maxVerticalVelocity;
-		if (yv < -maxVerticalVelocity) yv = -maxVerticalVelocity;
 		
-		//float bx = getX(), by = getY(); //store original values
-		
-		setX(getX() + xv);
-		setY(getY() + yv);
+		x = getX() + xv;
+		y = getY() + yv;
 		
 		if (getX() < 0) { //left side of level
-			setX(0);
-			xv = 0;
+			x = 0.0f;
+			xv = 0.0f;
 		}
 		
 		if (getY() < 0) { //top of level
-			setY(0);
-			yv = 0;
+			y = 0.0f;
+			yv = 0.0f;
 		}
 		
 		float levelWidth = level.chunks[0].length * Chunk.WIDTH - Player.WIDTH; //right side of level
 		if (getX() > levelWidth) {
-			setX(levelWidth);
-			xv = 0;
+			x = levelWidth;
+			xv = 0.0f;
 		}
 		
 		float levelHeight = level.height * Chunk.WIDTH - Player.HEIGHT; //bottom of level
 		if (getY() > levelHeight) {
-			setY(levelHeight);
+			y = levelHeight;
 			onGround = true;
 		}
 		
-		//replace with a close vicinity search
-		
-		//		if (xv != 0 || yv != 0) {
-		//			for (int i = 0; i < gs.level.chunks.length; i++) {
-		//				for (int j = 0; j < gs.level.chunks[i].length; j++) {
-		//					for (int k = 0; k < gs.level.chunks[i][j].tiles.length; k++) {
-		//						for (int l = 0; l < gs.level.chunks[i][j].tiles[k].length; l++) {
-		//							Tile t = gs.level.chunks[i][j].tiles[k][l];
-		//							if (t.intersects(this)) { //FIXME col detection will never work as intended because player's x & y pos are not rendered the same way tile's x & y 
-		//								if (t.getType() == Tile.Type.COIN) {
-		//									if (!((Coin) t).isRemoved()) {
-		//										coins++;
-		//										((Coin) gs.level.chunks[i][j].tiles[k][l]).remove();
-		//									}
-		//								} else if (t.getType().isSolid()) {
-		//									setX(bx);
-		//									setY(by);
-		//									
-		//									xv = 0;
-		//									onGround = true;
-		//								}
-		//							}
-		//						}
-		//					}
-		//				}
-		//			}
-		//		}
+		if (xv != 0 || yv != 0) {
+			Tile[] tiles = new Tile[level.width * level.height * Chunk.WIDTH * Chunk.HEIGHT];
+			int k = 0;
+			for (int i = 0; i < level.chunks.length; i++) {
+				for (int j = 0; j < level.chunks[i].length; j++) {
+					for (int y = 0; y < level.chunks[i][j].tiles.length; y++) {
+						for (int x = 0; x < level.chunks[i][j].tiles[y].length; x++) {
+							tiles[k] = level.chunks[i][j].tiles[y][x];
+							k++;
+							//LATER check for coins
+						}
+					}
+				}
+			}
+			
+			attemptToMove(delta, tiles);
+		}
 		
 		if (onGround) {
 			hasDoubleJumped = false;
-			yv = 0;
+			yv = 0.0f;
 		}
 	}
 	
 	public void respawn() {
-		setX(SPAWN_X);
-		setY(SPAWN_Y);
+		x = SPAWN_X;
+		y = SPAWN_Y;
 		coins = 0;
+		onGround = false;
+		yv = 0.0f;
+		xv = 0.0f;
 	}
 	
 	public void render(Graphics g) {
-		g.setColor(Color.white); //LATER check if this is neccessary
+		g.setColor(Color.white); //LATER check if this is necessary
 		g.drawImage(sprite, (int) (getX() * Tile.PIXEL_WIDTH + GameState.camera.x),
 				(int) (getY() * Tile.PIXEL_WIDTH + GameState.camera.y), null);
 	}

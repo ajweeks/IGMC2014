@@ -15,6 +15,7 @@ public class StateManager {
 	public static final int GAME_STATE_ID = 2;
 	public static final int HELP_STATE_ID = 3;
 	public static final int ABOUT_STATE_ID = 4;
+	public static final int OPTOINS_STATE_ID = 5;
 	
 	private ArrayList<BasicState> states;
 	private BasicState currentState;

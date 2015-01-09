@@ -43,11 +43,11 @@ public class RenderDebugOverlay {
 		Rectangle2D bounds = g.getFontMetrics().getStringBounds(str, g);
 		
 		g.setColor(Colour.translucentBlack);
-		g.fillRect(x - 1, y - 14, (int) bounds.getWidth() + 8, (int) bounds.getHeight());
+		g.fillRect(x - 1, y - 12, (int) bounds.getWidth() + 8, (int) bounds.getHeight());
 		
 		g.setColor(Color.white);
 		g.drawString(str, x + 3, y + 2);
 		
-		y += bounds.getHeight() + 3;
+		y += bounds.getHeight() + 2;
 	}
 }

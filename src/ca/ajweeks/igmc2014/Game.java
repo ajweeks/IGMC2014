@@ -29,9 +29,17 @@ public class Game extends Canvas implements Runnable {
 	public static boolean renderDebug = true; //TODO MAKE FALSE FOR RELEASES
 	
 	private JFrame frame;
+	
 	private boolean running = false;
+	//	private boolean hasFocus = false;
 	private int fps = 0;
-	int frames = 0;
+	private int frames = 0;
+	
+	static {
+		font24 = new Font("Consolas", Font.PLAIN, 24);
+		font34 = new Font("Consolas", Font.PLAIN, 34);
+		fontDebug = new Font("Consolas", Font.BOLD, 16);
+	}
 	
 	public Game() {
 		super();
@@ -48,6 +56,7 @@ public class Game extends Canvas implements Runnable {
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
+		frame.setFocusable(true);
 	}
 	
 	public static void main(String[] args) {
@@ -56,14 +65,15 @@ public class Game extends Canvas implements Runnable {
 	
 	@Override
 	public void run() {
+		requestFocus();
 		running = true;
 		
-		double NS_PER_TICK = 1_000_000_000 / 60;
+		double NS_PER_TICK = 1_000_000_000 / 64;
 		long before = System.nanoTime();
 		long elapsed = 0;
 		while (running) {
 			long now = System.nanoTime();
-			long delta = now - before;
+			double delta = now - before;
 			before = now;
 			elapsed += delta;
 			double extra = NS_PER_TICK - delta;
@@ -71,28 +81,13 @@ public class Game extends Canvas implements Runnable {
 			if (elapsed > 1_000_000_000) { //one second
 				fps = frames;
 				frames = 0;
-				elapsed = 0;
+				elapsed -= 1_000_000_000;
+				frame.setTitle(GAME_TITLE + " | " + fps + " fps");
 			}
 			
-			sm.update(delta);
-			keyboard.update();
-			mouse.update();
+			update(delta / 10_000_000); // around 1.0
 			
-			BufferStrategy buffer = getBufferStrategy();
-			if (buffer == null) {
-				createBufferStrategy(2);
-				continue;
-			}
-			Graphics g = buffer.getDrawGraphics();
-			
-			g.setColor(Colour.offBlack);
-			g.fillRect(0, 0, SIZE.width, SIZE.height);
-			
-			sm.render(g);
-			frames++;
-			
-			g.dispose();
-			buffer.show();
+			render();
 			
 			if (extra > 0) {
 				try {
@@ -104,6 +99,31 @@ public class Game extends Canvas implements Runnable {
 		}
 		frame.dispose();
 		System.exit(0);
+	}
+	
+	public void update(double delta) {
+		sm.update(delta);
+		keyboard.update();
+		mouse.update();
+	}
+	
+	public void render() {
+		BufferStrategy buffer = getBufferStrategy();
+		if (buffer == null) {
+			createBufferStrategy(2);
+			return;
+		}
+		Graphics g = buffer.getDrawGraphics();
+		
+		//clear screen
+		g.setColor(Colour.offBlack);
+		g.fillRect(0, 0, SIZE.width, SIZE.height);
+		
+		sm.render(g);
+		frames++;
+		
+		g.dispose();
+		buffer.show();
 	}
 	
 	public void stop() {

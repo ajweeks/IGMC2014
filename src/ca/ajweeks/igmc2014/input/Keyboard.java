@@ -1,6 +1,7 @@
 package ca.ajweeks.igmc2014.input;
 
 import java.awt.Canvas;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -19,19 +20,17 @@ public class Keyboard implements KeyListener {
 		//other non-function keys
 		SPACE(" ", false), SLASH("/", "?", false), BACKSLASH("\\", "|", false), COMMA(",", "<", false), PERIOD(".", ">", false), GRAVE(
 				"`", "~", false), LSQUARE("[", "{", false), RSQUARE("]", "}", false), SEMICOLON(";", ":", false), APOSTROPHE(
-				"\'", "\"", false), MINUS("-", "_", false), EQUALS("=", "+", false), TAB("    ", false),
+				"\'", "\"", false), MINUS("-", "_", false), EQUALS("=", "+", false),
 		
 		//function keys
 		UP_ARROW("up arrow", true), DOWN_ARROW("down arrow", true), LEFT_ARROW("left arrow", true), RIGHT_ARROW("right arrow",
 				true), ENTER("enter", true), ESC("esc", true), BACKSPACE("bksp", true), DEL("del", true), SHIFT("shift", true), CONTROL(
-				"control", true), HOME("home", true), END("end", true),
+				"control", true), HOME("home", true), END("end", true), TAB("tab", true), CAPS_LOCK("caps lock", true), NUM_LOCK(
+				"num lock", true), INSERT("insert", true),
 		
 		//F keys
 		F1("F1", true), F2("F2", true), F3("F3", true), F4("F4", true), F5("F5", true), F6("F6", true), F7("F7", true), F8("F8",
-				true), F9("F9", true), F10("F10", true), F11("F11", true), F12("F12", true),
-		
-		//multiple keys
-		UP("up", true), LEFT("left", true), DOWN("down", true), RIGHT("right", true);
+				true), F9("F9", true), F10("F10", true), F11("F11", true), F12("F12", true);
 		
 		public final String text, TEXT;
 		public boolean clicked, isFunctionKey;
@@ -52,8 +51,8 @@ public class Keyboard implements KeyListener {
 			}
 		}
 		
-		Key(String s, boolean isFunctionKey) {
-			this(s, s.toUpperCase(), isFunctionKey);
+		Key(String text, boolean isFunctionKey) {
+			this(text, text.toUpperCase(), isFunctionKey);
 		}
 		
 		public void update() {
@@ -70,26 +69,22 @@ public class Keyboard implements KeyListener {
 		}
 	}
 	
-	public static boolean capsLock = false;
-	private static boolean capsChanged = false;
-	
+	public static boolean capsLock = Toolkit.getDefaultToolkit().getLockingKeyState(KeyEvent.VK_CAPS_LOCK);
+	public static boolean numLock = Toolkit.getDefaultToolkit().getLockingKeyState(KeyEvent.VK_NUM_LOCK);
 	public static boolean insert = false;
-	private static boolean insertChanged = false;
 	
-	//LATER num lock
+	//LATER figure out what scroll lock is used for, and possibly implement it
 	
-	private static void updateCaps(boolean pressed) {
-		if (!capsChanged && pressed) {
-			capsChanged = true;
-			capsLock = !capsLock;
-		} else if (!pressed) capsChanged = false; // only reset capsChanged variable once the caps is released (prevents switching back and forth repeatedly)
+	private void updateCapsLock(boolean pressed) {
+		if (pressed && Key.CAPS_LOCK.clicked) capsLock = !capsLock;
 	}
 	
-	private static void updateInsert(boolean pressed) {
-		if (!insertChanged && pressed) {
-			insertChanged = true;
-			insert = !insert;
-		} else if (!pressed) insertChanged = false; // only reset insertChanged variable once insert is released (prevents switching back and forth repeatedly)
+	private void updateNumLock(boolean pressed) {
+		if (pressed && Key.NUM_LOCK.clicked) numLock = !numLock;
+	}
+	
+	private void updateInsert(boolean pressed) {
+		if (pressed && Key.INSERT.clicked) insert = !insert;
 	}
 	
 	public void update() {
@@ -118,19 +113,15 @@ public class Keyboard implements KeyListener {
 		switch (ke.getKeyCode()) {
 		case KeyEvent.VK_UP:
 			Key.UP_ARROW.changed(pressed);
-			Key.UP.changed(pressed);
 			break;
 		case KeyEvent.VK_LEFT:
 			Key.LEFT_ARROW.changed(pressed);
-			Key.LEFT.changed(pressed);
 			break;
 		case KeyEvent.VK_DOWN:
 			Key.DOWN_ARROW.changed(pressed);
-			Key.DOWN.changed(pressed);
 			break;
 		case KeyEvent.VK_RIGHT:
 			Key.RIGHT_ARROW.changed(pressed);
-			Key.RIGHT.changed(pressed);
 			break;
 		case KeyEvent.VK_ENTER:
 			Key.ENTER.changed(pressed);
@@ -157,10 +148,16 @@ public class Keyboard implements KeyListener {
 			Key.END.changed(pressed);
 			break;
 		case KeyEvent.VK_INSERT:
+			Key.INSERT.changed(pressed);
 			updateInsert(pressed);
 			break;
 		case KeyEvent.VK_CAPS_LOCK:
-			updateCaps(pressed);
+			Key.CAPS_LOCK.changed(pressed);
+			updateCapsLock(pressed);
+			break;
+		case KeyEvent.VK_NUM_LOCK:
+			Key.NUM_LOCK.changed(pressed);
+			updateNumLock(pressed);
 			break;
 		
 		//others
@@ -174,6 +171,7 @@ public class Keyboard implements KeyListener {
 			Key.SLASH.changed(pressed);
 			break;
 		case KeyEvent.VK_PERIOD:
+		case KeyEvent.VK_DECIMAL:
 			Key.PERIOD.changed(pressed);
 			break;
 		case KeyEvent.VK_COMMA:
@@ -242,7 +240,6 @@ public class Keyboard implements KeyListener {
 		//letters
 		case KeyEvent.VK_A:
 			Key.A.changed(pressed);
-			Key.LEFT.changed(pressed);
 			break;
 		case KeyEvent.VK_B:
 			Key.B.changed(pressed);
@@ -252,7 +249,6 @@ public class Keyboard implements KeyListener {
 			break;
 		case KeyEvent.VK_D:
 			Key.D.changed(pressed);
-			Key.RIGHT.changed(pressed);
 			break;
 		case KeyEvent.VK_E:
 			Key.E.changed(pressed);
@@ -298,7 +294,6 @@ public class Keyboard implements KeyListener {
 			break;
 		case KeyEvent.VK_S:
 			Key.S.changed(pressed);
-			Key.DOWN.changed(pressed);
 			break;
 		case KeyEvent.VK_T:
 			Key.T.changed(pressed);
@@ -311,7 +306,6 @@ public class Keyboard implements KeyListener {
 			break;
 		case KeyEvent.VK_W:
 			Key.W.changed(pressed);
-			Key.UP.changed(pressed);
 			break;
 		case KeyEvent.VK_X:
 			Key.X.changed(pressed);

@@ -39,13 +39,13 @@ public class HelpState extends BasicState {
 	
 	@Override
 	public void update(double delta) {
-		if (Key.RIGHT.clicked || right.isClicked()) {
+		if (Key.RIGHT_ARROW.clicked || right.isClicked()) {
 			if (page < MAX_PAGES - 1) {
 				Sound.SELECT.play();
 				setDirection(1);
 				ticks = 0;
 			}
-		} else if (Key.LEFT.clicked || left.isClicked()) {
+		} else if (Key.LEFT_ARROW.clicked || left.isClicked()) {
 			if (page > 0) {
 				Sound.SELECT.play();
 				setDirection(-1);

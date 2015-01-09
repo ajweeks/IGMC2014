@@ -21,4 +21,5 @@ public abstract class BasicState {
 	
 	public abstract int getID();
 	
+	//TODO add abstract destructor method?
 }
